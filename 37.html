@@ -1,0 +1,2237 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>注音符號總表｜中班親子互動小冒險（37個符號全收錄）</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tone.js 用於產生清脆有趣的互動與交通提示音效 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <!-- Google Fonts: 圓潤易讀的繁體中文字體 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background-color: #FFFDF7;
+      background-image: radial-gradient(#FDE68A 1.5px, transparent 1.5px);
+      background-size: 28px 28px;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .font-round {
+      font-family: 'Fredoka', 'Noto Sans TC', sans-serif;
+    }
+
+    /* 黑色遮罩轉場動畫 */
+    .black-mask {
+      background-color: #09090B;
+      transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .black-mask.revealed {
+      opacity: 0;
+      transform: scale(1.08);
+      pointer-events: none;
+    }
+
+    /* 輕柔漂浮動畫 */
+    @keyframes floatGentle {
+      0% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-8px) scale(1.03); }
+      100% { transform: translateY(0px) scale(1); }
+    }
+
+    .gentle-float {
+      animation: floatGentle 2.7s ease-in-out infinite;
+    }
+
+    /* 揭曉時的彈跳效果 */
+    @keyframes popIn {
+      0% { transform: scale(0.82); }
+      60% { transform: scale(1.06); }
+      100% { transform: scale(1); }
+    }
+
+    .animate-pop {
+      animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* 台灣標準直式注音排版 */
+    .zhuyin-vertical {
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+  </style>
+</head>
+<body class="text-slate-800 min-h-screen pb-16">
+
+  <!-- ===================================================================== -->
+  <!-- 視圖一：注音符號總表（首頁目錄）                                        -->
+  <!-- ===================================================================== -->
+  <div id="view-chart">
+    <!-- 頂部總表標題列 -->
+    <header class="bg-white/95 backdrop-blur-md border-b-4 border-amber-300 sticky top-0 z-30 shadow-sm">
+      <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 text-white flex items-center justify-center text-2xl font-black shadow-md">
+            ㄅㄆ
+          </div>
+          <div>
+            <h1 class="text-xl sm:text-2xl font-black text-slate-800 tracking-wide">
+              注音符號總表｜中班親子互動小冒險
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-500 font-medium">
+              點擊任一注音符號，開始「看圖・發音・生活尋寶・交通探索」9 分鐘遊戲！
+            </p>
+          </div>
+        </div>
+
+        <!-- 學習進度徽章 -->
+        <div class="flex items-center gap-2 bg-amber-50 border-2 border-amber-200 px-4 py-2 rounded-2xl">
+          <span class="text-xl">⭐</span>
+          <div class="text-sm font-black text-amber-900">
+            已收集星星：<span id="mastered-count" class="text-rose-600 text-lg font-round">0</span> / 37
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 pt-6 space-y-6">
+      <!-- 類別篩選膠囊列 -->
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-3.5 rounded-3xl border-2 border-amber-200 shadow-sm">
+        <div class="flex flex-wrap items-center gap-2">
+          <button
+            onclick="filterChart('all')"
+            id="filter-all"
+            class="chart-filter-btn px-4 py-2 rounded-2xl font-black text-sm bg-slate-800 text-white shadow transition cursor-pointer"
+          >
+            🌈 全部符號 (37)
+          </button>
+          <button
+            onclick="filterChart('initial')"
+            id="filter-initial"
+            class="chart-filter-btn px-4 py-2 rounded-2xl font-black text-sm bg-rose-50 text-rose-700 hover:bg-rose-100 transition cursor-pointer"
+          >
+            🔤 聲母 (21)
+          </button>
+          <button
+            onclick="filterChart('medial')"
+            id="filter-medial"
+            class="chart-filter-btn px-4 py-2 rounded-2xl font-black text-sm bg-sky-50 text-sky-700 hover:bg-sky-100 transition cursor-pointer"
+          >
+            🌉 介音 (3)
+          </button>
+          <button
+            onclick="filterChart('final')"
+            id="filter-final"
+            class="chart-filter-btn px-4 py-2 rounded-2xl font-black text-sm bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition cursor-pointer"
+          >
+            🎵 韻母 (13)
+          </button>
+        </div>
+
+        <div class="text-xs font-bold text-slate-500 px-2">
+          💡 點擊卡片上的 <span class="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded">🔊</span> 可直接試聽發音
+        </div>
+      </div>
+
+      <!-- 聲母區塊 (21 個) -->
+      <section id="section-initial" class="space-y-3">
+        <div class="flex items-center gap-2 px-1">
+          <span class="w-3 h-7 rounded-full bg-rose-500"></span>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-800">聲母家族（21 個）</h2>
+          <span class="text-xs font-bold bg-rose-100 text-rose-700 px-2.5 py-1 rounded-full">ㄅ ～ ㄙ</span>
+        </div>
+        <div id="grid-initial" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-3.5">
+          <!-- JS 動態生成 -->
+        </div>
+      </section>
+
+      <!-- 介音區塊 (3 個) -->
+      <section id="section-medial" class="space-y-3 pt-2">
+        <div class="flex items-center gap-2 px-1">
+          <span class="w-3 h-7 rounded-full bg-sky-500"></span>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-800">介音家族（3 個）</h2>
+          <span class="text-xs font-bold bg-sky-100 text-sky-700 px-2.5 py-1 rounded-full">ㄧ ㄨ ㄩ</span>
+        </div>
+        <div id="grid-medial" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3.5">
+          <!-- JS 動態生成 -->
+        </div>
+      </section>
+
+      <!-- 韻母區塊 (13 個) -->
+      <section id="section-final" class="space-y-3 pt-2">
+        <div class="flex items-center gap-2 px-1">
+          <span class="w-3 h-7 rounded-full bg-emerald-500"></span>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-800">韻母家族（13 個）</h2>
+          <span class="text-xs font-bold bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full">ㄚ ～ ㄦ</span>
+        </div>
+        <div id="grid-final" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-3.5">
+          <!-- JS 動態生成 -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 視圖二：單一注音符號互動教學頁面（4 關卡）                              -->
+  <!-- ===================================================================== -->
+  <div id="view-lesson" class="hidden">
+    <!-- 頂部導覽與返回總表列 -->
+    <header id="lesson-header" class="bg-white/95 backdrop-blur-md border-b-4 border-amber-300 sticky top-0 z-30 shadow-sm">
+      <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5 sm:gap-3">
+          <!-- 返回總表按鈕 -->
+          <button
+            onclick="backToChart()"
+            class="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 text-white font-black px-3.5 py-2.5 rounded-2xl shadow transition cursor-pointer text-sm sm:text-base"
+          >
+            <span>⬅</span>
+            <span>注音總表</span>
+          </button>
+
+          <div id="lesson-badge" class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-rose-500 text-white flex items-center justify-center text-2xl sm:text-3xl font-black shadow-md">
+            ㄅ
+          </div>
+
+          <div>
+            <h1 class="text-lg sm:text-2xl font-black text-slate-800 tracking-wide">
+              認識「<span id="lesson-symbol-title" class="text-rose-600">ㄅ</span>」
+            </h1>
+            <p id="lesson-category-subtitle" class="text-xs text-slate-500 font-bold">
+              聲母・親子共學 9 分鐘
+            </p>
+          </div>
+        </div>
+
+        <!-- 右側：前後切換 + 隨時聽發音按鈕 -->
+        <div class="flex items-center gap-2">
+          <button
+            onclick="navigateAdjacentSymbol(-1)"
+            title="上一個注音符號"
+            class="bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 font-black px-3 py-2.5 rounded-xl transition cursor-pointer text-sm"
+          >
+            ◀ 上一個
+          </button>
+          <button
+            onclick="navigateAdjacentSymbol(1)"
+            title="下一個注音符號"
+            class="bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 font-black px-3 py-2.5 rounded-xl transition cursor-pointer text-sm"
+          >
+            下一個 ▶
+          </button>
+          <button
+            onclick="playCurrentSymbolSound()"
+            class="flex items-center gap-1.5 bg-amber-400 hover:bg-amber-500 active:scale-95 text-slate-900 font-black px-3.5 sm:px-4 py-2.5 rounded-2xl shadow-md border-b-4 border-amber-600 transition cursor-pointer text-sm sm:text-base"
+          >
+            <span class="text-lg">🔊</span>
+            <span>聽發音</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 pt-6 space-y-6">
+      <!-- 四大關卡切換導覽列 -->
+      <nav aria-label="學習關卡切換" class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <button
+          id="tab-0"
+          onclick="switchStage(0)"
+          class="stage-tab p-3 sm:p-4 rounded-2xl border-b-4 text-left transition cursor-pointer flex flex-col justify-between shadow-sm bg-sky-500 text-white border-sky-700"
+        >
+          <div class="flex items-center justify-between w-full">
+            <span class="text-2xl">👀</span>
+            <span class="text-xs font-bold bg-white/25 px-2.5 py-0.5 rounded-full">1 分鐘</span>
+          </div>
+          <div class="mt-2 font-black text-base sm:text-lg">1. 看圖聯想</div>
+        </button>
+
+        <button
+          id="tab-1"
+          onclick="switchStage(1)"
+          class="stage-tab p-3 sm:p-4 rounded-2xl border-b-4 text-left transition cursor-pointer flex flex-col justify-between shadow-sm bg-white text-slate-700 border-slate-300 hover:bg-rose-50"
+        >
+          <div class="flex items-center justify-between w-full">
+            <span class="text-2xl">🗣️</span>
+            <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-full">2 分鐘</span>
+          </div>
+          <div class="mt-2 font-black text-base sm:text-lg">2. 誇張發音</div>
+        </button>
+
+        <button
+          id="tab-2"
+          onclick="switchStage(2)"
+          class="stage-tab p-3 sm:p-4 rounded-2xl border-b-4 text-left transition cursor-pointer flex flex-col justify-between shadow-sm bg-white text-slate-700 border-slate-300 hover:bg-emerald-50"
+        >
+          <div class="flex items-center justify-between w-full">
+            <span class="text-2xl">🔍</span>
+            <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-full">3 分鐘</span>
+          </div>
+          <div class="mt-2 font-black text-base sm:text-lg">3. 生活尋寶</div>
+        </button>
+
+        <button
+          id="tab-3"
+          onclick="switchStage(3)"
+          class="stage-tab p-3 sm:p-4 rounded-2xl border-b-4 text-left transition cursor-pointer flex flex-col justify-between shadow-sm bg-white text-slate-700 border-slate-300 hover:bg-amber-50"
+        >
+          <div class="flex items-center justify-between w-full">
+            <span class="text-2xl">🚌</span>
+            <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-full">3 分鐘</span>
+          </div>
+          <div class="mt-2 font-black text-base sm:text-lg">4. 交通工具或設施</div>
+        </button>
+      </nav>
+
+      <!-- 親子專注力小計時器控制列 -->
+      <section class="bg-white rounded-3xl p-4 border-2 border-amber-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl">
+            ⏱️
+          </div>
+          <div>
+            <div class="text-xs font-bold text-slate-400">本關建議時間（掌握幼兒專注力）</div>
+            <div class="flex items-baseline gap-2">
+              <span id="timer-display" class="font-round text-2xl sm:text-3xl font-bold text-slate-800">01:00</span>
+              <span id="timer-status" class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">準備就緒</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button
+            id="timer-toggle-btn"
+            onclick="toggleTimer()"
+            class="bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold px-4 py-2 rounded-xl shadow transition cursor-pointer"
+          >
+            ▶ 開始計時
+          </button>
+          <button
+            onclick="resetTimer()"
+            class="bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 font-bold px-3.5 py-2 rounded-xl transition cursor-pointer"
+          >
+            ↺ 重設
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 第一關：看圖聯想（1 分鐘）                                  -->
+      <!-- ========================================================= -->
+      <section id="stage-0" class="stage-panel bg-white rounded-3xl p-6 sm:p-8 border-4 border-sky-200 shadow-md space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b-2 border-sky-100 pb-4">
+          <div>
+            <span class="inline-block bg-sky-100 text-sky-700 text-xs font-black px-3 py-1 rounded-full mb-1">STAGE 1・1 分鐘視覺記憶</span>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-800">
+              👀 看圖聯想：「<span class="current-sym-text text-sky-600">ㄅ</span>」長得像什麼？
+            </h2>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <!-- 互動變身畫布 -->
+          <div
+            onclick="toggleVisualMorph()"
+            class="bg-gradient-to-b from-sky-50 to-blue-100 rounded-3xl p-6 border-2 border-sky-200 flex flex-col items-center justify-center min-h-[300px] cursor-pointer relative group transition hover:shadow-inner"
+          >
+            <span class="absolute top-3 right-3 text-xs font-bold bg-white/90 text-sky-700 px-3 py-1 rounded-full shadow-sm">
+              👆 點擊圖案切換變身
+            </span>
+
+            <div id="visual-morph-container" class="w-56 h-56 flex items-center justify-center animate-pop">
+              <!-- 由 JS 動態渲染聯想圖與注音疊加 -->
+            </div>
+
+            <p id="visual-caption" class="mt-3 text-lg font-black text-sky-900 text-center">
+              挺著圓圓大肚子的企鵝！
+            </p>
+          </div>
+
+          <!-- 引導說明與切換按鈕 -->
+          <div class="space-y-4">
+            <p id="visual-description" class="text-slate-600 font-medium leading-relaxed text-base">
+              不用急著教筆順！把抽象的符號變成可愛的圖像，幫助孩子一眼記住它的形狀：
+            </p>
+
+            <div class="grid grid-cols-1 gap-3">
+              <button
+                onclick="setVisualMode('picture')"
+                id="btn-mode-picture"
+                class="visual-mode-btn flex items-center gap-3 p-3.5 rounded-2xl border-2 border-sky-500 bg-sky-50 text-sky-900 font-black text-left transition cursor-pointer"
+              >
+                <span id="visual-mode-emoji" class="text-3xl">🐧</span>
+                <div>
+                  <div id="visual-mode-title">變身「大肚子企鵝」</div>
+                  <div id="visual-mode-subtitle" class="text-xs font-normal text-sky-700">觀察圖案和符號重疊的地方！</div>
+                </div>
+              </button>
+
+              <button
+                onclick="setVisualMode('symbol')"
+                id="btn-mode-symbol"
+                class="visual-mode-btn flex items-center gap-3 p-3.5 rounded-2xl border-2 border-slate-200 bg-white text-slate-700 font-black text-left hover:bg-sky-50 transition cursor-pointer"
+              >
+                <span class="text-3xl">🔤</span>
+                <div>
+                  <div>變回標準注音符號「<span class="current-sym-text">ㄅ</span>」</div>
+                  <div class="text-xs font-normal text-slate-500">用手指在空中跟著比一比就好囉</div>
+                </div>
+              </button>
+            </div>
+
+            <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-2xl text-sm text-amber-900">
+              <strong>💡 親子互動提示：</strong><br />
+              <span id="visual-parent-tip">問問孩子：「你的小肚子在哪裡？拍拍看！」</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button
+            onclick="switchStage(1)"
+            class="bg-sky-500 hover:bg-sky-600 text-white font-black px-6 py-3 rounded-2xl shadow-md border-b-4 border-sky-700 transition cursor-pointer"
+          >
+            下一關：誇張發音 ➔
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 第二關：誇張發音（2 分鐘）                                  -->
+      <!-- ========================================================= -->
+      <section id="stage-1" class="stage-panel hidden bg-white rounded-3xl p-6 sm:p-8 border-4 border-rose-200 shadow-md space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-rose-100 pb-4">
+          <div>
+            <span class="inline-block bg-rose-100 text-rose-700 text-xs font-black px-3 py-1 rounded-full mb-1">STAGE 2・2 分鐘聲音與動作遊戲</span>
+            <h2 id="pronounce-stage-title" class="text-2xl sm:text-3xl font-black text-slate-800">
+              🗣️ 誇張發音：戳破大泡泡
+            </h2>
+          </div>
+
+          <button
+            onclick="spawnSoundTargets()"
+            class="bg-rose-100 hover:bg-rose-200 text-rose-800 font-black px-4 py-2 rounded-2xl text-sm transition cursor-pointer"
+          >
+            🔄 補充一輪目標
+          </button>
+        </div>
+
+        <div class="bg-gradient-to-b from-rose-50 to-orange-50 rounded-3xl p-5 sm:p-6 border-2 border-rose-200 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <p id="sound-game-instruction" class="font-bold text-rose-900 text-base sm:text-lg">
+              👆 點擊泡泡戳破它，並一起大聲喊出：「ㄅ！」
+            </p>
+            <span class="bg-white px-4 py-1.5 rounded-full font-black text-rose-600 border border-rose-200 shadow-sm">
+              已發出 <span id="pop-counter" class="text-xl font-round">0</span> 次「<span class="current-sym-text">ㄅ</span>」
+            </span>
+          </div>
+
+          <div
+            id="sound-targets-grid"
+            class="grid grid-cols-3 sm:grid-cols-4 gap-4 py-4 min-h-[260px] place-items-center"
+          >
+            <!-- JS 動態產生互動按鈕 -->
+          </div>
+        </div>
+
+        <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-2xl text-sm text-amber-900">
+          <strong>💡 發音小秘訣：</strong><br />
+          <span id="pronounce-parent-tip">發音時結合拍手或誇張表情，讓孩子用身體記住聲音！</span>
+        </div>
+
+        <div class="flex justify-between pt-2">
+          <button
+            onclick="switchStage(0)"
+            class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-black px-5 py-3 rounded-2xl transition cursor-pointer"
+          >
+            ⬅ 上一關
+          </button>
+          <button
+            onclick="switchStage(2)"
+            class="bg-rose-500 hover:bg-rose-600 text-white font-black px-6 py-3 rounded-2xl shadow-md border-b-4 border-rose-700 transition cursor-pointer"
+          >
+            下一關：生活尋寶 ➔
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 第三關：生活尋寶（3 分鐘）— 黑色遮罩點擊揭曉               -->
+      <!-- ========================================================= -->
+      <section id="stage-2" class="stage-panel hidden bg-white rounded-3xl p-6 sm:p-8 border-4 border-emerald-200 shadow-md space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-emerald-100 pb-4">
+          <div>
+            <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-black px-3 py-1 rounded-full mb-1">STAGE 3・3 分鐘猜謎揭曉</span>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-800">🔍 生活尋寶：黑色布幕後面是什麼？</h2>
+          </div>
+
+          <!-- 遮罩控制按鈕群 -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button
+              onclick="toggleHintVisibility('treasure')"
+              id="treasure-hint-toggle"
+              class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-3.5 py-2 rounded-xl text-sm transition cursor-pointer"
+            >
+              💡 提示文字：顯示中
+            </button>
+            <button
+              onclick="setAllMasks('treasure', false)"
+              class="bg-neutral-900 hover:bg-neutral-800 text-white font-bold px-3.5 py-2 rounded-xl text-sm shadow transition cursor-pointer"
+            >
+              ⬛ 全部蓋上黑布
+            </button>
+            <button
+              onclick="setAllMasks('treasure', true)"
+              class="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold px-3.5 py-2 rounded-xl text-sm transition cursor-pointer"
+            >
+              👀 全部打開
+            </button>
+          </div>
+        </div>
+
+        <p class="text-slate-600 font-medium">
+          這些生活事物都含有「<span class="current-sym-text text-rose-600 font-black">ㄅ</span>」的聲音喔！先唸出黑色遮罩上的提示讓孩子猜猜看，再讓孩子<strong>親手點擊黑色遮罩</strong>揭曉答案！
+        </p>
+
+        <div id="treasure-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- JS 動態渲染 -->
+        </div>
+
+        <div class="flex justify-between pt-2">
+          <button
+            onclick="switchStage(1)"
+            class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-black px-5 py-3 rounded-2xl transition cursor-pointer"
+          >
+            ⬅ 上一關
+          </button>
+          <button
+            onclick="switchStage(3)"
+            class="bg-emerald-500 hover:bg-emerald-600 text-white font-black px-6 py-3 rounded-2xl shadow-md border-b-4 border-emerald-700 transition cursor-pointer"
+          >
+            下一關：交通工具或設施 ➔
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 第四關：交通工具或設施（3 分鐘）— 黑色遮罩點擊揭曉          -->
+      <!-- ========================================================= -->
+      <section id="stage-3" class="stage-panel hidden bg-white rounded-3xl p-6 sm:p-8 border-4 border-amber-300 shadow-md space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-amber-100 pb-4">
+          <div>
+            <span class="inline-block bg-amber-100 text-amber-800 text-xs font-black px-3 py-1 rounded-full mb-1">STAGE 4・3 分鐘交通大挑戰</span>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-800">🚌 交通工具或設施：黑布後面藏著什麼？</h2>
+          </div>
+
+          <!-- 遮罩控制按鈕群 -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button
+              onclick="toggleHintVisibility('vehicle')"
+              id="vehicle-hint-toggle"
+              class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-3.5 py-2 rounded-xl text-sm transition cursor-pointer"
+            >
+              💡 提示文字：顯示中
+            </button>
+            <button
+              onclick="setAllMasks('vehicle', false)"
+              class="bg-neutral-900 hover:bg-neutral-800 text-white font-bold px-3.5 py-2 rounded-xl text-sm shadow transition cursor-pointer"
+            >
+              ⬛ 全部蓋上黑布
+            </button>
+            <button
+              onclick="setAllMasks('vehicle', true)"
+              class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-3.5 py-2 rounded-xl text-sm transition cursor-pointer"
+            >
+              👀 全部打開
+            </button>
+          </div>
+        </div>
+
+        <p class="text-slate-600 font-medium">
+          這 6 個交通工具或設施都有「<span class="current-sym-text text-rose-600 font-black">ㄅ</span>」的聲音！可以先按「🔊 聽聽聲音提示」聽聲音猜謎，再點開黑色遮罩揭曉！
+        </p>
+
+        <div id="vehicle-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- JS 動態渲染 -->
+        </div>
+
+        <div class="flex flex-wrap justify-between items-center gap-3 pt-4 border-t-2 border-amber-100">
+          <button
+            onclick="switchStage(2)"
+            class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-black px-5 py-3 rounded-2xl transition cursor-pointer"
+          >
+            ⬅ 上一關
+          </button>
+
+          <button
+            onclick="showCelebrationModal()"
+            class="bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-black px-6 py-3.5 rounded-2xl shadow-lg border-b-4 border-rose-700 transition cursor-pointer text-base sm:text-lg"
+          >
+            🎉 完成今日「<span class="current-sym-text">ㄅ</span>」冒險！
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 完成獎勵彈窗 -->
+  <div id="celebration-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-8 text-center border-4 border-amber-400 shadow-2xl space-y-5 animate-pop">
+      <div class="text-6xl">🏆</div>
+      <h3 class="text-2xl sm:text-3xl font-black text-slate-800">
+        太棒了！挑戰成功！
+      </h3>
+      <p class="text-slate-600 font-medium leading-relaxed">
+        你已經認識注音符號「<span id="modal-symbol-text" class="text-rose-600 font-black text-2xl">ㄅ</span>」，還會唸出好多相關詞彙囉！今天不用拿筆寫字，給自己一個大大的掌聲吧！
+      </p>
+      <div class="bg-amber-50 rounded-2xl p-4 border border-amber-200 text-sm text-amber-900 font-bold">
+        ⭐ 已在注音總表點亮「<span id="modal-badge-symbol">ㄅ</span>」小星星 ⭐
+      </div>
+      <div class="grid grid-cols-2 gap-3 pt-1">
+        <button
+          onclick="closeCelebrationModal()"
+          class="bg-slate-100 hover:bg-slate-200 text-slate-800 font-black py-3.5 rounded-2xl transition cursor-pointer"
+        >
+          再玩一次
+        </button>
+        <button
+          onclick="closeCelebrationModal(); backToChart();"
+          class="bg-amber-400 hover:bg-amber-500 text-slate-900 font-black py-3.5 rounded-2xl shadow border-b-4 border-amber-600 transition cursor-pointer"
+        >
+          回總表選下一個
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 溫馨提示訊息條（計時結束時顯示） -->
+  <div id="toast-banner" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-40 bg-slate-900 text-white px-6 py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-3 transition-all duration-300 opacity-0 pointer-events-none">
+    <span class="text-2xl">⏰</span>
+    <span id="toast-message">時間到囉！可以準備進入下一關囉～</span>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. 完整 37 個注音符號互動資料庫
+    //    格式說明：
+    //    - s: 符號本體, cat: 'initial'(聲母) | 'medial'(介音) | 'final'(韻母)
+    //    - vis: { e: 聯想圖示, t: 聯想標題, d: 聯想描述, tip: 親子互動提示 }
+    //    - pro: { e: 發音遊戲圖示, t: 遊戲標題, ins: 遊戲指令, tip: 發音小秘訣, snd: 音效類型 }
+    //    - tr: 生活尋寶 6 題 [圖示, 國字, 注音(空白分隔各字), 猜謎提示]
+    //    - vh: 交通工具或設施 6 題 [圖示, 國字, 注音(空白分隔各字), 猜謎提示, 聲音類型]
+    // =========================================================================
+    const BOPOMOFO_DATA = [
+      // -------------------- 聲母 (21 個) --------------------
+      {
+        s: 'ㄅ', cat: 'initial',
+        vis: { e: '🐧', t: '大肚子企鵝', d: '觀察「ㄅ」右邊圓圓鼓鼓的弧線，就像企鵝挺著圓圓的大肚子，或小朋友背著鼓鼓的背包！', tip: '問問孩子：「你的小肚子在哪裡？拍拍看！是不是跟『ㄅ』一樣圓圓的？」' },
+        pro: { e: '🫧', t: '戳破大泡泡', ins: '點擊泡泡戳破它，並一起大聲喊出：「ㄅ！」', tip: '發「ㄅ」的音時，雙唇要先閉緊把氣憋住，再突然爆開！每戳破一顆就誇張地唸「ㄅ、ㄅ、ㄅ！」。', snd: 'pop' },
+        tr: [
+          ['👨', '爸爸', 'ㄅㄚˋ ㄅㄚ˙', '家裡高高壯壯、會抱抱你的家人'],
+          ['🥤', '杯子', 'ㄅㄟ ㄗ˙', '口渴喝水、喝牛奶時會拿在手上的東西'],
+          ['🎒', '包包', 'ㄅㄠ ㄅㄠ', '出門去上學或去公園玩，背在肩膀上的袋子'],
+          ['🍪', '餅乾', 'ㄅㄧㄥˇ ㄍㄢ', '下午茶點心，咬起來卡滋卡滋香香甜甜的'],
+          ['✏️', '筆', 'ㄅㄧˇ', '拿在手上畫畫、塗鴉的工具'],
+          ['🍦', '冰淇淋', 'ㄅㄧㄥ ㄑㄧˊ ㄌㄧㄣˊ', '夏天的時候吃起來冰冰涼涼、甜甜的甜筒']
+        ],
+        vh: [
+          ['🚌', '巴士', 'ㄅㄚ ㄕˋ', '有很多座位，可以載好多小朋友一起去郊遊的大車子', 'horn'],
+          ['🚐', '冰淇淋車', 'ㄅㄧㄥ ㄑㄧˊ ㄌㄧㄣˊ ㄔㄜ', '車頂上有大甜筒，會播放好聽音樂賣點心的車子', 'music'],
+          ['🚚', '搬家貨車', 'ㄅㄢ ㄐㄧㄚ ㄏㄨㄛˋ ㄔㄜ', '後面有一個大箱子，幫忙載沙發、床鋪搬新家的車子', 'engine'],
+          ['🚼', '寶寶推車', 'ㄅㄠˇ ㄅㄠ ㄊㄨㄟ ㄔㄜ', '小嬰兒坐在裡面，爸爸媽媽推著散步的小車子', 'bell'],
+          ['🚶', '斑馬線', 'ㄅㄢ ㄇㄚˇ ㄒㄧㄢˋ', '馬路上白色一條一條的線，行人過馬路要走這裡', 'chime'],
+          ['🛣️', '避車彎', 'ㄅㄧˋ ㄔㄜ ㄨㄢ', '路邊凹進去的停車空間，讓車子暫時停靠不擋路', 'horn']
+        ]
+      },
+      {
+        s: 'ㄆ', cat: 'initial',
+        vis: { e: '🛝', t: '長長的溜滑梯', d: '「ㄆ」有一條長長斜斜滑下來的線條，就像公園裡爬上階梯後「咻——」滑下來的溜滑梯！', tip: '帶孩子站起來，模仿「ㄆ」的樣子把一隻腳往前踢出去，一起喊：「咻——溜滑梯『ㄆ』！」' },
+        pro: { e: '🌼', t: '吹飛蒲公英', ins: '對著螢幕用力吹一口氣並點擊蒲公英，大聲發出：「ㄆ——！」', tip: '拿一張衛生紙放在嘴巴前面，唸「ㄆ」的時候用力吹出一大口氣，看看衛生紙是不是被吹飛起來了！', snd: 'blow' },
+        tr: [
+          ['🍎', '蘋果', 'ㄆㄧㄥˊ ㄍㄨㄛˇ', '紅紅圓圓的水果，咬起來脆脆甜甜的'],
+          ['🍇', '葡萄', 'ㄆㄨˊ ㄊㄠˊ', '紫色一顆一顆串在一起，像小珍珠一樣的水果'],
+          ['🫧', '泡泡', 'ㄆㄠˋ ㄆㄠˋ', '洗澡抹肥皂、或在公園拿吹棒吹出來會飛高高的圓球'],
+          ['🍽️', '盤子', 'ㄆㄢˊ ㄗ˙', '吃飯或裝點心、裝水果的時候用的圓形餐具'],
+          ['⚽', '皮球', 'ㄆㄧˊ ㄑㄧㄡˊ', '拍一拍會砰砰砰彈起來，可以滾來滾去的玩具'],
+          ['🦀', '螃蟹', 'ㄆㄤˊ ㄒㄧㄝˋ', '住在海邊，有兩支大大的鉗子、會橫著走路的小動物']
+        ],
+        vh: [
+          ['🏎️', '跑車', 'ㄆㄠˇ ㄔㄜ', '流線型車身，在賽道上咻一下開得超級快的帥氣車子', 'engine'],
+          ['✈️', '噴射機', 'ㄆㄣ ㄕㄜˋ ㄐㄧ', '在藍天白雲上高速飛行，尾巴會噴出長長白煙的飛機', 'jet'],
+          ['🚂', '平交道', 'ㄆㄧㄥˊ ㄐㄧㄠ ㄉㄠˋ', '馬路和火車鐵軌交叉的地方，火車快來時會噹噹噹放下柵欄', 'bell'],
+          ['🚒', '噴水消防車', 'ㄆㄣ ㄕㄨㄟˇ ㄒㄧㄠ ㄈㄤˊ ㄔㄜ', '紅色大大台，出動救火時會噴出強大水柱的車子', 'siren'],
+          ['🚢', '破冰船', 'ㄆㄛˋ ㄅㄧㄥ ㄔㄨㄢˊ', '船頭特別堅固，能在結冰的大海裡撞開冰塊前進的大船', 'ship'],
+          ['🚧', '刨路機', 'ㄆㄠˊ ㄌㄨˋ ㄐㄧ', '修馬路時會開出來的工程車，能把舊柏油路面刨掉重鋪', 'engine']
+        ]
+      },
+      {
+        s: 'ㄇ', cat: 'initial',
+        vis: { e: '🚪', t: '家裡的大門框', d: '「ㄇ」有三面圍起來、下面空空的形狀，就像家裡可以走過去的大門框，也像火車穿過的山洞！', tip: '家長可以張開雙手撐在門框上，或跟孩子手牽手搭起一座「ㄇ」字大山洞，讓孩子鑽過去玩！' },
+        pro: { e: '🍰', t: '美味點心「ㄇ——」', ins: '點擊美味點心，閉起嘴巴發出拉長音：「ㄇ——好好吃！」', tip: '把上下嘴唇輕輕閉起來，請孩子用小手摸摸自己的鼻翼兩側，唸「ㄇ——」時會感覺鼻子震動喔！', snd: 'hum' },
+        tr: [
+          ['👩', '媽媽', 'ㄇㄚ ㄇㄚ˙', '每天溫柔照顧你、給你大大抱抱的家人'],
+          ['👒', '帽子', 'ㄇㄠˋ ㄗ˙', '出門太陽大大的時候，戴在頭上遮陽的東西'],
+          ['🐱', '貓咪', 'ㄇㄠ ㄇㄧ', '有尖尖的耳朵和長鬍鬚，會「喵～喵～」叫的小動物'],
+          ['🍞', '麵包', 'ㄇㄧㄢˋ ㄅㄠ', '早餐常吃的食物，烤得香香鬆鬆軟軟的'],
+          ['🧻', '毛巾', 'ㄇㄠˊ ㄐㄧㄣ', '洗完臉或洗完澡的時候，用來把水擦乾的軟軟布巾'],
+          ['🥭', '芒果', 'ㄇㄤˊ ㄍㄨㄛˇ', '夏天的水果，果皮黃黃橘橘的，吃起來又香又甜']
+        ],
+        vh: [
+          ['🛵', '摩托車', 'ㄇㄛˊ ㄊㄨㄛ ㄔㄜ', '有兩個輪子，騎的時候要戴安全帽的交通工具', 'horn'],
+          ['🐎', '馬車', 'ㄇㄚˇ ㄔㄜ', '像童話故事裡公主坐的車，前面有駿馬拉著跑', 'bell'],
+          ['🚣', '木船', 'ㄇㄨˋ ㄔㄨㄢˊ', '用木頭做的小船，拿著船槳在水面上划呀划', 'chime'],
+          ['🛣️', '馬路', 'ㄇㄚˇ ㄌㄨˋ', '車子在上面行駛、有斑馬線和紅綠燈的交通設施', 'horn'],
+          ['🚢', '碼頭', 'ㄇㄚˇ ㄊㄡˊ', '靠在海邊或河邊，讓大船停靠、上下乘客的交通設施', 'ship'],
+          ['🌉', '木橋', 'ㄇㄨˋ ㄑㄧㄠˊ', '架在小河上面，讓行人可以安全走過去的木頭拱橋', 'chime']
+        ]
+      },
+      {
+        s: 'ㄈ', cat: 'initial',
+        vis: { e: '🦯', t: '老爺爺的拐杖', d: '「ㄈ」上面彎彎的把手，直直站立在地上，就像老爺爺散步時拿的拐杖，也像迎風飄揚的小旗子！', tip: '拿一把長柄雨傘倒過來看看，是不是跟「ㄈ」長得一模一樣呢？' },
+        pro: { e: '🎐', t: '呼呼吹小風車', ins: '點擊小風車讓它轉動，輕輕吹氣發出：「ㄈ——！」', tip: '上排門牙輕輕碰著下嘴唇，像吹風一樣送出氣流，感受涼涼的風從牙縫吹出來！', snd: 'blow' },
+        tr: [
+          ['🏠', '房子', 'ㄈㄤˊ ㄗ˙', '有屋頂、窗戶和大門，全家人住在一起的地方'],
+          ['🪁', '風箏', 'ㄈㄥ ㄓㄥ', '拉著長長的線，在草地上迎風飛到高高天空的玩具'],
+          ['🍅', '番茄', 'ㄈㄢ ㄑㄧㄝˊ', '紅紅圓圓的蔬果，炒蛋或直接吃都酸酸甜甜的'],
+          ['🍯', '蜂蜜', 'ㄈㄥ ㄇㄧˋ', '小蜜蜂採花蜜做出來的，金黃色甜甜的醬'],
+          ['🧼', '肥皂', 'ㄈㄟˊ ㄗㄠˋ', '洗手時搓一搓會有很多白色泡泡，把細菌洗光光'],
+          ['👕', '衣服', 'ㄧ ㄈㄨˊ', '每天起床要穿在身上的上衣和外套']
+        ],
+        vh: [
+          ['✈️', '飛機', 'ㄈㄟ ㄐㄧ', '有大大的翅膀，可以載我們飛過雲朵出國旅行', 'jet'],
+          ['⛵', '帆船', 'ㄈㄢ ㄔㄨㄢˊ', '船上有大大的布帆，靠風吹動就能在大海上航行', 'ship'],
+          ['🎈', '飛船', 'ㄈㄟ ㄔㄨㄢˊ', '像一顆巨大橄欖球，在天空中慢慢漂浮的飛行器', 'chime'],
+          ['🛫', '飛機場', 'ㄈㄟ ㄐㄧ ㄔㄤˇ', '有長長跑道和航廈，讓飛機起飛和降落的地方', 'jet'],
+          ['🌊', '防波堤', 'ㄈㄤˊ ㄅㄛ ㄉㄧˊ', '建在海港旁邊高高的石頭牆，擋住大浪保護船隻', 'ship'],
+          ['🛞', '方向盤', 'ㄈㄤ ㄒㄧㄤˋ ㄆㄢˊ', '駕駛座前面圓圓的轉盤，控制車子向左轉或向右轉', 'horn']
+        ]
+      },
+      {
+        s: 'ㄉ', cat: 'initial',
+        vis: { e: '🥁', t: '敲鼓的小鼓槌', d: '「ㄉ」左邊彎彎的弧度加上右邊直直的一豎，就像小鼓槌敲在圓圓的大鼓上！', tip: '拿兩根湯匙當鼓槌，在桌子或抱枕上敲出節奏：「ㄉ、ㄉ、ㄉ！」' },
+        pro: { e: '🥁', t: '敲敲大鼓「ㄉ、ㄉ、ㄉ」', ins: '點擊大鼓敲出節奏，一起大聲喊：「ㄉ、ㄉ、ㄉ！」', tip: '舌尖頂住上排牙齒後面，再突然彈開，發出清脆短促的「ㄉ」！', snd: 'drum' },
+        tr: [
+          ['🎂', '蛋糕', 'ㄉㄢˋ ㄍㄠ', '過生日吹蠟燭時，上面有奶油和水果的甜甜點心'],
+          ['🐘', '大象', 'ㄉㄚˋ ㄒㄧㄤˋ', '身體好大好大，有長長的鼻子和大扇子耳朵的動物'],
+          ['🥚', '雞蛋', 'ㄐㄧ ㄉㄢˋ', '白白橢圓形，敲開來可以煎荷包蛋或做蒸蛋'],
+          ['🏮', '燈籠', 'ㄉㄥ ㄌㄨㄥˊ', '元宵節提在手上，裡面會發光的漂亮裝飾'],
+          ['🫛', '豆子', 'ㄉㄡˋ ㄗ˙', '綠綠圓圓躲在豆莢裡，營養又健康的食物'],
+          ['🌀', '電風扇', 'ㄉㄧㄢˋ ㄈㄥ ㄕㄢˋ', '夏天打開開關，葉片轉轉轉吹出涼風的電器']
+        ],
+        vh: [
+          ['🚊', '電車', 'ㄉㄧㄢˋ ㄔㄜ', '頭頂接電線、在城市軌道上叮叮噹噹行駛的車子', 'bell'],
+          ['🏗️', '吊車', 'ㄉㄧㄠˋ ㄔㄜ', '有長長的手臂和掛鉤，把重重東西吊到高樓的工程車', 'engine'],
+          ['🛶', '獨木舟', 'ㄉㄨˊ ㄇㄨˋ ㄓㄡ', '細細長長的小船，拿著雙頭船槳在水上划行', 'chime'],
+          ['🚇', '地下道', 'ㄉㄧˋ ㄒㄧㄚˋ ㄉㄠˋ', '建在地底下，讓行人或車子安全穿過馬路的通道', 'chime'],
+          ['🗼', '燈塔', 'ㄉㄥ ㄊㄚˇ', '海邊高高的白塔，晚上發出亮光指引船隻安全回家', 'ship'],
+          ['🛣️', '道路', 'ㄉㄠˋ ㄌㄨˋ', '鋪得平平坦坦，連接每個地方讓車子通行的路', 'horn']
+        ]
+      },
+      {
+        s: 'ㄊ', cat: 'initial',
+        vis: { e: '☂️', t: '雨傘彎彎把手', d: '「ㄊ」上面一橫加上彎彎勾起來的線條，就像雨傘的把手，也像小朋友抬起一隻腳踢踢腿！', tip: '跟孩子一起單腳站立，把另一隻腳往前勾起來，擺出「ㄊ」的帥氣姿勢！' },
+        pro: { e: '🐰', t: '小兔子跳跳跳', ins: '點擊小兔子讓它跳起來，一起喊：「ㄊ、ㄊ、ㄊ！」', tip: '舌尖頂住上牙齦彈開並送出一口氣，像小兔子輕快跳躍的聲音！', snd: 'pop' },
+        tr: [
+          ['🐰', '兔子', 'ㄊㄨˋ ㄗ˙', '有兩隻長耳朵和紅眼睛，最愛吃紅蘿蔔的小動物'],
+          ['🍬', '糖果', 'ㄊㄤˊ ㄍㄨㄛˇ', '包著漂亮糖果紙，吃起來甜甜的小點心'],
+          ['☀️', '太陽', 'ㄊㄞˋ ㄧㄤˊ', '白天掛在天空上，發出溫暖光亮的大火球'],
+          ['🗼', '積木塔', 'ㄐㄧ ㄇㄨˋ ㄊㄚˇ', '用積木一塊一塊往上疊得高高的建築物'],
+          ['🩴', '拖鞋', 'ㄊㄨㄛ ㄒㄧㄝˊ', '在家裡穿脫好方便，輕輕便便的鞋子'],
+          ['🥄', '湯匙', 'ㄊㄤ ㄔˊ', '喝湯、吃飯或吃布丁時拿在手上的餐具']
+        ],
+        vh: [
+          ['🚜', '拖拉機', 'ㄊㄨㄛ ㄌㄚ ㄐㄧ', '後輪特別大顆，在農場裡幫忙耕田載貨的車子', 'engine'],
+          ['🛡️', '坦克車', 'ㄊㄢˇ ㄎㄜˋ ㄔㄜ', '穿著厚厚裝甲、用履帶在泥巴路上也能前進的車子', 'engine'],
+          ['🚀', '太空船', 'ㄊㄞˋ ㄎㄨㄥ ㄔㄨㄢˊ', '載著太空人飛出地球，去拜訪月亮和星星的飛行器', 'jet'],
+          ['🌉', '天橋', 'ㄊㄧㄢ ㄑㄧㄠˊ', '架在馬路半空中，讓行人走樓梯安全過馬路的橋', 'chime'],
+          ['🛤️', '鐵軌', 'ㄊㄧㄝˇ ㄍㄨㄟˇ', '兩條平行的鋼鐵軌道，火車的輪子專走這上面', 'bell'],
+          ['🅿️', '停車場', 'ㄊㄧㄥˊ ㄔㄜ ㄔㄤˇ', '畫著一格一格停車位，讓車子排隊休息的地方', 'horn']
+        ]
+      },
+      {
+        s: 'ㄋ', cat: 'initial',
+        vis: { e: '🛝', t: '轉彎滑水道', d: '「ㄋ」先橫過來再往下彎出一個大轉彎，就像水上樂園裡轉個彎再衝進水池的滑水道！', tip: '用手指在孩子背上畫一個大轉彎的「ㄋ」，玩猜猜看遊戲！' },
+        pro: { e: '🐮', t: '小牛哞哞「ㄋ——」', ins: '點擊小牛摸摸牠，一起發出鼻音：「ㄋ——！」', tip: '舌尖頂住上排牙齒後面不要放開，讓聲音從鼻子嗡嗡地跑出來！', snd: 'hum' },
+        tr: [
+          ['🥛', '牛奶', 'ㄋㄧㄡˊ ㄋㄞˇ', '乳牛產出來的白色營養飲料，喝了會長高高'],
+          ['🐦', '小鳥', 'ㄒㄧㄠˇ ㄋㄧㄠˇ', '有羽毛和翅膀，在樹枝上吱吱喳喳唱歌的動物'],
+          ['🎃', '南瓜', 'ㄋㄢˊ ㄍㄨㄚ', '圓圓橘橘的大瓜果，煮濃湯香香甜甜的'],
+          ['👵', '奶奶', 'ㄋㄞˇ ㄋㄞ˙', '爸爸的媽媽，總是笑眯眯疼愛你的長輩'],
+          ['🌱', '泥土', 'ㄋㄧˊ ㄊㄨˇ', '花草和大樹把根扎在裡面吸收養分的棕色土地'],
+          ['🔘', '鈕扣', 'ㄋㄧㄡˇ ㄎㄡˋ', '縫在衣服上圓圓小小的扣子，扣起來風就吹不進來']
+        ],
+        vh: [
+          ['🚜', '農用車', 'ㄋㄨㄥˊ ㄩㄥˋ ㄔㄜ', '在鄉下田野間幫忙載運稻米和蔬菜的小貨車', 'engine'],
+          ['🎢', '雲霄飛車', 'ㄩㄣˊ ㄒㄧㄠ ㄈㄟ ㄔㄜ', '在遊樂園裡高高低低轉彎、速度超快的刺激列車', 'jet'],
+          ['🛣️', '內線車道', 'ㄋㄟˋ ㄒㄧㄢˋ ㄔㄜ ㄉㄠˋ', '馬路最靠近中央分隔島的那一條車道', 'horn'],
+          ['🛤️', '泥巴小路', 'ㄋㄧˊ ㄅㄚ ㄒㄧㄠˇ ㄌㄨˋ', '鄉間沒有鋪柏油、下雨天會踩出腳印的田間小路', 'chime'],
+          ['🐂', '牛車', 'ㄋㄧㄡˊ ㄔㄜ', '古時候由力氣很大的水牛在前面拉動的木頭車', 'bell'],
+          ['🔌', '能源充電站', 'ㄋㄥˊ ㄩㄢˊ ㄔㄨㄥ ㄉㄧㄢˋ ㄓㄢˋ', '電動車沒電時，開過來插上充電槍補充能量的地方', 'chime']
+        ]
+      },
+      {
+        s: 'ㄌ', cat: 'initial',
+        vis: { e: '🦒', t: '長頸鹿高高站', d: '「ㄌ」左邊斜斜一撇、右邊高高伸直一豎再勾起來，就像長頸鹿伸長脖子吃樹葉！', tip: '雙手往上伸得高高的，模仿長頸鹿長長的脖子「ㄌ」！' },
+        pro: { e: '🎶', t: '唱快樂歌「ㄌㄚ ㄌㄚ ㄌㄚ」', ins: '點擊音符一起唱歌，清脆地發出：「ㄌ、ㄌ、ㄌ！」', tip: '舌尖輕輕頂一下上牙齦再彈開，像唱歌時「ㄌㄚ ㄌㄚ ㄌㄚ」一樣輕鬆！', snd: 'chime' },
+        tr: [
+          ['🍐', '梨子', 'ㄌㄧˊ ㄗ˙', '黃黃綠綠的水果，咬下去好多汁又清脆'],
+          ['🐯', '老虎', 'ㄌㄠˇ ㄏㄨˇ', '額頭上有「王」字條紋，會「吼——」大叫的森林之王'],
+          ['🎁', '禮物', 'ㄌㄧˇ ㄨˋ', '綁著漂亮蝴蝶結，打開來會有驚喜的盒子'],
+          ['🌶️', '辣椒', 'ㄌㄚˋ ㄐㄧㄠ', '紅紅長長的蔬菜，大人吃起來會覺得辣辣的'],
+          ['🧺', '籃子', 'ㄌㄢˊ ㄗ˙', '有提把可以裝水果、裝衣服或去野餐的容器'],
+          ['🖍️', '蠟筆', 'ㄌㄚˋ ㄅㄧˇ', '五顏六色粗粗短短的筆，用來在圖畫紙上塗顏色']
+        ],
+        vh: [
+          ['🚢', '輪船', 'ㄌㄨㄣˊ ㄔㄨㄢˊ', '在海洋上航行的大型船隻，會發出「嗚——」的汽笛聲', 'ship'],
+          ['🚡', '纜車', 'ㄌㄢˇ ㄔㄜ', '吊在空中鋼索上，載大家翻過高山看風景的車廂', 'bell'],
+          ['🚛', '垃圾車', 'ㄌㄜˋ ㄙㄜˋ ㄔㄜ', '晚上會播放〈給愛麗絲〉音樂，來收家裡垃圾的車子', 'music'],
+          ['💡', '路燈', 'ㄌㄨˋ ㄉㄥ', '站在馬路旁邊高高的柱子，天黑時會亮起來照亮道路', 'chime'],
+          ['🚦', '路口', 'ㄌㄨˋ ㄎㄡˇ', '兩條馬路交會的地方，過馬路時要停看聽', 'bell'],
+          ['🏢', '立體停車場', 'ㄌㄧˋ ㄊㄧˇ ㄊㄧㄥˊ ㄔㄜ ㄔㄤˇ', '像大樓一樣有很多層樓，可以停好多車子的建築', 'horn']
+        ]
+      },
+      {
+        s: 'ㄍ', cat: 'initial',
+        vis: { e: '🕊️', t: '小鴿子點點頭', d: '「ㄍ」上面橫折、下面橫折，就像小鴿子彎著脖子在草地上找穀粒吃！', tip: '模仿小鴿子點點頭，發出「ㄍㄨ ㄍㄨ ㄍㄨ」的聲音！' },
+        pro: { e: '🕊️', t: '小鴿子咕咕叫', ins: '點擊小鴿子餵牠吃穀粒，一起喊：「ㄍ、ㄍ、ㄍ！」', tip: '舌頭後面（舌根）輕輕往上抬起再放開，發出清脆的「ㄍ」！', snd: 'pop' },
+        tr: [
+          ['🐶', '狗狗', 'ㄍㄡˇ ㄍㄡ˙', '會「汪汪」叫、搖尾巴迎接你回家的好朋友'],
+          ['👦', '哥哥', 'ㄍㄜ ㄍㄜ˙', '比你早出生、會陪你一起玩玩具的男生家人'],
+          ['👸', '公主', 'ㄍㄨㄥ ㄓㄨˇ', '戴著閃亮皇冠、穿著漂亮禮服的童話角色'],
+          ['🌻', '瓜子', 'ㄍㄨㄚ ㄗ˙', '向日葵的種子，剝開殼裡面有香香的果仁'],
+          ['🍳', '鍋子', 'ㄍㄨㄛ ㄗ˙', '放在瓦斯爐上炒菜、煮湯用的廚房用具'],
+          ['🥬', '高麗菜', 'ㄍㄠ ㄌㄧˋ ㄘㄞˋ', '葉子一層一層包得圓圓的，吃起來脆脆甜美']
+        ],
+        vh: [
+          ['🚌', '公車', 'ㄍㄨㄥ ㄔㄜ', '在城市裡每一站停靠、大家投幣或刷卡搭乘的巴士', 'horn'],
+          ['🚜', '工程車', 'ㄍㄨㄥ ㄔㄥˊ ㄔㄜ', '在工地裡挖土、鋪路、蓋房子的黃色大力士車子', 'engine'],
+          ['🚄', '高鐵', 'ㄍㄠ ㄊㄧㄝˇ', '車頭尖尖流線型、速度超級無敵快的高速火車', 'jet'],
+          ['🛣️', '高速公路', 'ㄍㄠ ㄙㄨˋ ㄍㄨㄥ ㄌㄨˋ', '沒有紅綠燈、讓汽車可以快速開往別的城市的寬敞道路', 'horn'],
+          ['🛤️', '公路', 'ㄍㄨㄥ ㄌㄨˋ', '沿著海岸或山邊修建，風景很漂亮的長途道路', 'chime'],
+          ['⚓', '港口', 'ㄍㄤˇ ㄎㄡˇ', '船隻停靠躲避風浪、搬運貨櫃的海邊重要設施', 'ship']
+        ]
+      },
+      {
+        s: 'ㄎ', cat: 'initial',
+        vis: { e: '🦋', t: '蝴蝶展開大翅膀', d: '「ㄎ」左邊彎彎、右邊伸展，就像漂亮的蝴蝶在花朵上張開雙翅！', tip: '雙手交叉大拇指勾在一起，當作蝴蝶翅膀拍拍飛「ㄎ」！' },
+        pro: { e: '🥤', t: '大口喝水「ㄎㄜ ㄎㄜ」', ins: '點擊水杯大口喝水，用力送氣發出：「ㄎ、ㄎ、ㄎ！」', tip: '和「ㄍ」一樣用舌根發音，但「ㄎ」要像咳嗽或大口喝水一樣用力送出一口氣！', snd: 'blow' },
+        tr: [
+          ['🦖', '恐龍', 'ㄎㄨㄥˇ ㄌㄨㄥˊ', '很久很久以前住在地球上的巨大動物，有暴龍和三角龍'],
+          ['🍫', '巧克力', 'ㄑㄧㄠˇ ㄎㄜˋ ㄌㄧˋ', '咖啡色香香甜甜的點心，含在嘴巴裡會融化'],
+          ['👖', '褲子', 'ㄎㄨˋ ㄗ˙', '穿在兩條腿上的衣物，有長褲也有短褲'],
+          ['😷', '口罩', 'ㄎㄡˇ ㄓㄠˋ', '戴在嘴巴和鼻子上，保護我們不吸進灰塵和病毒'],
+          ['🐚', '貝殼', 'ㄅㄟˋ ㄎㄜˊ', '在海邊沙灘上可以撿到，花紋很漂亮的硬殼'],
+          ['☕', '咖啡杯', 'ㄎㄚ ㄈㄟ ㄅㄟ', '有小耳朵把手、用來裝熱飲的漂亮杯子']
+        ],
+        vh: [
+          ['🚚', '卡車', 'ㄎㄚˇ ㄔㄜ', '輪胎很大顆、力氣很大，能載運重物的貨車', 'engine'],
+          ['🚤', '快艇', 'ㄎㄨㄞˋ ㄊㄧㄥˇ', '在水面上飛馳、後面會激起白色浪花的小船', 'ship'],
+          ['🚌', '客運', 'ㄎㄜˋ ㄩㄣˋ', '載著旅客行駛高速公路去遠方城市的大型巴士', 'horn'],
+          ['🚡', '空中纜車', 'ㄎㄨㄥ ㄓㄨㄥ ㄌㄢˇ ㄔㄜ', '高高掛在天空鋼索上移動的透明景觀車廂', 'bell'],
+          ['🌉', '跨海大橋', 'ㄎㄨㄚˋ ㄏㄞˇ ㄉㄚˋ ㄑㄧㄠˊ', '橫跨在大海上面、連接兩座島嶼的超級長橋', 'ship'],
+          ['🛣️', '快車道', 'ㄎㄨㄞˋ ㄔㄜ ㄉㄠˋ', '馬路中間讓汽車快速通行的車道，行人不能走喔', 'horn']
+        ]
+      },
+      {
+        s: 'ㄏ', cat: 'initial',
+        vis: { e: '🪑', t: '側面看小椅子', d: '「ㄏ」左邊一撇是椅背，右邊彎下來是椅腳，就像從側面看一張小椅子！', tip: '找一張家裡的小椅子從側面看一看，是不是跟「ㄏ」長得很像？' },
+        pro: { e: '😆', t: '開心大笑「ㄏㄚ ㄏㄚ ㄏㄚ」', ins: '點擊笑臉哈哈大笑，輕鬆發出：「ㄏ、ㄏ、ㄏ！」', tip: '嘴巴張開，從喉嚨輕輕哈出一口溫暖的氣，就像冬天哈氣暖手「ㄏ——」！', snd: 'blow' },
+        tr: [
+          ['🌸', '花朵', 'ㄏㄨㄚ ㄉㄨㄛˇ', '五顏六色開在樹枝或草地上，聞起來香香的'],
+          ['🦋', '蝴蝶', 'ㄏㄨˊ ㄉㄧㄝˊ', '毛毛蟲長大變身後，有著花花綠綠大翅膀的昆蟲'],
+          ['🐒', '猴子', 'ㄏㄡˊ ㄗ˙', '有長長的尾巴，最喜歡在樹上盪來盪去吃香蕉'],
+          ['🐬', '海豚', 'ㄏㄞˇ ㄊㄨㄣˊ', '住在海洋裡很聰明、會跳出水面翻跟斗的動物'],
+          ['🍔', '漢堡', 'ㄏㄢˋ ㄅㄠˇ', '兩片圓麵包中間夾著肉排、起司和生菜的美食'],
+          ['🍳', '荷包蛋', 'ㄏㄜˊ ㄅㄠ ㄉㄢˋ', '蛋白圍著黃色蛋黃，像一朵太陽花的煎蛋']
+        ],
+        vh: [
+          ['🚂', '火車', 'ㄏㄨㄛˇ ㄔㄜ', '一節一節連在一起，在鐵軌上「況且況且」跑的列車', 'bell'],
+          ['🚚', '貨車', 'ㄏㄨㄛˋ ㄔㄜ', '專門載運貨物、箱子和蔬果的大車子', 'engine'],
+          ['🛴', '滑板車', 'ㄏㄨㄚˊ ㄅㄢˇ ㄔㄜ', '一隻腳踩在踏板上、另一隻腳蹬地滑行的兒童車', 'chime'],
+          ['🚀', '火箭', 'ㄏㄨㄛˇ ㄐㄧㄢˋ', '尾巴噴出熊熊火焰，「轟」一聲衝上外太空的載具', 'jet'],
+          ['🚉', '火車站', 'ㄏㄨㄛˇ ㄔㄜ ㄓㄢˋ', '大家買車票、排隊等火車進站的地方', 'bell'],
+          ['🚦', '紅綠燈', 'ㄏㄨㄥˊ ㄌㄩˋ ㄉㄥ', '紅燈停、綠燈行、黃燈亮了要小心的重要號誌', 'bell']
+        ]
+      },
+      {
+        s: 'ㄐ', cat: 'initial',
+        vis: { e: '🐤', t: '小雞低頭啄米', d: '「ㄐ」右邊直直站立、左邊彎勾起來，就像小雞彎下脖子在地上啄米粒吃！', tip: '雙手放在肩膀當小翅膀，模仿小雞「ㄐㄧ ㄐㄧ ㄐㄧ」叫！' },
+        pro: { e: '🐤', t: '小雞嘰嘰「ㄐㄧ ㄐㄧ ㄐㄧ」', ins: '點擊可愛小雞，嘴角微笑發出：「ㄐ、ㄐ、ㄐ！」', tip: '嘴角往兩旁拉開微笑，舌面輕輕往上貼住上顎再放開，發出清脆的「ㄐ」！', snd: 'chime' },
+        tr: [
+          ['🐥', '小雞', 'ㄒㄧㄠˇ ㄐㄧ', '毛茸茸黃色身體，剛從蛋殼裡孵出來的小寶寶'],
+          ['🧱', '積木', 'ㄐㄧ ㄇㄨˋ', '有正方形、三角形和長方形，可以拼成城堡的玩具'],
+          ['🍌', '香蕉', 'ㄒㄧㄤ ㄐㄧㄠ', '黃色彎彎像月亮的水果，剝開皮就能直接吃'],
+          ['✂️', '剪刀', 'ㄐㄧㄢˇ ㄉㄠ', '有兩個圓圈把手，用來剪紙張的文具（使用要小心喔）'],
+          ['🍊', '橘子', 'ㄐㄩˊ ㄗ˙', '橘色圓圓的水果，剝開皮裡面有一瓣一瓣果肉'],
+          ['🦒', '長頸鹿', 'ㄔㄤˊ ㄐㄧㄥˇ ㄌㄨˋ', '脖子超級長、身上有網狀斑點的溫馴動物']
+        ],
+        vh: [
+          ['🚕', '計程車', 'ㄐㄧˋ ㄔㄥˊ ㄔㄜ', '車頂有燈牌、招手就會停下來載你去目的地的車子', 'horn'],
+          ['🚙', '吉普車', 'ㄐㄧˊ ㄆㄨˇ ㄔㄜ', '輪胎又粗又大，爬山坡或走石頭路都不怕的越野車', 'engine'],
+          ['🚑', '救護車', 'ㄐㄧㄡˋ ㄏㄨˋ ㄔㄜ', '車身有紅色十字，鳴笛「喔伊喔伊」載病人去醫院的車', 'siren'],
+          ['🚓', '警車', 'ㄐㄧㄥˇ ㄔㄜ', '警察叔叔開著巡邏、保護大家安全的車子', 'siren'],
+          ['🛫', '機場', 'ㄐㄧ ㄔㄤˇ', '停著好多大飛機，旅客拖著行李箱準備搭機的地方', 'jet'],
+          ['⛽', '加油站', 'ㄐㄧㄚ ㄧㄡˊ ㄓㄢˋ', '汽車和摩托車肚子餓時，開進來加滿油的地方', 'horn']
+        ]
+      },
+      {
+        s: 'ㄑ', cat: 'initial',
+        vis: { e: '🎈', t: '飛上天的氣球', d: '「ㄑ」的線條轉個彎直直往下垂，就像抓著細線飄在半空中的彩色氣球！', tip: '假裝手裡抓著一顆氣球，跟著風一起左右搖擺「ㄑ」！' },
+        pro: { e: '🎈', t: '吹大氣球「ㄑㄧ——」', ins: '點擊氣球幫它打氣，送氣發出：「ㄑ、ㄑ、ㄑ！」', tip: '和「ㄐ」一樣嘴角微笑，但「ㄑ」要從牙縫用力送出一股氣流！', snd: 'blow' },
+        tr: [
+          ['🎈', '氣球', 'ㄑㄧˋ ㄑㄧㄡˊ', '吹氣進去會變得圓滾滾，輕飄飄飛起來的派對裝飾'],
+          ['🐧', '企鵝', 'ㄑㄧˋ ㄜˊ', '穿著黑白禮服、住在冰天雪地南極的可愛鳥類'],
+          ['🍫', '巧克力', 'ㄑㄧㄠˇ ㄎㄜˋ ㄌㄧˋ', '濃郁香甜的可可點心，大人小孩都喜歡'],
+          ['🐸', '青蛙', 'ㄑㄧㄥ ㄨㄚ', '綠綠的皮膚、大大的眼睛，在荷葉上「呱呱」叫'],
+          ['✏️', '鉛筆', 'ㄑㄧㄢ ㄅㄧˇ', '木頭做的筆，寫錯字還可以用橡皮擦擦掉'],
+          ['🍆', '茄子', 'ㄑㄧㄝˊ ㄗ˙', '紫色長條形的蔬菜，煮熟後軟軟綿綿的']
+        ],
+        vh: [
+          ['🚗', '汽車', 'ㄑㄧˋ ㄔㄜ', '有四個輪子和方向盤，爸爸媽媽常開的代步工具', 'horn'],
+          ['🤿', '潛水艇', 'ㄑㄧㄢˊ ㄕㄨㄟˇ ㄊㄧㄥˇ', '可以潛入深海裡，透過潛望鏡觀察海底世界的船', 'ship'],
+          ['🛥️', '氣墊船', 'ㄑㄧˋ ㄉㄧㄢˋ ㄔㄨㄢˊ', '底部充滿空氣，能在水面和沙灘上滑行的特殊船隻', 'ship'],
+          ['🌉', '橋梁', 'ㄑㄧㄠˊ ㄌㄧㄤˊ', '橫跨在河流或山谷上方，讓車子和行人通行的建築', 'chime'],
+          ['🚋', '輕軌', 'ㄑㄧㄥ ㄍㄨㄟˇ', '在草地軌道上安靜行駛、車廂很漂亮的路面電車', 'bell'],
+          ['🛫', '起飛跑道', 'ㄑㄧˇ ㄈㄟ ㄆㄠˇ ㄉㄠˋ', '機場裡又長又直的道路，飛機在上面加速衝向天空', 'jet']
+        ]
+      },
+      {
+        s: 'ㄒ', cat: 'initial',
+        vis: { e: '🎀', t: '可愛蝴蝶結', d: '「ㄒ」中間一彎加上兩邊點綴，就像禮物盒或小女孩頭髮上漂亮的蝴蝶結！', tip: '比出手指愛心或蝴蝶結的手勢，笑嘻嘻地唸出「ㄒ」！' },
+        pro: { e: '😄', t: '笑嘻嘻「ㄒㄧ ㄒㄧ ㄒㄧ」', ins: '點擊笑臉一起開心笑，發出：「ㄒㄧ、ㄒㄧ、ㄒㄧ！」', tip: '嘴角往兩側大大拉開露齒微笑，輕輕吹氣就像在笑「ㄒㄧ ㄒㄧ ㄒㄧ」！', snd: 'chime' },
+        tr: [
+          ['🍉', '西瓜', 'ㄒㄧ ㄍㄨㄚ', '綠色條紋外皮、裡面紅紅多汁的夏天消暑水果'],
+          ['🍌', '香蕉', 'ㄒㄧㄤ ㄐㄧㄠ', '猴子最愛吃的黃色水果，香香軟軟又營養'],
+          ['⭐', '星星', 'ㄒㄧㄥ ㄒㄧㄥ˙', '晚上掛在黑黑夜空裡，一閃一閃亮晶晶的小光點'],
+          ['🧸', '小熊', 'ㄒㄧㄠˇ ㄒㄩㄥˊ', '毛茸茸軟綿綿，晚上睡覺陪你抱抱的泰迪熊'],
+          ['👟', '鞋子', 'ㄒㄧㄝˊ ㄗ˙', '出門走路、跑步之前，穿在腳上保護小腳丫'],
+          ['🐘', '大象', 'ㄉㄚˋ ㄒㄧㄤˋ', '會用長鼻子噴水洗澡的溫柔大動物']
+        ],
+        vh: [
+          ['🚒', '消防車', 'ㄒㄧㄠ ㄈㄤˊ ㄔㄜ', '車身紅通通、載著雲梯和水管的救火英雄車', 'siren'],
+          ['🚌', '校車', 'ㄒㄧㄠˋ ㄔㄜ', '黃色的大巴士，每天接送小朋友平安上學和回家', 'horn'],
+          ['🚣', '小船', 'ㄒㄧㄠˇ ㄔㄨㄢˊ', '在湖面上輕輕划槳前進的可愛木舟', 'chime'],
+          ['🚗', '小客車', 'ㄒㄧㄠˇ ㄎㄜˋ ㄔㄜ', '載著全家人一起出門兜風的家用轎車', 'horn'],
+          ['🚶', '行人天橋', 'ㄒㄧㄥˊ ㄖㄣˊ ㄊㄧㄢ ㄑㄧㄠˊ', '專門讓走路的人從馬路上方安全通過的天橋', 'chime'],
+          ['🏪', '休息站', 'ㄒㄧㄡ ㄒㄧˊ ㄓㄢˋ', '開高速公路開累了，停車上廁所、買點心的地方', 'bell']
+        ]
+      },
+      {
+        s: 'ㄓ', cat: 'initial',
+        vis: { e: '🌱', t: '小樹苗長枝椏', d: '「ㄓ」直直的樹幹旁邊長出小枝椏，就像春天剛冒出新葉子的小樹苗！', tip: '站直直當小樹幹，伸出一隻手臂當小樹枝「ㄓ」！' },
+        pro: { e: '🦗', t: '夏天小知了「ㄓ——」', ins: '點擊小知了聽牠唱歌，舌頭翹起來唸：「ㄓ——！」', tip: '把舌尖往上翹起來頂住上顎，發出響亮清脆的「ㄓ」！', snd: 'chime' },
+        tr: [
+          ['🐷', '豬豬', 'ㄓㄨ ㄓㄨ', '有圓圓扁扁的鼻子和捲捲尾巴，會「呼嚕嚕」叫'],
+          ['🕷️', '蜘蛛', 'ㄓ ㄓㄨ', '有八隻長腳，會在樹枝間織出漂亮網子的小動物'],
+          ['🧋', '珍珠奶茶', 'ㄓㄣ ㄓㄨ ㄋㄞˇ ㄔㄚˊ', '台灣最有名的飲料，裡面有黑黑QQ的粉圓'],
+          ['🪵', '桌子', 'ㄓㄨㄛ ㄗ˙', '吃飯、畫畫、看書時放東西的四腳家具'],
+          ['⛵', '摺紙', 'ㄓㄜˊ ㄓˇ', '把正方形色紙折一折，變成紙飛機或小青蛙'],
+          ['🎋', '竹子', 'ㄓㄨˊ ㄗ˙', '一節一節綠綠高高的植物，大熊貓最愛吃它的葉子']
+        ],
+        vh: [
+          ['🚁', '直升機', 'ㄓˊ ㄕㄥ ㄐㄧ', '頭頂有大螺旋槳轉轉轉，不用跑道就能直接飛上天', 'jet'],
+          ['🛡️', '裝甲車', 'ㄓㄨㄤ ㄐㄧㄚˇ ㄔㄜ', '外殼非常堅固，用來保護人員安全通行的特殊車輛', 'engine'],
+          ['🚂', '蒸汽火車', 'ㄓㄥ ㄑㄧˋ ㄏㄨㄛˇ ㄔㄜ', '煙囪會冒出白色水蒸氣、復古又帥氣的老火車', 'bell'],
+          ['🚏', '站牌', 'ㄓㄢˋ ㄆㄞˊ', '立在人行道邊，寫著公車號碼與站名的牌子', 'bell'],
+          ['↪️', '轉彎標誌', 'ㄓㄨㄢˇ ㄨㄢ ㄅㄧㄠ ㄓˋ', '提醒駕駛前面道路要向左或向右轉彎的交通牌', 'horn'],
+          ['🚌', '專用車道', 'ㄓㄨㄢ ㄩㄥˋ ㄔㄜ ㄉㄠˋ', '馬路上特別畫出來，專門給公車或腳踏車走的車道', 'horn']
+        ]
+      },
+      {
+        s: 'ㄔ', cat: 'initial',
+        vis: { e: '🍴', t: '湯匙和小叉子', d: '「ㄔ」左邊兩撇像小叉子，右邊直豎像湯匙，就像吃飯時擺在一起的餐具！', tip: '吃點心時看看手上的小叉子，是不是跟「ㄔ」很像呢？' },
+        pro: { e: '🚂', t: '火車開動「ㄔ ㄔ ㄔ」', ins: '點擊小火車讓它前進，用力吹氣喊：「ㄔ、ㄔ、ㄔ！」', tip: '舌尖往上翹起來，像蒸汽火車噴氣一樣用力吹出「ㄔ」！', snd: 'blow' },
+        tr: [
+          ['🦒', '長頸鹿', 'ㄔㄤˊ ㄐㄧㄥˇ ㄌㄨˋ', '動物界裡個子最高的長脖子先生'],
+          ['🍴', '叉子', 'ㄔㄚ ㄗ˙', '吃義大利麵或叉水果塊時用的有尖齒餐具'],
+          ['🍵', '茶杯', 'ㄔㄚˊ ㄅㄟ', '泡熱茶時用來喝茶的小巧杯子'],
+          ['🐛', '小蟲', 'ㄒㄧㄠˇ ㄔㄨㄥˊ', '在草地上蠕動爬行、會變成蝴蝶的綠色毛毛蟲'],
+          ['📏', '尺', 'ㄔˇ', '上面有一格一格數字，用來量長度或畫直線的工具'],
+          ['🍛', '炒飯', 'ㄔㄠˇ ㄈㄢˋ', '白飯加上雞蛋、玉米和火腿在鍋子裡炒得香噴噴']
+        ],
+        vh: [
+          ['🚗', '車子', 'ㄔㄜ ㄗ˙', '在馬路上跑來跑去、載我們出門的各種車輛', 'horn'],
+          ['🏎️', '敞篷車', 'ㄔㄤˇ ㄆㄥˊ ㄔㄜ', '沒有車頂棚子、可以吹到微風和看到藍天的酷炫汽車', 'engine'],
+          ['🚜', '除雪車', 'ㄔㄨˊ ㄒㄩㄝˇ ㄔㄜ', '下大雪時開出來，把馬路上的積雪推開的工程車', 'engine'],
+          ['🏠', '車庫', 'ㄔㄜ ㄎㄨˋ', '讓汽車晚上回家睡覺、遮風避雨的專屬房間', 'chime'],
+          ['🚉', '車站', 'ㄔㄜ ㄓㄢˋ', '火車、高鐵或公車停靠，讓大家上車下車的地方', 'bell'],
+          ['🛣️', '車道', 'ㄔㄜ ㄉㄠˋ', '馬路上用白線或黃線畫分出來讓車子走的路線', 'horn']
+        ]
+      },
+      {
+        s: 'ㄕ', cat: 'initial',
+        vis: { e: '🦁', t: '獅子甩長尾巴', d: '「ㄕ」上面一橫折、下面一撇與直豎，就像草原上的獅子甩著長尾巴！', tip: '比出「噓——」安靜的手勢放在嘴巴前，輕輕發出「ㄕ——」！' },
+        pro: { e: '🤫', t: '安靜小秘密「ㄕ——」', ins: '點擊小精靈比出安靜手勢，輕輕吹氣：「ㄕ——！」', tip: '舌尖往上翹起來不要碰到上顎，讓氣流順順地吹出來「ㄕ——」！', snd: 'blow' },
+        tr: [
+          ['🦁', '獅子', 'ㄕ ㄗ˙', '脖子一圈蓬蓬鬃毛、威風凜凜的草原之王'],
+          ['🧴', '水壺', 'ㄕㄨㄟˇ ㄏㄨˊ', '上學和去公園玩都要隨身帶著裝開水的瓶子'],
+          ['🎒', '書包', 'ㄕㄨ ㄅㄠ', '裡面裝著繪本、聯絡簿和水壺的學生背包'],
+          ['⌚', '手錶', 'ㄕㄡˇ ㄅㄧㄠˇ', '戴在手腕上，滴答滴答告訴我們現在幾點鐘'],
+          ['🪮', '梳子', 'ㄕㄨ ㄗ˙', '早上起床把亂翹的頭髮梳得整整齊齊的工具'],
+          ['🍅', '柿子', 'ㄕˋ ㄗ˙', '秋天成熟時橘紅色的水果，吃起來甜滋滋的']
+        ],
+        vh: [
+          ['🚛', '砂石車', 'ㄕㄚ ㄕˊ ㄔㄜ', '後面車斗裝滿沙子和石頭的巨大工程卡車', 'engine'],
+          ['🚌', '雙層巴士', 'ㄕㄨㄤ ㄘㄥˊ ㄅㄚ ㄕˋ', '有樓上和樓下兩層座位、高高大大的觀光巴士', 'horn'],
+          ['🚤', '水上摩托車', 'ㄕㄨㄟˇ ㄕㄤˋ ㄇㄛˊ ㄊㄨㄛ ㄔㄜ', '沒有輪子、在海面上高速衝浪的酷炫載具', 'ship'],
+          ['🚧', '收費站', 'ㄕㄡ ㄈㄟˋ ㄓㄢˋ', '經過大橋或隧道前，停下來繳通行費的關卡', 'bell'],
+          ['🚦', '十字路口', 'ㄕˊ ㄗˋ ㄌㄨˋ ㄎㄡˇ', '兩條大馬路交叉成「十」字形、有紅綠燈的路口', 'bell'],
+          ['🚇', '山洞隧道', 'ㄕㄢ ㄉㄨㄥˋ ㄙㄨㄟˋ ㄉㄠˋ', '從山肚子中間挖通的長長通道，車子開進去要開大燈', 'chime']
+        ]
+      },
+      {
+        s: 'ㄖ', cat: 'initial',
+        vis: { e: '🌱', t: '太陽下的小芽', d: '「ㄖ」直立的莖幹旁邊長出一片彎彎葉子，就像在太陽公公（日）照耀下發芽的小草！', tip: '雙手舉高比出大太陽，感受溫暖的感覺「ㄖ」！' },
+        pro: { e: '🚗', t: '小車引擎「ㄖ——」', ins: '點擊小汽車發動引擎，感受震動發出：「ㄖ——！」', tip: '舌尖往上翹起來，同時讓喉嚨聲帶發出嗡嗡震動的聲音「ㄖ——」！', snd: 'engine' },
+        tr: [
+          ['☀️', '太陽日頭', 'ㄖˋ ㄊㄡˊ', '每天早上從東邊升起、照亮大地的太陽公公'],
+          ['🐄', '乳牛', 'ㄖㄨˇ ㄋㄧㄡˊ', '身上有黑白花紋、會產出好喝鮮奶的牛媽媽'],
+          ['🌭', '熱狗', 'ㄖㄜˋ ㄍㄡˇ', '長條麵包夾著香噴噴火腿腸的點心'],
+          ['🥟', '肉包', 'ㄖㄡˋ ㄅㄠ', '白白胖胖熱騰騰的包子，裡面包著香噴噴肉餡'],
+          ['🧸', '絨毛熊', 'ㄖㄨㄥˊ ㄇㄠˊ ㄒㄩㄥˊ', '摸起來毛茸茸、軟綿綿的可愛小熊玩偶'],
+          ['🍬', '軟糖', 'ㄖㄨㄢˇ ㄊㄤˊ', '咬起來QQ彈彈、有各種水果口味的小糖果']
+        ],
+        vh: [
+          ['🎈', '熱氣球', 'ㄖㄜˋ ㄑㄧˋ ㄑㄧㄡˊ', '點火加熱空氣就會膨脹升空、載著籃子飛行的彩色大氣球', 'blow'],
+          ['🛺', '人力車', 'ㄖㄣˊ ㄌㄧˋ ㄔㄜ', '靠車夫踩腳踏板或拉動前進的復古觀光小車', 'bell'],
+          ['🚲', '雙人協力車', 'ㄕㄨㄤ ㄖㄣˊ ㄒㄧㄝˊ ㄌㄧˋ ㄔㄜ', '有兩個座位和兩組踏板，兩個人一起踩的長腳踏車', 'bell'],
+          ['🚶', '人行道', 'ㄖㄣˊ ㄒㄧㄥˊ ㄉㄠˋ', '馬路兩旁高起來的磚頭路，專門給行人安全走路', 'chime'],
+          ['🚧', '入口閘門', 'ㄖㄨˋ ㄎㄡˇ ㄓㄚˊ ㄇㄣˊ', '停車場或捷運站進站時，感應卡片就會打開的門', 'bell'],
+          ['🔄', '繞圈圓環', 'ㄖㄠˋ ㄑㄩㄢ ㄩㄢˊ ㄏㄨㄢˊ', '馬路中間圓圓的花圃圓環，車子要繞著圈圈轉彎', 'horn']
+        ]
+      },
+      {
+        s: 'ㄗ', cat: 'initial',
+        vis: { e: '🦆', t: '小鴨子游泳', d: '「ㄗ」橫折後往下彎，就像一隻可愛的小黃鴨浮在水面上游泳的側影！', tip: '雙手放屁股後面當小鴨尾巴，搖搖擺擺學小鴨走路「ㄗ」！' },
+        pro: { e: '🐝', t: '小蜜蜂飛「ㄗ——」', ins: '點擊小蜜蜂讓牠採花蜜，發出：「ㄗ、ㄗ、ㄗ！」', tip: '舌尖平平地輕頂住上下牙齒中間，不要翹起來，發出清脆的「ㄗ」！', snd: 'chime' },
+        tr: [
+          ['🍙', '粽子', 'ㄗㄨㄥˋ ㄗ˙', '端午節吃三角形竹葉包著糯米和香菇的美食'],
+          ['🍇', '紫葡萄', 'ㄗˇ ㄆㄨˊ ㄊㄠˊ', '紫黑色圓圓甜甜、不用吐籽就能吃的水果'],
+          ['👄', '嘴巴', 'ㄗㄨㄟˇ ㄅㄚ', '用來吃飯、說話、唱歌和微笑的重要器官'],
+          ['🥤', '杯子', 'ㄅㄟ ㄗ˙', '裝水、裝果汁用來喝飲料的容器'],
+          ['🐰', '兔子', 'ㄊㄨˋ ㄗ˙', '蹦蹦跳跳的長耳朵小白兔'],
+          ['🪑', '椅子', 'ㄧˇ ㄗ˙', '累了的時候可以坐下來休息的四腳家具']
+        ],
+        vh: [
+          ['🚲', '自行車', 'ㄗˋ ㄒㄧㄥˊ ㄔㄜ', '用兩隻腳踩踏板前進的環保兩輪腳踏車', 'bell'],
+          ['🚚', '載貨卡車', 'ㄗㄞˋ ㄏㄨㄛˋ ㄎㄚˇ ㄔㄜ', '後面載著滿滿貨物箱子去送貨的卡車', 'engine'],
+          ['🤖', '自動駕駛車', 'ㄗˋ ㄉㄨㄥˋ ㄐㄧㄚˋ ㄕˇ ㄔㄜ', '裝有聰明電腦雷達、不用人握方向盤也能開的未來車', 'chime'],
+          ['🚶', '走廊通道', 'ㄗㄡˇ ㄌㄤˊ ㄊㄨㄥ ㄉㄠˋ', '車站或大樓裡連接不同房間的長長走道', 'chime'],
+          ['🚏', '總站', 'ㄗㄨㄥˇ ㄓㄢˋ', '公車或客運出發和最後回到終點休息的大車站', 'bell'],
+          ['⬅️', '左轉車道', 'ㄗㄨㄛˇ ㄓㄨㄢˇ ㄔㄜ ㄉㄠˋ', '地上畫著向左彎箭頭、專門讓車子左轉的車道', 'horn']
+        ]
+      },
+      {
+        s: 'ㄘ', cat: 'initial',
+        vis: { e: '🦔', t: '小刺蝟捲身體', d: '「ㄘ」一撇加上彎彎的弧線，就像小刺蝟背著刺刺的殼捲起身體！', tip: '雙手抱膝蓋蹲下來，假裝變成一顆圓圓的小刺蝟「ㄘ」！' },
+        pro: { e: '🚲', t: '腳踏車打氣「ㄘ ㄘ ㄘ」', ins: '點擊打氣筒幫輪胎打氣，用力吹氣：「ㄘ、ㄘ、ㄘ！」', tip: '舌尖平平頂住牙齒縫，用力送出一口氣，像輪胎打氣「ㄘ、ㄘ、ㄘ」的聲音！', snd: 'blow' },
+        tr: [
+          ['🍓', '草莓', 'ㄘㄠˇ ㄇㄟˊ', '紅通通心形、表面有小芝麻點點的酸甜水果'],
+          ['🦔', '刺蝟', 'ㄘˋ ㄨㄟˋ', '背上長滿尖尖小刺、遇到危險會縮成球的小動物'],
+          ['🌈', '彩虹', 'ㄘㄞˇ ㄏㄨㄥˊ', '下雨過後太陽出來時，掛在天空七彩顏色的拱橋'],
+          ['🥬', '青菜', 'ㄑㄧㄥ ㄘㄞˋ', '綠油油的蔬菜，每天吃才會頭好壯壯'],
+          ['🍽️', '餐盤', 'ㄘㄢ ㄆㄢˊ', '營養午餐時用來裝飯菜的分格盤子'],
+          ['🖍️', '彩色筆', 'ㄘㄞˇ ㄙㄜˋ ㄅㄧˇ', '一盒有好多顏色、畫起來線條很鮮豔的畫筆']
+        ],
+        vh: [
+          ['🚐', '餐車', 'ㄘㄢ ㄔㄜ', '開到公園或市集旁邊，打開窗口賣漢堡飲料的行動店面', 'music'],
+          ['⛏️', '採礦車', 'ㄘㄞˇ ㄎㄨㄤˋ ㄔㄜ', '在山洞軌道上載著石頭和礦石的小鐵車', 'engine'],
+          ['🚗', '測試車', 'ㄘㄜˋ ㄕˋ ㄔㄜ', '新車剛造好時，開出來檢查安不安全的實驗汽車', 'engine'],
+          ['🛣️', '側邊車道', 'ㄘㄜˋ ㄅㄧㄢ ㄔㄜ ㄉㄠˋ', '大馬路最靠旁邊、靠近人行道的那一條車道', 'horn'],
+          ['🌿', '草原小徑', 'ㄘㄠˇ ㄩㄢˊ ㄒㄧㄠˇ ㄐㄧㄥˋ', '綠油油草地中間踩出來的一條彎彎小路', 'chime'],
+          ['📦', '倉庫碼頭', 'ㄘㄤ ㄎㄨˋ ㄇㄚˇ ㄊㄡˊ', '大貨車停靠在倉庫門口卸下貨物的地方', 'horn']
+        ]
+      },
+      {
+        s: 'ㄙ', cat: 'initial',
+        vis: { e: '🐍', t: '小蛇彎彎扭動', d: '「ㄙ」先折一個三角彎再加一點，就像小青蛇在草地上彎彎曲曲地向前滑行！', tip: '用手臂模仿小蛇彎彎扭動，發出「ㄙ——」的聲音！' },
+        pro: { e: '🐍', t: '小蛇吐信「ㄙ——」', ins: '點擊小青蛇一起玩，輕輕吹氣發出：「ㄙ——！」', tip: '牙齒輕輕合起來，舌尖平平靠在牙齒後面，讓氣流細細地吹出來「ㄙ——」！', snd: 'blow' },
+        tr: [
+          ['☂️', '雨傘', 'ㄩˇ ㄙㄢˇ', '下雨天撐開來擋雨、晴天也能遮太陽的工具'],
+          ['🐿️', '松鼠', 'ㄙㄨㄥ ㄕㄨˇ', '有蓬鬆大尾巴、喜歡抱著松果啃的小動物'],
+          ['🌽', '玉米筍', 'ㄩˋ ㄇㄧˇ ㄙㄨㄣˇ', '小小一根黃黃脆脆的蔬菜，吃火鍋常看到'],
+          ['🍞', '吐司', 'ㄊㄨˇ ㄙ', '切片正方形的麵包，塗上果醬或花生醬超好吃'],
+          ['🟧', '四方形', 'ㄙˋ ㄈㄤ ㄒㄧㄥˊ', '有四條一樣長的邊和四個角角的正方形'],
+          ['🥒', '絲瓜', 'ㄙ ㄍㄨㄚ', '綠皮長條形的瓜果，煮湯喝起來清甜軟嫩']
+        ],
+        vh: [
+          ['🏎️', '賽車', 'ㄙㄞˋ ㄔㄜ', '在專業賽車場上比賽誰跑得最快、車身貼滿號碼的車', 'engine'],
+          ['🛺', '三輪車', 'ㄙㄢ ㄌㄨㄣˊ ㄔㄜ', '前面一個輪子、後面兩個輪子，小朋友最喜歡騎的車', 'bell'],
+          ['🚛', '灑水車', 'ㄙㄚˇ ㄕㄨㄟˇ ㄔㄜ', '會噴出水霧清洗馬路、讓地板涼涼的清潔車', 'chime'],
+          ['🚇', '隧道', 'ㄙㄨㄟˋ ㄉㄠˋ', '穿過山壁或地底下的長長通道，裡面有亮亮的燈', 'chime'],
+          ['🛣️', '高速公路', 'ㄍㄠ ㄙㄨˋ ㄍㄨㄥ ㄌㄨˋ', '讓汽車高速長途行駛的寬敞大公路', 'horn'],
+          ['🌲', '森林步道', 'ㄙㄣ ㄌㄧㄣˊ ㄅㄨˋ ㄉㄠˋ', '在大大樹林裡面鋪設、可以散步呼吸新鮮空氣的小路', 'chime']
+        ]
+      },
+
+      // -------------------- 介音 (3 個) --------------------
+      {
+        s: 'ㄧ', cat: 'medial',
+        vis: { e: '✏️', t: '直直站立的鉛筆', d: '「ㄧ」就是一條平平直直的線條（直寫時直直站立，橫寫時平平躺著），就像一枝筆或數字 1！', tip: '身體站得直挺挺像一根小木棒「ㄧ」，大聲唸出「ㄧ——」！' },
+        pro: { e: '😁', t: '笑眯眯「ㄧ——」', ins: '點擊微笑太陽，牙齒對齊微笑唸：「ㄧ——！」', tip: '上下牙齒輕輕對齊，嘴角往兩邊拉開笑眯眯，發出高高亮亮的「ㄧ——」！', snd: 'chime' },
+        tr: [
+          ['👕', '衣服', 'ㄧ ㄈㄨˊ', '穿在身上保暖又漂亮的衣物'],
+          ['🪑', '椅子', 'ㄧˇ ㄗ˙', '大家圍在桌子旁邊坐著的小凳子'],
+          ['👩‍⚕️', '醫生', 'ㄧ ㄕㄥ', '穿著白袍、拿聽診器幫我們檢查身體健康的人'],
+          ['🐜', '螞蟻', 'ㄇㄚˇ ㄧˇ', '黑黑小小一隻，喜歡排隊一起搬運甜食的昆蟲'],
+          ['🎵', '音樂盒', 'ㄧㄣ ㄩㄝˋ ㄏㄜˊ', '轉動發條就會打開蓋子、叮叮咚咚唱歌的盒子'],
+          ['🦅', '老鷹', 'ㄌㄠˇ ㄧㄥ', '在天空高高盤旋、眼睛很銳利的大鳥']
+        ],
+        vh: [
+          ['🚐', '移動餐車', 'ㄧˊ ㄉㄨㄥˋ ㄘㄢ ㄔㄜ', '可以開到不同地方賣點心和飲料的車子', 'music'],
+          ['🚑', '醫療救護車', 'ㄧ ㄌㄧㄠˊ ㄐㄧㄡˋ ㄏㄨˋ ㄔㄜ', '載著急救設備和醫護人員趕去救人的車子', 'siren'],
+          ['🚌', '一號公車', 'ㄧ ㄏㄠˋ ㄍㄨㄥ ㄔㄜ', '車頭牌子寫著數字「1」號的路線公車', 'horn'],
+          ['🏮', '驛站', 'ㄧˋ ㄓㄢˋ', '古時候騎馬或走路旅行的人中途休息換馬的地方', 'bell'],
+          ['🛣️', '引道', 'ㄧㄣˇ ㄉㄠˋ', '連接一般馬路和高速公路或大橋的斜坡道路', 'horn'],
+          ['🅿️', '地下一樓停車場', 'ㄉㄧˋ ㄒㄧㄚˋ ㄧ ㄌㄡˊ ㄊㄧㄥˊ ㄔㄜ ㄔㄤˇ', '開車順著斜坡往下開一層樓的室內停車場', 'chime']
+        ]
+      },
+      {
+        s: 'ㄨ', cat: 'medial',
+        vis: { e: '🐢', t: '小烏龜的背殼', d: '「ㄨ」一橫加上轉折勾起來，就像小烏龜圓鼓鼓的硬殼，也像小房屋的屋頂！', tip: '雙手在頭頂搭成尖尖的小屋頂「ㄨ」，唸出「ㄨ——」！' },
+        pro: { e: '🚂', t: '小火車鳴笛「ㄨ——」', ins: '點擊小火車拉響汽笛，嘴巴嘟圓唸：「ㄨ——！」', tip: '把嘴巴嘟成一個圓圓的小洞，像吹哨子或火車鳴笛一樣發出「ㄨ——」！', snd: 'ship' },
+        tr: [
+          ['🐢', '烏龜', 'ㄨ ㄍㄨㄟ', '背著硬硬的殼、走路慢慢吞吞的長壽動物'],
+          ['🏠', '屋子', 'ㄨ ㄗ˙', '遮風避雨、溫暖舒適的家'],
+          ['🐦‍⬛', '烏鴉', 'ㄨ ㄧㄚ', '全身羽毛黑亮亮、很聰明的鳥類'],
+          ['🐸', '青蛙', 'ㄑㄧㄥ ㄨㄚ', '在池塘裡游泳、會跳高高抓蚊子的綠色小動物'],
+          ['🧦', '襪子', 'ㄨㄚˋ ㄗ˙', '穿鞋子之前要先套在腳丫上的保暖棉襪'],
+          ['🎁', '禮物', 'ㄌㄧˇ ㄨˋ', '過節或生日收到的驚喜包裹']
+        ],
+        vh: [
+          ['🚜', '挖掘機', 'ㄨㄚ ㄐㄩㄝˊ ㄐㄧ', '前面有大鏟斗、在工地挖土的怪手工程車', 'engine'],
+          ['🤖', '無人駕駛車', 'ㄨˊ ㄖㄣˊ ㄐㄧㄚˋ ㄕˇ ㄔㄜ', '不用司機叔叔坐在裡面也能自己開的聰明車子', 'chime'],
+          ['🛶', '烏篷船', 'ㄨ ㄆㄥˊ ㄔㄨㄢˊ', '船身上蓋著黑灰色半圓形竹篷的傳統小船', 'chime'],
+          ['🏢', '屋頂停車場', 'ㄨ ㄉㄧㄥˇ ㄊㄧㄥˊ ㄔㄜ ㄔㄤˇ', '開到大樓最頂樓露天曬太陽的停車場', 'horn'],
+          ['↪️', '彎道', 'ㄨㄢ ㄉㄠˋ', '不是直直的、像彩虹一樣轉彎的馬路', 'horn'],
+          ['🛣️', '外環道路', 'ㄨㄞˋ ㄏㄨㄢˊ ㄉㄠˋ ㄌㄨˋ', '圍繞在城市外圍一圈、讓車子不用擠進市區的大路', 'horn']
+        ]
+      },
+      {
+        s: 'ㄩ', cat: 'medial',
+        vis: { e: '🐠', t: '小魚缸游呀游', d: '「ㄩ」上面像裝水的小魚缸，裡面住著一條吐泡泡的小金魚！', tip: '雙手合十當小魚尾左右擺動，嘴巴嘟圓吐泡泡「ㄩ——」！' },
+        pro: { e: '🐠', t: '小魚吐泡泡「ㄩ——」', ins: '點擊小金魚吐出泡泡，嘴巴嘟圓唸：「ㄩ——！」', tip: '先唸「ㄧ」微笑，舌頭位置不要動，把嘴唇慢慢嘟成小圓圈，就會變成「ㄩ——」囉！', snd: 'pop' },
+        tr: [
+          ['🐟', '小魚', 'ㄒㄧㄠˇ ㄩˊ', '在水裡搖尾巴游泳、用鰓呼吸的可愛動物'],
+          ['☂️', '雨傘', 'ㄩˇ ㄙㄢˇ', '下雨天出門撐在頭頂上的圓圓大傘'],
+          ['🌽', '玉米', 'ㄩˋ ㄇㄧˇ', '黃澄澄一排一排整齊顆粒、咬起來甜甜的農作物'],
+          ['🌙', '月亮', 'ㄩㄝˋ ㄌㄧㄤˋ', '晚上掛在天空，有時彎彎像小船、有時圓圓像玉盤'],
+          ['🪶', '羽毛', 'ㄩˇ ㄇㄠˊ', '小鳥翅膀上輕飄飄、摸起來軟軟的毛'],
+          ['🍠', '芋頭', 'ㄩˋ ㄊㄡˊ', '紫色鬆鬆綿綿、煮甜湯或做成芋圓都超好吃']
+        ],
+        vh: [
+          ['🛥️', '漁船', 'ㄩˊ ㄔㄨㄢˊ', '漁夫叔叔開著出海捕魚的船隻', 'ship'],
+          ['🚒', '雲梯消防車', 'ㄩㄣˊ ㄊㄧ ㄒㄧㄠ ㄈㄤˊ ㄔㄜ', '背著可以伸到好高好高樓層救人的長梯子消防車', 'siren'],
+          ['🚀', '宇宙飛船', 'ㄩˇ ㄓㄡˋ ㄈㄟ ㄔㄨㄢˊ', '穿梭在銀河系星星之間的超酷太空載具', 'jet'],
+          ['⚓', '漁港碼頭', 'ㄩˊ ㄍㄤˇ ㄇㄚˇ ㄊㄡˊ', '停滿漁船、一大早有很多新鮮魚貨上岸的港口', 'ship'],
+          ['🚉', '月台', 'ㄩㄝˋ ㄊㄞˊ', '火車或捷運進站時，乘客站在黃線後面排隊等車的平台', 'bell'],
+          ['☂️', '雨遮走廊', 'ㄩˇ ㄓㄜ ㄗㄡˇ ㄌㄤˊ', '上面有屋頂遮雨，下雨天走路不會淋濕的通道', 'chime']
+        ]
+      },
+
+      // -------------------- 韻母 (13 個) --------------------
+      {
+        s: 'ㄚ', cat: 'final',
+        vis: { e: '🌳', t: '分叉的小樹枝', d: '「ㄚ」上面兩條線分開，就像小樹幹上面長出兩根分叉的樹枝！', tip: '雙手舉高比出大大的「Y」字形分叉，張大嘴巴唸「ㄚ——」！' },
+        pro: { e: '😮', t: '張大嘴巴「ㄚ——」', ins: '點擊大嘴巴看牙醫，張大嘴唸：「ㄚ——！」', tip: '像去看牙醫檢查牙齒一樣，把嘴巴張得大大的、圓圓的，發出響亮的「ㄚ——」！', snd: 'chime' },
+        tr: [
+          ['🦆', '鴨子', 'ㄧㄚ ㄗ˙', '扁扁嘴巴、腳掌有蹼，會「呱呱呱」叫的動物'],
+          ['🐸', '青蛙', 'ㄑㄧㄥ ㄨㄚ', '下雨天在池塘邊大合唱的綠色小動物'],
+          ['🍉', '西瓜', 'ㄒㄧ ㄍㄨㄚ', '夏天切開來紅紅黑籽的大圓瓜'],
+          ['🌺', '花朵', 'ㄏㄨㄚ ㄉㄨㄛˇ', '花園裡蜜蜂和蝴蝶最喜歡採蜜的漂亮植物'],
+          ['🪥', '牙刷', 'ㄧㄚˊ ㄕㄨㄚ', '每天早晚擠上牙膏，幫牙齒刷刷洗乾淨的工具'],
+          ['👨', '爸爸', 'ㄅㄚˋ ㄅㄚ˙', '家裡強壯又溫柔的超級英雄']
+        ],
+        vh: [
+          ['🚜', '壓路機', 'ㄧㄚ ㄌㄨˋ ㄐㄧ', '前面有超級重的大鐵滾輪，把馬路壓得平平坦坦的工程車', 'engine'],
+          ['🦆', '鴨子船', 'ㄧㄚ ㄗ˙ ㄔㄨㄢˊ', '造型像可愛大黃鴨，既能在路上開也能下水游的觀光車船', 'horn'],
+          ['🚌', '巴士', 'ㄅㄚ ㄕˋ', '載著好多乘客一起出發的大客車', 'horn'],
+          ['🛣️', '馬路', 'ㄇㄚˇ ㄌㄨˋ', '每天車水馬龍、有紅綠燈的大道路', 'horn'],
+          ['🦓', '斑馬線', 'ㄅㄢ ㄇㄚˇ ㄒㄧㄢˋ', '過馬路時要牽好大人手走的白色條紋線', 'chime'],
+          ['🏝️', '安全島', 'ㄢ ㄑㄩㄢˊ ㄉㄠˇ', '寬大馬路中間種著花草樹木、分隔雙向車道的設施', 'chime']
+        ]
+      },
+      {
+        s: 'ㄛ', cat: 'final',
+        vis: { e: '🐓', t: '公雞喔喔啼', d: '「ㄛ」一豎加上彎勾，就像大公雞挺起胸膛、張開圓嘴巴「喔喔喔」叫太陽起床！', tip: '雙手拍拍翅膀學大公雞，嘴巴圓圓唸出「ㄛ——」！' },
+        pro: { e: '🐓', t: '公雞喔喔啼「ㄛ——」', ins: '點擊大公雞叫太陽起床，嘴巴圓圓唸：「ㄛ——！」', tip: '嘴巴張開變成圓圓的形狀，就像吹小喇叭一樣發出「ㄛ——」！', snd: 'chime' },
+        tr: [
+          ['🥕', '蘿蔔', 'ㄌㄨㄛˊ ㄅㄛ˙', '長在土裡的蔬菜，有橘色的紅蘿蔔和白色的白蘿蔔'],
+          ['🥬', '菠菜', 'ㄅㄛ ㄘㄞˋ', '綠綠的葉子，吃了會像大力水手一樣有力氣'],
+          ['🥛', '玻璃杯', 'ㄅㄛ ㄌㄧˊ ㄅㄟ', '透明亮晶晶、看得到裡面飲料顏色的杯子'],
+          ['🍄', '蘑菇', 'ㄇㄛˊ ㄍㄨ', '長得像一把胖胖小雨傘的美味菇類'],
+          ['🧣', '脖子', 'ㄅㄛˊ ㄗ˙', '連接頭和身體、冬天要圍圍巾保暖的部位'],
+          ['🥁', '波浪鼓', 'ㄅㄛ ㄌㄤˋ ㄍㄨˇ', '轉動握把時，兩邊小珠子會咚咚咚敲打鼓面的傳統玩具']
+        ],
+        vh: [
+          ['🛵', '摩托車', 'ㄇㄛˊ ㄊㄨㄛ ㄔㄜ', '載著騎士穿梭大街小巷的二輪機車', 'horn'],
+          ['🚢', '破冰船', 'ㄆㄛˋ ㄅㄧㄥ ㄔㄨㄢˊ', '在冰冷北極海撞開厚冰塊開路的勇敢船隻', 'ship'],
+          ['🚚', '貨車', 'ㄏㄨㄛˋ ㄔㄜ', '載滿包裹和商品送到商店的運輸車', 'engine'],
+          ['🚂', '火車', 'ㄏㄨㄛˇ ㄔㄜ', '在鐵軌上長途奔馳的列車', 'bell'],
+          ['🌊', '防波堤', 'ㄈㄤˊ ㄅㄛ ㄉㄧˊ', '保護港口船隻不被海浪拍打的堅固石堤', 'ship'],
+          ['⛰️', '山坡路', 'ㄕㄢ ㄆㄛ ㄌㄨˋ', '沿著山壁往上爬或往下滑的斜坡道路', 'engine']
+        ]
+      },
+      {
+        s: 'ㄜ', cat: 'final',
+        vis: { e: '🦢', t: '白鵝彎彎長脖子', d: '「ㄜ」上面像鵝頭，下面彎彎的曲線就像大白鵝優雅彎曲的長脖子！', tip: '手臂彎曲學大白鵝伸脖子，微笑唸出「ㄜ——」！' },
+        pro: { e: '🦢', t: '大白鵝唱歌「ㄜ——」', ins: '點擊優雅大白鵝，嘴巴半開微笑唸：「ㄜ——！」', tip: '嘴巴自然張開一半，嘴角微微往兩邊微笑，發出長長的「ㄜ——」！', snd: 'chime' },
+        tr: [
+          ['🐧', '企鵝', 'ㄑㄧˋ ㄜˊ', '搖搖擺擺走路、游泳卻超級快的南極鳥類'],
+          ['🦢', '白鵝', 'ㄅㄞˊ ㄜˊ', '全身雪白羽毛、長長脖子在水面上優雅游泳的鳥'],
+          ['🐊', '鱷魚', 'ㄜˋ ㄩˊ', '有長長嘴巴和尖牙齒、喜歡泡在水裡的綠色爬蟲類'],
+          ['🥤', '可樂', 'ㄎㄜˇ ㄌㄜˋ', '咖啡色、倒進杯子裡會冒出好多氣泡的飲料'],
+          ['🪷', '荷花', 'ㄏㄜˊ ㄏㄨㄚ', '夏天開在池塘綠色大荷葉中間的粉紅花朵'],
+          ['🍫', '巧克力', 'ㄑㄧㄠˇ ㄎㄜˋ ㄌㄧˋ', '香濃可口的甜心點心']
+        ],
+        vh: [
+          ['🚌', '客運', 'ㄎㄜˋ ㄩㄣˋ', '載著乘客往返各個縣市的大型巴士', 'horn'],
+          ['🚛', '垃圾車', 'ㄌㄜˋ ㄙㄜˋ ㄔㄜ', '播放好聽音樂提醒大家倒垃圾的清潔車', 'music'],
+          ['🚗', '小客車', 'ㄒㄧㄠˇ ㄎㄜˋ ㄔㄜ', '一般家庭出門旅遊最常開的汽車', 'horn'],
+          ['🛵', '機車', 'ㄐㄧ ㄔㄜ', '停在機車停車格裡的兩輪交通工具', 'horn'],
+          ['🚶', '河堤步道', 'ㄏㄜˊ ㄉㄧ ㄅㄨˋ ㄉㄠˋ', '沿著河岸高高的堤防建造、可以看風景散步的路', 'chime'],
+          ['🚏', '候車亭', 'ㄏㄡˋ ㄔㄜ ㄊㄧㄥˊ', '公車站牌旁邊有屋頂和椅子的地方，等車時可以躲太陽', 'bell']
+        ]
+      },
+      {
+        s: 'ㄝ', cat: 'final',
+        vis: { e: '👠', t: '媽媽的高跟鞋', d: '「ㄝ」就像一隻側面擺放的漂亮高跟鞋，前面鞋頭尖尖、後面有鞋跟！', tip: '比出「耶！」的勝利手勢，笑嘻嘻地唸出「ㄧㄝ——」！' },
+        pro: { e: '✌️', t: '比勝利手勢「ㄧㄝ——」', ins: '點擊勝利手勢比出「耶」，嘴角微笑唸：「ㄝ——！」', tip: '嘴角往兩邊拉開笑得開開心心，發出輕快的「ㄝ」（就像說「耶！」的尾音）！', snd: 'chime' },
+        tr: [
+          ['🦋', '蝴蝶', 'ㄏㄨˊ ㄉㄧㄝˊ', '在花叢間翩翩飛舞的美麗昆蟲'],
+          ['👟', '鞋子', 'ㄒㄧㄝˊ ㄗ˙', '保護雙腳、有鞋帶或魔鬼氈的鞋子'],
+          ['🍃', '樹葉', 'ㄕㄨˋ ㄧㄝˋ', '長在樹枝上綠油油、秋天會變紅變黃的葉子'],
+          ['🍅', '番茄', 'ㄈㄢ ㄑㄧㄝˊ', '酸甜多汁的紅色蔬果'],
+          ['👴', '爺爺', 'ㄧㄝˊ ㄧㄝ˙', '爸爸的爸爸，慈祥和藹的長輩'],
+          ['🦀', '螃蟹', 'ㄆㄤˊ ㄒㄧㄝˋ', '橫著走路、舉著兩支大螯的海邊小動物']
+        ],
+        vh: [
+          ['🚙', '越野車', 'ㄩㄝˋ ㄧㄝˇ ㄔㄜ', '不怕泥巴、山坡和石頭路，冒險專用的強壯車子', 'engine'],
+          ['🚂', '鐵路火車', 'ㄊㄧㄝˇ ㄌㄨˋ ㄏㄨㄛˇ ㄔㄜ', '沿著環島鐵路載運旅客的列車', 'bell'],
+          ['🚇', '地鐵', 'ㄉㄧˋ ㄊㄧㄝˇ', '行駛在城市地底下隧道的快速捷運列車', 'chime'],
+          ['🚄', '高鐵', 'ㄍㄠ ㄊㄧㄝˇ', '南北往來最快速的高速鐵路列車', 'jet'],
+          ['🚉', '月台', 'ㄩㄝˋ ㄊㄞˊ', '火車靠站時，乘客上下車的長長平台', 'bell'],
+          ['🛤️', '鐵軌', 'ㄊㄧㄝˇ ㄍㄨㄟˇ', '枕木上面鋪著兩條長長的鋼鐵軌道', 'bell']
+        ]
+      },
+      {
+        s: 'ㄞ', cat: 'final',
+        vis: { e: '🪜', t: '靠在牆邊的梯子', d: '「ㄞ」一橫加上兩條斜線，就像工人叔叔靠在牆邊爬高高的梯子！', tip: '雙手比出大大的愛心抱抱「ㄞˋ」，大聲唸出「ㄞ——」！' },
+        pro: { e: '👏', t: '拍拍小手「ㄞ——」', ins: '點擊愛心拍拍手，一起喊出：「ㄞ——！」', tip: '嘴巴先像「ㄚ」一樣張大，再慢慢收攏微笑變成「ㄧ」，連起來就是「ㄞ——」！', snd: 'pop' },
+        tr: [
+          ['❤️', '愛心', 'ㄞˋ ㄒㄧㄣ', '代表喜歡、關心和溫暖抱抱的心形圖案'],
+          ['🥬', '白菜', 'ㄅㄞˊ ㄘㄞˋ', '葉梗白白胖胖、煮火鍋超甜美的蔬菜'],
+          ['🥛', '牛奶', 'ㄋㄧㄡˊ ㄋㄞˇ', '每天早上喝一杯，讓骨骼牙齒更強壯'],
+          ['🐬', '海豚', 'ㄏㄞˇ ㄊㄨㄣˊ', '在藍色大海裡成群游泳的聰明動物'],
+          ['🌈', '彩虹', 'ㄘㄞˇ ㄏㄨㄥˊ', '紅橙黃綠藍靛紫七種顏色的天空拱橋'],
+          ['🐇', '白兔', 'ㄅㄞˊ ㄊㄨˋ', '全身雪白絨毛、三瓣嘴動呀動的小兔子']
+        ],
+        vh: [
+          ['⛏️', '採礦車', 'ㄘㄞˇ ㄎㄨㄤˋ ㄔㄜ', '載運寶石和礦石的小型軌道工程車', 'engine'],
+          ['🏎️', '賽車', 'ㄙㄞˋ ㄔㄜ', '引擎轟隆隆作響、速度飛快的比賽車輛', 'engine'],
+          ['🚤', '快艇', 'ㄎㄨㄞˋ ㄊㄧㄥˇ', '乘風破浪高速前進的海上小船', 'ship'],
+          ['🌉', '跨海大橋', 'ㄎㄨㄚˋ ㄏㄞˇ ㄉㄚˋ ㄑㄧㄠˊ', '建在海面上連接兩岸的宏偉大橋', 'ship'],
+          ['🚏', '站牌', 'ㄓㄢˋ ㄆㄞˊ', '公車停靠站的位置標示牌', 'bell'],
+          ['⚓', '海港', 'ㄏㄞˇ ㄍㄤˇ', '大輪船進進出出、有吊車搬運貨櫃的港口', 'ship']
+        ]
+      },
+      {
+        s: 'ㄟ', cat: 'final',
+        vis: { e: '⚡', t: '天空的閃電', d: '「ㄟ」一撇一捺轉折下來，就像下雨天夜空中一閃而過的閃電！', tip: '手臂比出閃電的形狀，喊出超有精神的「ㄟ——」！' },
+        pro: { e: '💪', t: '加油拔蘿蔔「ㄟ——」', ins: '點擊小超人加油打氣，喊出：「ㄟ——咻！」', tip: '嘴角輕輕往上揚起微笑，發出有精神的「ㄟ——」！', snd: 'chime' },
+        tr: [
+          ['🥤', '杯子', 'ㄅㄟ ㄗ˙', '喝水時每天都會用到的生活用品'],
+          ['🍓', '草莓', 'ㄘㄠˇ ㄇㄟˊ', '香香甜甜、做蛋糕最常放在最上面的水果'],
+          ['🐢', '烏龜', 'ㄨ ㄍㄨㄟ', '遇到事情會把頭和腳縮進龜殼裡的小動物'],
+          ['🛏️', '棉被', 'ㄇㄧㄢˊ ㄅㄟˋ', '晚上睡覺蓋在身上，暖呼呼軟綿綿的被子'],
+          ['🌹', '玫瑰花', 'ㄇㄟˊ ㄍㄨㄟ ㄏㄨㄚ', '花瓣層層疊疊、香氣迷人的漂亮花朵'],
+          ['🧴', '水壺', 'ㄕㄨㄟˇ ㄏㄨˊ', '裝滿開水隨時補充水分的好幫手']
+        ],
+        vh: [
+          ['✈️', '飛機', 'ㄈㄟ ㄐㄧ', '帶我們飛上藍天白雲的空中交通工具', 'jet'],
+          ['🎈', '飛船', 'ㄈㄟ ㄔㄨㄢˊ', '在天空中悠閒航行的巨大氣艇', 'chime'],
+          ['🎢', '雲霄飛車', 'ㄩㄣˊ ㄒㄧㄠ ㄈㄟ ㄔㄜ', '在空中軌道上俯衝轉彎的遊樂設施列車', 'jet'],
+          ['🛫', '飛機場', 'ㄈㄟ ㄐㄧ ㄔㄤˇ', '有塔台和跑道、讓飛機起降的交通樞紐', 'jet'],
+          ['🛩️', '水上飛機', 'ㄕㄨㄟˇ ㄕㄤˋ ㄈㄟ ㄐㄧ', '機腹像船一樣，可以直接降落在海面上的特殊飛機', 'ship'],
+          ['🛣️', '內線車道', 'ㄋㄟˋ ㄒㄧㄢˋ ㄔㄜ ㄉㄠˋ', '高速公路最內側讓車子超車的車道', 'horn']
+        ]
+      },
+      {
+        s: 'ㄠ', cat: 'final',
+        vis: { e: '⛵', t: '搖呀搖的小帆船', d: '「ㄠ」彎彎曲曲的線條，就像一艘小帆船在波浪上搖呀搖！', tip: '身體左右輕輕搖晃像小船，拉長聲音唸「ㄠ——」！' },
+        pro: { e: '🐱', t: '小貓咪叫「ㄇㄠ——」', ins: '點擊小貓咪聽牠撒嬌，張嘴再嘟圓唸：「ㄠ——！」', tip: '嘴巴先張大發出「ㄚ」，再把嘴唇收成圓圓的「ㄛ」，連起來就是「ㄠ——」！', snd: 'hum' },
+        tr: [
+          ['🐱', '貓咪', 'ㄇㄠ ㄇㄧ', '愛吃魚、走路輕悄悄沒有聲音的可愛寵物'],
+          ['👒', '帽子', 'ㄇㄠˋ ㄗ˙', '戴在頭上遮太陽或保暖的配件'],
+          ['🎂', '蛋糕', 'ㄉㄢˋ ㄍㄠ', '慶祝快樂日子必吃的甜蜜糕點'],
+          ['🍌', '香蕉', 'ㄒㄧㄤ ㄐㄧㄠ', '彎彎黃黃、香甜軟糯的水果'],
+          ['🍇', '葡萄', 'ㄆㄨˊ ㄊㄠˊ', '一串一串紫紅色的多汁水果'],
+          ['🐦', '小鳥', 'ㄒㄧㄠˇ ㄋㄧㄠˇ', '在樹梢築巢、每天早起唱歌的小動物']
+        ],
+        vh: [
+          ['🏎️', '跑車', 'ㄆㄠˇ ㄔㄜ', '底盤低低的、在賽道上奔馳的超跑', 'engine'],
+          ['🚜', '刨路機', 'ㄆㄠˊ ㄌㄨˋ ㄐㄧ', '翻修馬路時負責刨除舊路面的大型工程車', 'engine'],
+          ['🚄', '高鐵', 'ㄍㄠ ㄊㄧㄝˇ', '車身橘白相間、風馳電掣的高速列車', 'jet'],
+          ['🏗️', '吊車', 'ㄉㄧㄠˋ ㄔㄜ', '伸出長長吊臂把重物抬高高的建築工程車', 'engine'],
+          ['🚧', '平交道', 'ㄆㄧㄥˊ ㄐㄧㄠ ㄉㄠˋ', '火車經過時會放下黃黑欄杆響鈴的路口', 'bell'],
+          ['🌉', '天橋', 'ㄊㄧㄢ ㄑㄧㄠˊ', '跨越馬路上方的行人陸橋', 'chime']
+        ]
+      },
+      {
+        s: 'ㄡ', cat: 'final',
+        vis: { e: '🕊️', t: '海鷗展翅飛翔', d: '「ㄡ」左邊彎彎框住右邊交叉，就像海鷗在大海上展翅飛翔的樣子！', tip: '雙臂像海鷗一樣上下拍動飛翔，發出「ㄡ——」的聲音！' },
+        pro: { e: '🌊', t: '海鷗飛呀飛「ㄡ——」', ins: '點擊海鷗飛過浪花，嘴巴圓圓往前嘟唸：「ㄡ——！」', tip: '嘴巴先半開，再往前嘟成圓圓的「ㄨ」，連起來唸出「ㄡ——」！', snd: 'ship' },
+        tr: [
+          ['🐒', '猴子', 'ㄏㄡˊ ㄗ˙', '聰明靈活、喜歡在樹枝間跳躍的小動物'],
+          ['🐶', '狗狗', 'ㄍㄡˇ ㄍㄡ˙', '人類最忠實的寵物好朋友'],
+          ['🕊️', '海鷗', 'ㄏㄞˇ ㄡ', '白色羽毛、喜歡跟著輪船在海面上飛翔的海鳥'],
+          ['🫛', '豆子', 'ㄉㄡˋ ㄗ˙', '營養豐富的綠色豆莢與豆仁'],
+          ['🌭', '熱狗', 'ㄖㄜˋ ㄍㄡˇ', '夾在麵包裡擠上番茄醬的美味點心'],
+          ['🧤', '手套', 'ㄕㄡˇ ㄊㄠˋ', '冬天天氣冷時戴在雙手上保暖的衣物']
+        ],
+        vh: [
+          ['🛶', '獨木舟', 'ㄉㄨˊ ㄇㄨˋ ㄓㄡ', '在溪流或湖泊上划槳前進的輕巧小船', 'chime'],
+          ['🐉', '龍舟', 'ㄌㄨㄥˊ ㄓㄡ', '端午節划龍舟比賽時，船頭有龍頭裝飾的長船', 'drum'],
+          ['🛥️', '遊艇', 'ㄧㄡˊ ㄊㄧㄥˇ', '載著大家出海兜風看海景的漂亮船隻', 'ship'],
+          ['🚢', '郵輪', 'ㄧㄡˊ ㄌㄨㄣˊ', '像一座海上大飯店、有游泳池和餐廳的超級大船', 'ship'],
+          ['🚏', '候車亭', 'ㄏㄡˋ ㄔㄜ ㄊㄧㄥˊ', '有遮雨棚和座位、讓大家安心等公車的設施', 'bell'],
+          ['🚦', '十字路口', 'ㄕˊ ㄗˋ ㄌㄨˋ ㄎㄡˇ', '四面八方道路交會、有斑馬線的重要路口', 'bell']
+        ]
+      },
+      {
+        s: 'ㄢ', cat: 'final',
+        vis: { e: '⛰️', t: '爬上小山坡', d: '「ㄢ」彎彎的線條往上爬再轉下來，就像沿著山坡小路爬上山頭！', tip: '手指沿著「ㄢ」的形狀爬山坡，唸出「ㄢ——」！' },
+        pro: { e: '🍚', t: '吃飯香噴噴「ㄢ——」', ins: '點擊香噴噴飯碗，舌尖輕頂上牙齦唸：「ㄢ——！」', tip: '先張開嘴巴發出「ㄚ」，最後舌尖輕輕往上頂住上排牙齒後面，發出「ㄢ——」！', snd: 'chime' },
+        tr: [
+          ['🍞', '麵包', 'ㄇㄧㄢˋ ㄅㄠ', '烘焙坊裡剛出爐、香氣撲鼻的鬆軟麵包'],
+          ['☂️', '雨傘', 'ㄩˇ ㄙㄢˇ', '雨天必備的擋雨小幫手'],
+          ['🍪', '餅乾', 'ㄅㄧㄥˇ ㄍㄢ', '酥酥脆脆、有各種可愛造型的點心'],
+          ['🎃', '南瓜', 'ㄋㄢˊ ㄍㄨㄚ', '萬聖節最常見的橘色大瓜果'],
+          ['🎂', '蛋糕', 'ㄉㄢˋ ㄍㄠ', '甜蜜鬆軟的生日蛋糕'],
+          ['🍅', '番茄', 'ㄈㄢ ㄑㄧㄝˊ', '紅潤飽滿的健康蔬果']
+        ],
+        vh: [
+          ['⛵', '帆船', 'ㄈㄢ ㄔㄨㄢˊ', '揚起白色風帆在大海上乘風前進的船', 'ship'],
+          ['🚚', '搬家貨車', 'ㄅㄢ ㄐㄧㄚ ㄏㄨㄛˋ ㄔㄜ', '載著家具和紙箱幫全家搬到新家的貨車', 'engine'],
+          ['🛺', '三輪車', 'ㄙㄢ ㄌㄨㄣˊ ㄔㄜ', '有三個輪子、騎起來穩穩不會倒的車子', 'bell'],
+          ['🚡', '纜車', 'ㄌㄢˇ ㄔㄜ', '沿著鋼纜緩緩爬上山頂的觀光車廂', 'bell'],
+          ['🦓', '斑馬線', 'ㄅㄢ ㄇㄚˇ ㄒㄧㄢˋ', '馬路上白色的行人穿越道線', 'chime'],
+          ['🏝️', '安全島', 'ㄢ ㄑㄩㄢˊ ㄉㄠˇ', '馬路中央保護行人和分隔車道的安全設施', 'chime']
+        ]
+      },
+      {
+        s: 'ㄣ', cat: 'final',
+        vis: { e: '🌳', t: '大樹深深扎根', d: '「ㄣ」往下延伸彎曲，就像大樹在泥土裡深深扎下強壯的樹根！', tip: '雙腳用力踩穩地板當大樹根，點點頭唸出「ㄣ——」！' },
+        pro: { e: '😊', t: '點點頭答應「ㄣ——」', ins: '點擊微笑表情點點頭，發出鼻音：「ㄣ——！」', tip: '嘴巴自然張開一點點，舌尖往上頂住上牙齦，發出「嗯——」的鼻音！', snd: 'hum' },
+        tr: [
+          ['🪴', '盆栽', 'ㄆㄣˊ ㄗㄞ', '種在花盆裡的綠色小植物，讓家裡充滿生氣'],
+          ['🌽', '玉米筍', 'ㄩˋ ㄇㄧˇ ㄙㄨㄣˇ', '金黃小巧、口感清脆的蔬菜'],
+          ['🚪', '門', 'ㄇㄣˊ', '回家時打開進去、出門時關好的大門'],
+          ['🛌', '枕頭', 'ㄓㄣˇ ㄊㄡˊ', '睡覺時墊在頭底下軟軟蓬蓬的寢具'],
+          ['🪆', '人偶', 'ㄖㄣˊ ㄡˇ', '穿漂亮衣服、可以陪你玩扮家家酒的娃娃'],
+          ['🧻', '毛巾', 'ㄇㄠˊ ㄐㄧㄣ', '洗臉擦手用的柔軟棉布巾']
+        ],
+        vh: [
+          ['✈️', '噴射機', 'ㄆㄣ ㄕㄜˋ ㄐㄧ', '速度極快、在天空留下一道白線的飛機', 'jet'],
+          ['🚒', '噴水消防車', 'ㄆㄣ ㄕㄨㄟˇ ㄒㄧㄠ ㄈㄤˊ ㄔㄜ', '噴出強大水花撲滅火勢的救援車', 'siren'],
+          ['🛺', '人力車', 'ㄖㄣˊ ㄌㄧˋ ㄔㄜ', '載著乘客慢慢欣賞老街風景的傳統車子', 'bell'],
+          ['🚶', '人行道', 'ㄖㄣˊ ㄒㄧㄥˊ ㄉㄠˋ', '馬路旁邊專門讓行人安全行走的道路', 'chime'],
+          ['🌲', '森林步道', 'ㄙㄣ ㄌㄧㄣˊ ㄅㄨˋ ㄉㄠˋ', '穿梭在芬多精大樹林裡的散步小路', 'chime'],
+          ['🚧', '入口閘門', 'ㄖㄨˋ ㄎㄡˇ ㄓㄚˊ ㄇㄣˊ', '進出停車場或車站時自動升降的柵欄門', 'bell']
+        ]
+      },
+      {
+        s: 'ㄤ', cat: 'final',
+        vis: { e: '🦒', t: '長頸鹿伸脖子', d: '「ㄤ」上面高高伸出、下面穩穩站立，就像長頸鹿抬頭看天空的樣子！', tip: '抬頭挺胸望向天空，把嘴巴張大唸出響亮的「ㄤ——」！' },
+        pro: { e: '📢', t: '大聲公喊「ㄤ——」', ins: '點擊大聲公一起喊，嘴巴張大鼻腔共鳴：「ㄤ——！」', tip: '嘴巴像「ㄚ」一樣張大，然後把舌頭後面往後縮，讓聲音從鼻子響亮地共鳴出來「ㄤ——」！', snd: 'chime' },
+        tr: [
+          ['🥭', '芒果', 'ㄇㄤˊ ㄍㄨㄛˇ', '夏天盛產、香甜多汁的金黃色水果'],
+          ['☀️', '太陽', 'ㄊㄞˋ ㄧㄤˊ', '發出溫暖光芒照耀萬物的太陽公公'],
+          ['🐘', '大象', 'ㄉㄚˋ ㄒㄧㄤˋ', '力氣很大、會用長鼻子捲食物吃的動物'],
+          ['🦀', '螃蟹', 'ㄆㄤˊ ㄒㄧㄝˋ', '穿著紅盔甲、揮舞大鉗子的海邊動物'],
+          ['🍬', '糖果', 'ㄊㄤˊ ㄍㄨㄛˇ', '甜甜滋味讓人心情變好的小點心'],
+          ['🦒', '長頸鹿', 'ㄔㄤˊ ㄐㄧㄥˇ ㄌㄨˋ', '擁有長長脖子和長睫毛的可愛動物']
+        ],
+        vh: [
+          ['🏎️', '敞篷車', 'ㄔㄤˇ ㄆㄥˊ ㄔㄜ', '把車頂打開就可以直接看到藍天的拉風汽車', 'engine'],
+          ['🛡️', '裝甲車', 'ㄓㄨㄤ ㄐㄧㄚˇ ㄔㄜ', '外殼厚實堅固的特種防護車輛', 'engine'],
+          ['🚌', '雙層巴士', 'ㄕㄨㄤ ㄘㄥˊ ㄅㄚ ㄕˋ', '有上下兩層座位、視野超棒的觀光大巴士', 'horn'],
+          ['🛫', '飛機場', 'ㄈㄟ ㄐㄧ ㄔㄤˇ', '大型客機起飛降落與旅客報到的場所', 'jet'],
+          ['🅿️', '停車場', 'ㄊㄧㄥˊ ㄔㄜ ㄔㄤˇ', '規劃整齊停車格讓車輛停放的空間', 'horn'],
+          ['🛣️', '高速公路', 'ㄍㄠ ㄙㄨˋ ㄍㄨㄥ ㄌㄨˋ', '連接南來北往城市的高速道路', 'horn']
+        ]
+      },
+      {
+        s: 'ㄥ', cat: 'final',
+        vis: { e: '🏮', t: '亮晶晶小燈籠', d: '「ㄥ」折角轉彎的線條，就像掛在屋簷下亮晶晶的傳統小燈籠！', tip: '雙手圍成一個大燈籠的形狀，發出嗡嗡鼻音「ㄥ——」！' },
+        pro: { e: '🐝', t: '蜜蜂嗡嗡嗡「ㄥ——」', ins: '點擊勤勞小蜜蜂，嘴巴半閉鼻音共鳴：「ㄥ——！」', tip: '先發出「ㄜ」的音，接著把舌根往後抬起，讓鼻腔發出嗡嗡的共鳴聲「ㄥ——」！', snd: 'hum' },
+        tr: [
+          ['🪁', '風箏', 'ㄈㄥ ㄓㄥ', '乘著微風在藍天上飛舞的彩色風箏'],
+          ['🐝', '蜜蜂', 'ㄇㄧˋ ㄈㄥ', '身上有黃黑條紋、勤勞採花蜜釀蜂蜜的昆蟲'],
+          ['🏮', '燈籠', 'ㄉㄥ ㄌㄨㄥˊ', '過年或元宵節掛起來紅通通喜氣洋洋的燈飾'],
+          ['🦖', '恐龍', 'ㄎㄨㄥˇ ㄌㄨㄥˊ', '遠古時代震撼大地的巨大恐龍'],
+          ['🌀', '電風扇', 'ㄉㄧㄢˋ ㄈㄥ ㄕㄢˋ', '吹出陣陣涼風幫大家消暑的電器'],
+          ['🍋', '檸檬', 'ㄋㄧㄥˊ ㄇㄥˊ', '黃色或綠色的水果，聞起來很清香、吃起來酸溜溜']
+        ],
+        vh: [
+          ['⛵', '蓬蓬船', 'ㄆㄥˊ ㄆㄥˊ ㄔㄨㄢˊ', '船頂有遮陽小棚子、載遊客遊湖的休閒船', 'ship'],
+          ['🚁', '直升機', 'ㄓˊ ㄕㄥ ㄐㄧ', '頂部大螺旋槳旋轉升空的救援與觀光飛行器', 'jet'],
+          ['🚜', '工程車', 'ㄍㄨㄥ ㄔㄥˊ ㄔㄜ', '建設道路與橋梁時不可或缺的重型機械車', 'engine'],
+          ['🚦', '紅綠燈', 'ㄏㄨㄥˊ ㄌㄩˋ ㄉㄥ', '指揮交通秩序、保護行人與車輛安全的號誌燈', 'bell'],
+          ['💡', '路燈', 'ㄌㄨˋ ㄉㄥ', '夜晚自動亮起、守護街道光明的照明設施', 'chime'],
+          ['🛣️', '公路', 'ㄍㄨㄥ ㄌㄨˋ', '通往山林與海邊的寬敞汽車道路', 'horn']
+        ]
+      },
+      {
+        s: 'ㄦ', cat: 'final',
+        vis: { e: '👂', t: '兩隻小耳朵', d: '「ㄦ」左邊一撇、右邊彎勾，就像我們頭上左右兩隻聽聲音的小耳朵，也像走路的兩條腿！', tip: '用雙手摸摸自己的兩隻小耳朵，舌頭輕輕捲起來唸「ㄦ——」！' },
+        pro: { e: '👂', t: '摸摸小耳朵「ㄦ——」', ins: '點擊小耳朵聽聲音，舌頭輕輕捲起來唸：「ㄦ——！」', tip: '嘴巴自然張開，把舌尖輕輕往上捲起來（不要碰到上顎喔），發出圓潤的「ㄦ——」！', snd: 'chime' },
+        tr: [
+          ['👂', '耳朵', 'ㄦˇ ㄉㄨㄛ˙', '長在頭的兩側，幫我們聽見爸爸媽媽說話和音樂的器官'],
+          ['🎧', '耳機', 'ㄦˇ ㄐㄧ', '戴在耳朵上聽故事或聽音樂的電子配件'],
+          ['🍄', '木耳', 'ㄇㄨˋ ㄦˇ', '長在木頭上黑黑脆脆、營養又健康的蔬菜'],
+          ['📚', '兒童繪本', 'ㄦˊ ㄊㄨㄥˊ ㄏㄨㄟˋ ㄅㄣˇ', '畫滿漂亮插畫、專為小朋友設計的故事書'],
+          ['🌸', '小花兒', 'ㄒㄧㄠˇ ㄏㄨㄚ ㄦ', '草地上開出的可愛小花朵'],
+          ['🐦', '鳥兒', 'ㄋㄧㄠˇ ㄦ', '在樹枝上自由自在唱歌的小鳥']
+        ],
+        vh: [
+          ['🛵', '二輪摩托車', 'ㄦˋ ㄌㄨㄣˊ ㄇㄛˊ ㄊㄨㄛ ㄔㄜ', '前後各有一個輪子、輕巧靈活的機車', 'horn'],
+          ['🚲', '兒童三輪車', 'ㄦˊ ㄊㄨㄥˊ ㄙㄢ ㄌㄨㄣˊ ㄔㄜ', '專為幼兒設計、騎起來很穩的三輪腳踏車', 'bell'],
+          ['🚲', '兒童滑步車', 'ㄦˊ ㄊㄨㄥˊ ㄏㄨㄚˊ ㄅㄨˋ ㄔㄜ', '沒有踏板、用雙腳滑行練習平衡感的小車車', 'chime'],
+          ['🚌', '二號公車', 'ㄦˋ ㄏㄠˋ ㄍㄨㄥ ㄔㄜ', '路線編號是「2」號的市區公車', 'horn'],
+          ['💺', '兒童安全座椅', 'ㄦˊ ㄊㄨㄥˊ ㄢ ㄑㄩㄢˊ ㄗㄨㄛˋ ㄧˇ', '裝在汽車後座、保護小朋友乘車安全的重要座椅', 'bell'],
+          ['🅿️', '二樓停車場', 'ㄦˋ ㄌㄡˊ ㄊㄧㄥˊ ㄔㄜ ㄔㄤˇ', '開車順著車道往上開到二樓的停車空間', 'chime']
+        ]
+      }
+    ];
+
+    // =========================================================================
+    // 1.5 專屬向量插畫庫（針對單一 Emoji 容易產生歧義的生活物品與交通設施）
+    // =========================================================================
+    const CUSTOM_SVGS = {
+      // --- 生活尋寶專屬插畫 ---
+      '盤子': `<svg viewBox="0 0 100 100" class="w-full h-full"><ellipse cx="50" cy="54" rx="42" ry="26" fill="#FFFFFF" stroke="#F59E0B" stroke-width="5"/><ellipse cx="50" cy="54" rx="28" ry="16" fill="#FEF3C7" stroke="#FBBF24" stroke-width="2.5"/><circle cx="50" cy="33" r="2.5" fill="#F43F5E"/><circle cx="50" cy="75" r="2.5" fill="#F43F5E"/><circle cx="15" cy="54" r="2.5" fill="#F43F5E"/><circle cx="85" cy="54" r="2.5" fill="#F43F5E"/></svg>`,
+      '毛巾': `<svg viewBox="0 0 100 100" class="w-full h-full"><line x1="16" y1="22" x2="84" y2="22" stroke="#64748B" stroke-width="6" stroke-linecap="round"/><rect x="26" y="22" width="48" height="58" rx="6" fill="#38BDF8"/><rect x="26" y="66" width="48" height="6" fill="#FFFFFF"/><line x1="32" y1="80" x2="32" y2="87" stroke="#0284C7" stroke-width="3" stroke-linecap="round"/><line x1="44" y1="80" x2="44" y2="87" stroke="#0284C7" stroke-width="3" stroke-linecap="round"/><line x1="56" y1="80" x2="56" y2="87" stroke="#0284C7" stroke-width="3" stroke-linecap="round"/><line x1="68" y1="80" x2="68" y2="87" stroke="#0284C7" stroke-width="3" stroke-linecap="round"/></svg>`,
+      '電風扇': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="30" y="82" width="40" height="8" rx="4" fill="#0284C7"/><rect x="46" y="64" width="8" height="18" fill="#64748B"/><circle cx="50" cy="42" r="28" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="4"/><ellipse cx="50" cy="27" rx="6" ry="12" fill="#38BDF8"/><ellipse cx="63" cy="50" rx="12" ry="6" transform="rotate(30 63 50)" fill="#38BDF8"/><ellipse cx="37" cy="50" rx="12" ry="6" transform="rotate(-30 37 50)" fill="#38BDF8"/><circle cx="50" cy="42" r="6" fill="#FACC15"/></svg>`,
+      '積木塔': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="24" y="68" width="52" height="18" rx="4" fill="#3B82F6"/><rect x="30" y="50" width="40" height="18" rx="4" fill="#10B981"/><rect x="36" y="32" width="28" height="18" rx="4" fill="#FACC15"/><polygon points="34,32 66,32 50,14" fill="#EF4444"/></svg>`,
+      '鈕扣': `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="50" cy="50" r="36" fill="#F43F5E"/><circle cx="50" cy="50" r="27" fill="#FB7185" stroke="#FFE4E6" stroke-width="2.5"/><circle cx="43" cy="43" r="3.5" fill="#FFF1F2"/><circle cx="57" cy="43" r="3.5" fill="#FFF1F2"/><circle cx="43" cy="57" r="3.5" fill="#FFF1F2"/><circle cx="57" cy="57" r="3.5" fill="#FFF1F2"/></svg>`,
+      '瓜子': `<svg viewBox="0 0 100 100" class="w-full h-full"><ellipse cx="38" cy="46" rx="11" ry="22" transform="rotate(-25 38 46)" fill="#1E293B"/><ellipse cx="38" cy="46" rx="5" ry="16" transform="rotate(-25 38 46)" fill="#CBD5E1"/><ellipse cx="62" cy="46" rx="11" ry="22" transform="rotate(25 62 46)" fill="#1E293B"/><ellipse cx="62" cy="46" rx="5" ry="16" transform="rotate(25 62 46)" fill="#CBD5E1"/><ellipse cx="50" cy="68" rx="9" ry="16" fill="#FDE68A" stroke="#D97706" stroke-width="2"/></svg>`,
+      '高麗菜': `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="50" cy="52" r="34" fill="#4ADE80"/><path d="M24 44 Q50 22 76 44" fill="none" stroke="#16A34A" stroke-width="4" stroke-linecap="round"/><path d="M22 60 Q50 38 78 60" fill="none" stroke="#16A34A" stroke-width="4" stroke-linecap="round"/><path d="M30 74 Q50 56 70 74" fill="none" stroke="#BBF7D0" stroke-width="4" stroke-linecap="round"/></svg>`,
+      '積木': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="18" y="54" width="32" height="28" rx="4" fill="#EF4444"/><rect x="23" y="48" width="8" height="6" rx="2" fill="#DC2626"/><rect x="37" y="48" width="8" height="6" rx="2" fill="#DC2626"/><rect x="52" y="54" width="32" height="28" rx="4" fill="#3B82F6"/><rect x="57" y="48" width="8" height="6" rx="2" fill="#2563EB"/><rect x="71" y="48" width="8" height="6" rx="2" fill="#2563EB"/><rect x="34" y="24" width="32" height="26" rx="4" fill="#FACC15"/><rect x="39" y="18" width="8" height="6" rx="2" fill="#EAB308"/><rect x="53" y="18" width="8" height="6" rx="2" fill="#EAB308"/></svg>`,
+      '桌子': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="14" y="34" width="72" height="12" rx="4" fill="#D97706"/><rect x="20" y="46" width="8" height="38" rx="2" fill="#92400E"/><rect x="72" y="46" width="8" height="38" rx="2" fill="#92400E"/><rect x="30" y="46" width="6" height="28" rx="2" fill="#B45309"/><rect x="64" y="46" width="6" height="28" rx="2" fill="#B45309"/></svg>`,
+      '摺紙': `<svg viewBox="0 0 100 100" class="w-full h-full"><polygon points="50,22 24,58 76,58" fill="#F472B6"/><polygon points="14,58 86,58 70,78 30,78" fill="#38BDF8"/><polygon points="50,22 50,58 76,58" fill="#EC4899"/></svg>`,
+      '叉子': `<svg viewBox="0 0 100 100" class="w-full h-full"><g transform="rotate(35 50 50)"><rect x="46" y="46" width="8" height="40" rx="4" fill="#64748B"/><rect x="36" y="38" width="28" height="10" rx="4" fill="#94A3B8"/><rect x="36" y="16" width="4" height="24" rx="2" fill="#94A3B8"/><rect x="44" y="16" width="4" height="24" rx="2" fill="#94A3B8"/><rect x="52" y="16" width="4" height="24" rx="2" fill="#94A3B8"/><rect x="60" y="16" width="4" height="24" rx="2" fill="#94A3B8"/></g></svg>`,
+      '炒飯': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M22 48 C22 26, 78 26, 78 48 Z" fill="#FDE047"/><circle cx="38" cy="38" r="3" fill="#22C55E"/><circle cx="52" cy="34" r="3" fill="#F97316"/><circle cx="62" cy="40" r="3" fill="#22C55E"/><circle cx="45" cy="42" r="3" fill="#EF4444"/><path d="M18 48 L82 48 C80 72, 66 80, 50 80 C34 80, 20 72, 18 48 Z" fill="#38BDF8"/><rect x="36" y="80" width="28" height="5" rx="2" fill="#0284C7"/></svg>`,
+      '水壺': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="42" y="14" width="16" height="8" rx="3" fill="#FACC15"/><rect x="36" y="22" width="28" height="10" rx="4" fill="#0284C7"/><rect x="30" y="32" width="40" height="52" rx="12" fill="#38BDF8"/><rect x="30" y="48" width="40" height="14" fill="#BAE6FD"/><path d="M30 36 Q16 56 30 78" fill="none" stroke="#F43F5E" stroke-width="4" stroke-linecap="round"/></svg>`,
+      '柿子': `<svg viewBox="0 0 100 100" class="w-full h-full"><ellipse cx="50" cy="58" rx="34" ry="26" fill="#F97316"/><ellipse cx="42" cy="58" rx="18" ry="24" fill="#FB923C" opacity="0.5"/><path d="M50 34 L34 26 L44 36 L50 22 L56 36 L66 26 Z" fill="#15803D"/></svg>`,
+      '肉包': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M20 66 C18 40, 36 26, 50 26 C64 26, 82 40, 80 66 C80 74, 20 74, 20 66 Z" fill="#FFFBEB" stroke="#E2E8F0" stroke-width="3"/><path d="M42 28 Q50 36 58 28 M46 26 L50 34 L54 26" fill="none" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round"/><path d="M36 16 Q32 10 36 6 M50 14 Q46 8 50 4 M64 16 Q60 10 64 6" fill="none" stroke="#94A3B8" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+      '軟糖': `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="34" cy="40" r="10" fill="#EF4444"/><ellipse cx="34" cy="62" rx="13" ry="16" fill="#EF4444"/><circle cx="27" cy="31" r="4" fill="#EF4444"/><circle cx="41" cy="31" r="4" fill="#EF4444"/><circle cx="66" cy="40" r="10" fill="#22C55E"/><ellipse cx="66" cy="62" rx="13" ry="16" fill="#22C55E"/><circle cx="59" cy="31" r="4" fill="#22C55E"/><circle cx="73" cy="31" r="4" fill="#22C55E"/></svg>`,
+      '粽子': `<svg viewBox="0 0 100 100" class="w-full h-full"><polygon points="50,18 18,76 82,76" fill="#16A34A" stroke="#15803D" stroke-width="3" stroke-linejoin="round"/><line x1="50" y1="18" x2="36" y2="76" stroke="#14532D" stroke-width="2.5"/><line x1="28" y1="56" x2="72" y2="56" stroke="#FDE047" stroke-width="4" stroke-linecap="round"/><path d="M50 56 Q62 64 58 72" fill="none" stroke="#FDE047" stroke-width="3" stroke-linecap="round"/></svg>`,
+      '餐盤': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="14" y="24" width="72" height="52" rx="10" fill="#FDE047" stroke="#EAB308" stroke-width="3"/><rect x="20" y="30" width="26" height="18" rx="4" fill="#FEF9C3"/><rect x="52" y="30" width="28" height="18" rx="4" fill="#FEF9C3"/><rect x="20" y="54" width="60" height="16" rx="4" fill="#FEF9C3"/></svg>`,
+      '彩色筆': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="24" y="34" width="12" height="48" rx="3" fill="#EF4444"/><polygon points="26,34 34,34 30,20" fill="#EF4444"/><rect x="44" y="34" width="12" height="48" rx="3" fill="#FACC15"/><polygon points="46,34 54,34 50,20" fill="#FACC15"/><rect x="64" y="34" width="12" height="48" rx="3" fill="#3B82F6"/><polygon points="66,34 74,34 70,20" fill="#3B82F6"/></svg>`,
+      '玉米筍': `<svg viewBox="0 0 100 100" class="w-full h-full"><ellipse cx="36" cy="52" rx="8" ry="28" transform="rotate(-15 36 52)" fill="#FDE047" stroke="#EAB308" stroke-width="2"/><ellipse cx="64" cy="52" rx="8" ry="28" transform="rotate(15 64 52)" fill="#FDE047" stroke="#EAB308" stroke-width="2"/><ellipse cx="50" cy="48" rx="9" ry="30" fill="#FEF08A" stroke="#CA8A04" stroke-width="2"/></svg>`,
+      '絲瓜': `<svg viewBox="0 0 100 100" class="w-full h-full"><g transform="rotate(-35 50 50)"><rect x="36" y="14" width="28" height="72" rx="14" fill="#22C55E"/><line x1="44" y1="20" x2="44" y2="80" stroke="#15803D" stroke-width="2.5"/><line x1="50" y1="18" x2="50" y2="82" stroke="#15803D" stroke-width="2.5"/><line x1="56" y1="20" x2="56" y2="80" stroke="#15803D" stroke-width="2.5"/></g></svg>`,
+      '音樂盒': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="24" y="48" width="52" height="32" rx="6" fill="#D97706"/><polygon points="24,48 76,48 68,30 20,30" fill="#F59E0B"/><line x1="76" y1="64" x2="88" y2="64" stroke="#FACC15" stroke-width="4"/><circle cx="88" cy="64" r="5" fill="#FACC15"/><text x="44" y="24" font-size="18" fill="#EC4899">🎵</text></svg>`,
+      '芋頭': `<svg viewBox="0 0 100 100" class="w-full h-full"><ellipse cx="44" cy="50" rx="22" ry="32" transform="rotate(-20 44 50)" fill="#7E22CE"/><circle cx="64" cy="62" r="18" fill="#E9D5FF" stroke="#6B21A8" stroke-width="3"/><circle cx="60" cy="58" r="1.5" fill="#7E22CE"/><circle cx="68" cy="64" r="1.5" fill="#7E22CE"/><circle cx="62" cy="68" r="1.5" fill="#7E22CE"/></svg>`,
+      '脖子': `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="50" cy="34" r="20" fill="#FDE68A"/><circle cx="44" cy="32" r="2.5" fill="#1E293B"/><circle cx="56" cy="32" r="2.5" fill="#1E293B"/><path d="M45 41 Q50 45 55 41" fill="none" stroke="#EA580C" stroke-width="2" stroke-linecap="round"/><rect x="42" y="52" width="16" height="18" fill="#FCD34D"/><path d="M24 88 C24 68, 76 68, 76 88 Z" fill="#38BDF8"/><polygon points="22,60 36,60 30,54 30,66" fill="#EF4444"/></svg>`,
+      '波浪鼓': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="46" y="56" width="8" height="32" rx="4" fill="#92400E"/><circle cx="50" cy="40" r="22" fill="#EF4444" stroke="#FACC15" stroke-width="4"/><circle cx="50" cy="40" r="14" fill="#FEF3C7"/><line x1="28" y1="40" x2="14" y2="30" stroke="#1E293B" stroke-width="2.5"/><circle cx="14" cy="30" r="5" fill="#FACC15"/><line x1="72" y1="40" x2="86" y2="50" stroke="#1E293B" stroke-width="2.5"/><circle cx="86" cy="50" r="5" fill="#FACC15"/></svg>`,
+      '棉被': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="18" y="34" width="64" height="42" rx="10" fill="#FB7185"/><path d="M18 48 L82 48 L82 38 C82 32, 18 32, 18 38 Z" fill="#FFE4E6"/><circle cx="36" cy="62" r="4" fill="#FEF08A"/><circle cx="54" cy="60" r="4" fill="#FEF08A"/><circle cx="68" cy="65" r="4" fill="#FEF08A"/></svg>`,
+      '枕頭': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M20 34 Q50 28 80 34 Q86 52 80 70 Q50 76 20 70 Q14 52 20 34 Z" fill="#BAE6FD" stroke="#38BDF8" stroke-width="3.5"/><circle cx="38" cy="52" r="3" fill="#FFFFFF"/><circle cx="62" cy="52" r="3" fill="#FFFFFF"/></svg>`,
+      '木耳': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M22 62 C16 40, 38 26, 54 38 C70 24, 88 42, 78 62 C70 76, 30 76, 22 62 Z" fill="#334155"/><path d="M32 56 C30 44, 46 38, 52 48 C60 38, 72 46, 68 58" fill="none" stroke="#64748B" stroke-width="3" stroke-linecap="round"/></svg>`,
+
+      // --- 交通工具與設施專屬插畫 ---
+      '冰淇淋車': `<svg viewBox="0 0 100 100" class="w-full h-full"><polygon points="44,24 56,24 50,8" fill="#F472B6"/><circle cx="50" cy="13" r="6" fill="#F43F5E"/><rect x="14" y="26" width="72" height="44" rx="8" fill="#FBCFE8"/><rect x="14" y="50" width="72" height="20" rx="4" fill="#38BDF8"/><rect x="24" y="32" width="30" height="14" rx="3" fill="#FFF1F2"/><rect x="60" y="32" width="18" height="14" rx="3" fill="#E0F2FE"/><circle cx="30" cy="72" r="9" fill="#1E293B"/><circle cx="70" cy="72" r="9" fill="#1E293B"/></svg>`,
+      '寶寶推車': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M18 30 L30 30 L38 50" fill="none" stroke="#475569" stroke-width="4.5" stroke-linecap="round"/><path d="M54 22 C72 22, 82 34, 82 48 L54 48 Z" fill="#818CF8"/><path d="M32 48 L82 48 C80 64, 68 70, 56 70 C44 70, 34 62, 32 48 Z" fill="#38BDF8"/><circle cx="40" cy="76" r="8" fill="#1E293B"/><circle cx="72" cy="76" r="8" fill="#1E293B"/></svg>`,
+      '斑馬線': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="14" y="18" width="72" height="64" rx="10" fill="#334155"/><rect x="22" y="38" width="10" height="24" rx="2" fill="#FFFFFF"/><rect x="37" y="38" width="10" height="24" rx="2" fill="#FFFFFF"/><rect x="52" y="38" width="10" height="24" rx="2" fill="#FFFFFF"/><rect x="67" y="38" width="10" height="24" rx="2" fill="#FFFFFF"/></svg>`,
+      '避車彎': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M22 14 L52 14 L52 32 L76 32 L76 68 L52 68 L52 86 L22 86 Z" fill="#475569"/><line x1="36" y1="20" x2="36" y2="80" stroke="#FACC15" stroke-width="3" stroke-dasharray="6 4"/><rect x="56" y="38" width="14" height="24" rx="4" fill="#38BDF8"/></svg>`,
+      '平交道': `<svg viewBox="0 0 100 100" class="w-full h-full"><line x1="12" y1="78" x2="88" y2="78" stroke="#475569" stroke-width="4"/><rect x="24" y="20" width="6" height="58" fill="#334155"/><line x1="16" y1="22" x2="38" y2="38" stroke="#EF4444" stroke-width="4" stroke-linecap="round"/><line x1="38" y1="22" x2="16" y2="38" stroke="#EF4444" stroke-width="4" stroke-linecap="round"/><circle cx="20" cy="45" r="4.5" fill="#EF4444"/><circle cx="34" cy="45" r="4.5" fill="#EF4444"/><rect x="28" y="55" width="60" height="7" rx="3" fill="#FACC15" stroke="#1E293B" stroke-width="1.5"/></svg>`,
+      '噴水消防車': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M54 24 Q74 10 92 22" fill="none" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="5 3"/><rect x="14" y="32" width="72" height="36" rx="8" fill="#DC2626"/><rect x="64" y="38" width="16" height="14" rx="2" fill="#E0F2FE"/><rect x="20" y="40" width="38" height="6" rx="2" fill="#FFFFFF"/><circle cx="30" cy="70" r="9" fill="#1E293B"/><circle cx="70" cy="70" r="9" fill="#1E293B"/></svg>`,
+      '破冰船': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="68" width="80" height="18" rx="6" fill="#0284C7"/><polygon points="74,68 84,56 92,68" fill="#E0F2FE"/><rect x="30" y="24" width="10" height="14" fill="#F97316"/><rect x="24" y="36" width="36" height="14" rx="3" fill="#FFFFFF"/><polygon points="16,50 78,50 68,70 22,70" fill="#E11D48"/></svg>`,
+      '刨路機': `<svg viewBox="0 0 100 100" class="w-full h-full"><line x1="10" y1="80" x2="90" y2="80" stroke="#475569" stroke-width="4"/><polygon points="58,42 90,22 92,28 60,50" fill="#334155"/><rect x="20" y="38" width="46" height="24" rx="6" fill="#F97316"/><rect x="34" y="62" width="20" height="12" rx="3" fill="#1E293B"/><rect x="16" y="64" width="16" height="12" rx="5" fill="#1E293B"/><rect x="56" y="64" width="16" height="12" rx="5" fill="#1E293B"/></svg>`,
+      '馬車': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M16 62 C12 40, 28 26, 44 26 C60 26, 70 40, 66 62 Z" fill="#F472B6"/><rect x="28" y="36" width="22" height="14" rx="4" fill="#FFF1F2"/><line x1="64" y1="56" x2="80" y2="54" stroke="#92400E" stroke-width="3"/><ellipse cx="82" cy="54" rx="9" ry="6" fill="#B45309"/><circle cx="89" cy="43" r="4.5" fill="#B45309"/><circle cx="26" cy="68" r="10" fill="none" stroke="#F59E0B" stroke-width="4"/><circle cx="54" cy="68" r="10" fill="none" stroke="#F59E0B" stroke-width="4"/></svg>`,
+      '木船': `<svg viewBox="0 0 100 100" class="w-full h-full"><polygon points="50,18 50,50 74,50" fill="#FBBF24"/><line x1="48" y1="16" x2="48" y2="54" stroke="#78350F" stroke-width="3.5"/><polygon points="16,52 84,52 72,70 28,70" fill="#B45309"/><path d="M12 74 Q30 68 48 74 T84 74" fill="none" stroke="#0284C7" stroke-width="4" stroke-linecap="round"/></svg>`,
+      '碼頭': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="64" width="80" height="20" rx="5" fill="#0EA5E9"/><rect x="12" y="48" width="52" height="8" rx="2" fill="#B45309"/><rect x="20" y="56" width="6" height="22" fill="#78350F"/><rect x="48" y="56" width="6" height="22" fill="#78350F"/><polygon points="66,50 92,50 86,64 70,64" fill="#F43F5E"/></svg>`,
+      '木橋': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="64" width="22" height="20" fill="#22C55E"/><rect x="68" y="64" width="22" height="20" fill="#22C55E"/><rect x="30" y="68" width="40" height="16" fill="#38BDF8"/><path d="M22 64 Q50 36 78 64" fill="none" stroke="#B45309" stroke-width="8" stroke-linecap="round"/><path d="M24 52 Q50 26 76 52" fill="none" stroke="#D97706" stroke-width="3" stroke-linecap="round"/></svg>`,
+      '飛船': `<svg viewBox="0 0 100 100" class="w-full h-full"><ellipse cx="50" cy="44" rx="36" ry="20" fill="#38BDF8"/><path d="M16 44 L84 44" stroke="#FACC15" stroke-width="5"/><polygon points="14,34 24,44 14,54" fill="#0284C7"/><rect x="38" y="64" width="24" height="8" rx="3" fill="#475569"/></svg>`,
+      '防波堤': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="66" width="80" height="20" rx="5" fill="#0284C7"/><path d="M12 62 Q24 44 36 62" fill="none" stroke="#38BDF8" stroke-width="5" stroke-linecap="round"/><polygon points="44,72 56,36 72,36 84,72" fill="#94A3B8"/><circle cx="44" cy="64" r="8" fill="#64748B"/><circle cx="52" cy="52" r="7" fill="#CBD5E1"/></svg>`,
+      '方向盤': `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="50" cy="50" r="34" fill="none" stroke="#1E293B" stroke-width="9"/><circle cx="50" cy="50" r="11" fill="#334155"/><line x1="18" y1="50" x2="82" y2="50" stroke="#1E293B" stroke-width="7"/><line x1="50" y1="50" x2="50" y2="82" stroke="#1E293B" stroke-width="7"/></svg>`,
+      '吊車': `<svg viewBox="0 0 100 100" class="w-full h-full"><line x1="36" y1="52" x2="80" y2="18" stroke="#EAB308" stroke-width="7" stroke-linecap="round"/><line x1="80" y1="18" x2="80" y2="40" stroke="#475569" stroke-width="2.5"/><path d="M77 40 Q80 46 83 40" fill="none" stroke="#1E293B" stroke-width="2.5"/><rect x="16" y="48" width="54" height="24" rx="5" fill="#FACC15"/><rect x="52" y="40" width="18" height="16" rx="3" fill="#38BDF8"/><circle cx="28" cy="74" r="8" fill="#1E293B"/><circle cx="58" cy="74" r="8" fill="#1E293B"/></svg>`,
+      '地下道': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="14" y="20" width="72" height="62" rx="10" fill="#CBD5E1"/><path d="M26 82 L26 42 C26 28, 74 28, 74 42 L74 82 Z" fill="#1E293B"/><rect x="34" y="54" width="32" height="6" fill="#94A3B8"/><rect x="30" y="64" width="40" height="6" fill="#CBD5E1"/><rect x="26" y="74" width="48" height="8" fill="#E2E8F0"/></svg>`,
+      '燈塔': `<svg viewBox="0 0 100 100" class="w-full h-full"><polygon points="56,22 92,14 92,32" fill="#FEF08A" opacity="0.85"/><polygon points="36,84 42,30 58,30 64,84" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/><polygon points="39,62 61,62 60,50 40,50" fill="#EF4444"/><rect x="42" y="18" width="16" height="12" rx="2" fill="#FACC15"/><polygon points="38,18 62,18 50,10" fill="#DC2626"/></svg>`,
+      '坦克車': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="36" y="34" width="28" height="16" rx="6" fill="#15803D"/><line x1="62" y1="42" x2="88" y2="42" stroke="#166534" stroke-width="6" stroke-linecap="round"/><rect x="20" y="48" width="60" height="16" rx="6" fill="#22C55E"/><rect x="16" y="62" width="68" height="14" rx="7" fill="#1E293B"/><circle cx="26" cy="69" r="3.5" fill="#94A3B8"/><circle cx="42" cy="69" r="3.5" fill="#94A3B8"/><circle cx="58" cy="69" r="3.5" fill="#94A3B8"/><circle cx="74" cy="69" r="3.5" fill="#94A3B8"/></svg>`,
+      '天橋': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="76" width="80" height="10" fill="#475569"/><rect x="22" y="44" width="56" height="8" fill="#3B82F6"/><line x1="26" y1="52" x2="14" y2="76" stroke="#1D4ED8" stroke-width="6" stroke-linecap="round"/><line x1="74" y1="52" x2="86" y2="76" stroke="#1D4ED8" stroke-width="6" stroke-linecap="round"/><rect x="22" y="36" width="56" height="8" fill="none" stroke="#93C5FD" stroke-width="2"/></svg>`,
+      '行人天橋': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="76" width="80" height="10" fill="#475569"/><rect x="22" y="44" width="56" height="8" fill="#10B981"/><line x1="26" y1="52" x2="14" y2="76" stroke="#047857" stroke-width="6" stroke-linecap="round"/><line x1="74" y1="52" x2="86" y2="76" stroke="#047857" stroke-width="6" stroke-linecap="round"/><circle cx="50" cy="30" r="4" fill="#F59E0B"/><line x1="50" y1="34" x2="50" y2="44" stroke="#F59E0B" stroke-width="3"/></svg>`,
+      '內線車道': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="16" y="16" width="68" height="68" rx="8" fill="#334155"/><rect x="48" y="16" width="4" height="68" fill="#FACC15"/><rect x="26" y="22" width="18" height="56" fill="#38BDF8" opacity="0.45"/><polygon points="35,30 29,42 41,42" fill="#FFFFFF"/></svg>`,
+      '泥巴小路': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="14" y="16" width="72" height="68" rx="10" fill="#86EFAC"/><path d="M36 84 C32 60, 62 46, 54 16 L68 16 C76 48, 48 62, 54 84 Z" fill="#A16207"/></svg>`,
+      '牛車': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="14" y="42" width="42" height="20" rx="4" fill="#B45309"/><circle cx="34" cy="66" r="12" fill="none" stroke="#78350F" stroke-width="4.5"/><line x1="56" y1="54" x2="74" y2="54" stroke="#78350F" stroke-width="3.5"/><ellipse cx="78" cy="54" rx="11" ry="8" fill="#475569"/><circle cx="88" cy="46" r="5" fill="#475569"/><path d="M84 42 Q88 36 92 42" fill="none" stroke="#CBD5E1" stroke-width="2.5"/></svg>`,
+      '能源充電站': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="26" y="22" width="32" height="58" rx="6" fill="#10B981"/><rect x="32" y="30" width="20" height="14" rx="2" fill="#ECFDF5"/><polygon points="44,50 38,60 43,60 40,70 48,58 43,58" fill="#FACC15"/><path d="M58 46 Q74 46 74 64 L66 64" fill="none" stroke="#1E293B" stroke-width="4" stroke-linecap="round"/></svg>`,
+      '垃圾車': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="14" y="32" width="48" height="36" rx="5" fill="#FACC15"/><rect x="64" y="42" width="22" height="26" rx="4" fill="#EAB308"/><rect x="68" y="46" width="14" height="10" rx="2" fill="#E0F2FE"/><circle cx="28" cy="70" r="8" fill="#1E293B"/><circle cx="72" cy="70" r="8" fill="#1E293B"/></svg>`,
+      '路燈': `<svg viewBox="0 0 100 100" class="w-full h-full"><polygon points="62,28 46,82 82,82" fill="#FEF08A" opacity="0.65"/><path d="M32 84 L32 28 Q32 18 44 18 L64 18" fill="none" stroke="#334155" stroke-width="6" stroke-linecap="round"/><ellipse cx="64" cy="22" rx="10" ry="5" fill="#FACC15"/></svg>`,
+      '立體停車場': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="20" y="20" width="60" height="64" rx="6" fill="#64748B"/><line x1="20" y1="42" x2="80" y2="42" stroke="#CBD5E1" stroke-width="4"/><line x1="20" y1="64" x2="80" y2="64" stroke="#CBD5E1" stroke-width="4"/><rect x="28" y="28" width="16" height="10" rx="2" fill="#38BDF8"/><rect x="52" y="50" width="16" height="10" rx="2" fill="#F43F5E"/><circle cx="74" cy="24" r="10" fill="#2563EB"/><text x="70" y="28" font-size="12" font-weight="bold" fill="#FFFFFF">P</text></svg>`,
+      '工程車': `<svg viewBox="0 0 100 100" class="w-full h-full"><polygon points="16,38 56,38 50,58 20,58" fill="#FACC15"/><rect x="58" y="42" width="24" height="24" rx="4" fill="#F59E0B"/><rect x="64" y="46" width="12" height="10" rx="2" fill="#E0F2FE"/><circle cx="30" cy="70" r="9" fill="#1E293B"/><circle cx="70" cy="70" r="9" fill="#1E293B"/></svg>`,
+      '公路': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="12" y="16" width="76" height="68" rx="10" fill="#86EFAC"/><polygon points="34,16 66,16 84,84 16,84" fill="#475569"/><line x1="50" y1="22" x2="50" y2="34" stroke="#FACC15" stroke-width="3.5"/><line x1="50" y1="44" x2="50" y2="56" stroke="#FACC15" stroke-width="3.5"/><line x1="50" y1="66" x2="50" y2="78" stroke="#FACC15" stroke-width="3.5"/></svg>`,
+      '港口': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="64" width="80" height="20" rx="5" fill="#0284C7"/><rect x="12" y="46" width="38" height="18" fill="#94A3B8"/><line x1="36" y1="46" x2="56" y2="26" stroke="#F97316" stroke-width="5"/><polygon points="52,52 86,52 78,64 58,64" fill="#FACC15"/></svg>`,
+      '海港': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="64" width="80" height="20" rx="5" fill="#0284C7"/><rect x="12" y="46" width="38" height="18" fill="#94A3B8"/><line x1="36" y1="46" x2="56" y2="26" stroke="#F97316" stroke-width="5"/><polygon points="52,52 86,52 78,64 58,64" fill="#FACC15"/></svg>`,
+      '快車道': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="14" y="16" width="72" height="68" rx="8" fill="#334155"/><rect x="38" y="16" width="24" height="68" fill="#F43F5E" opacity="0.45"/><polygon points="50,24 42,38 58,38" fill="#FFFFFF"/><polygon points="50,46 42,60 58,60" fill="#FFFFFF"/></svg>`,
+      '潛水艇': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="16" width="80" height="68" rx="10" fill="#BAE6FD"/><path d="M46 38 L46 24 L56 24" fill="none" stroke="#EAB308" stroke-width="5" stroke-linecap="round"/><ellipse cx="52" cy="54" rx="30" ry="15" fill="#FACC15"/><circle cx="42" cy="54" r="4.5" fill="#E0F2FE"/><circle cx="56" cy="54" r="4.5" fill="#E0F2FE"/><circle cx="70" cy="54" r="4.5" fill="#E0F2FE"/></svg>`,
+      '氣墊船': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="68" width="80" height="16" rx="5" fill="#38BDF8"/><rect x="16" y="56" width="68" height="14" rx="7" fill="#1E293B"/><polygon points="24,56 76,56 68,40 32,40" fill="#EF4444"/><circle cx="24" cy="36" r="9" fill="#94A3B8"/></svg>`,
+      '起飛跑道': `<svg viewBox="0 0 100 100" class="w-full h-full"><polygon points="28,44 72,44 88,84 12,84" fill="#334155"/><line x1="50" y1="50" x2="50" y2="78" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="6 4"/><text x="38" y="34" font-size="24">🛫</text></svg>`,
+      '休息站': `<svg viewBox="0 0 100 100" class="w-full h-full"><polygon points="18,44 50,24 82,44" fill="#F97316"/><rect x="24" y="44" width="52" height="32" fill="#FEF3C7"/><rect x="42" y="54" width="16" height="22" fill="#38BDF8"/><circle cx="74" cy="26" r="10" fill="#2563EB"/><text x="70" y="30" font-size="12" font-weight="bold" fill="#FFFFFF">P</text></svg>`,
+      '裝甲車': `<svg viewBox="0 0 100 100" class="w-full h-full"><polygon points="22,40 72,40 84,54 84,68 18,68 18,52" fill="#4D7C0F"/><rect x="54" y="45" width="16" height="9" rx="2" fill="#BAE6FD"/><circle cx="30" cy="70" r="9" fill="#1E293B"/><circle cx="52" cy="70" r="9" fill="#1E293B"/><circle cx="72" cy="70" r="9" fill="#1E293B"/></svg>`,
+      '轉彎標誌': `<svg viewBox="0 0 100 100" class="w-full h-full"><polygon points="50,12 88,50 50,88 12,50" fill="#FACC15" stroke="#1E293B" stroke-width="4" stroke-linejoin="round"/><path d="M42 66 L42 46 Q42 38 52 38 L62 38" fill="none" stroke="#1E293B" stroke-width="6" stroke-linecap="round"/><polygon points="62,31 72,38 62,45" fill="#1E293B"/></svg>`,
+      '專用車道': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="16" y="16" width="68" height="68" rx="8" fill="#334155"/><rect x="34" y="16" width="32" height="68" fill="#DC2626"/><text x="38" y="56" font-size="14" font-weight="bold" fill="#FFFFFF">BUS</text></svg>`,
+      '敞篷車': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M14 54 L34 54 L46 40 L52 54 L86 54 L86 70 L14 70 Z" fill="#EF4444"/><line x1="46" y1="40" x2="54" y2="54" stroke="#38BDF8" stroke-width="4"/><circle cx="30" cy="72" r="9" fill="#1E293B"/><circle cx="70" cy="72" r="9" fill="#1E293B"/></svg>`,
+      '除雪車': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M74 44 Q88 58 76 72 L70 72 L70 44 Z" fill="#FACC15"/><rect x="20" y="36" width="50" height="32" rx="6" fill="#F97316"/><rect x="48" y="42" width="16" height="12" rx="2" fill="#E0F2FE"/><circle cx="32" cy="70" r="8" fill="#1E293B"/><circle cx="60" cy="70" r="8" fill="#1E293B"/><circle cx="86" cy="68" r="5" fill="#FFFFFF"/></svg>`,
+      '車庫': `<svg viewBox="0 0 100 100" class="w-full h-full"><polygon points="14,44 50,20 86,44" fill="#EF4444"/><rect x="20" y="44" width="60" height="38" fill="#F1F5F9"/><rect x="28" y="50" width="44" height="32" fill="#334155"/><rect x="34" y="62" width="32" height="16" rx="4" fill="#38BDF8"/></svg>`,
+      '砂石車': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M22 38 Q40 24 58 38 Z" fill="#D97706"/><rect x="18" y="38" width="44" height="28" rx="4" fill="#F59E0B"/><rect x="64" y="44" width="22" height="22" rx="4" fill="#0284C7"/><circle cx="30" cy="70" r="8" fill="#1E293B"/><circle cx="72" cy="70" r="8" fill="#1E293B"/></svg>`,
+      '雙層巴士': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="18" y="20" width="64" height="50" rx="8" fill="#DC2626"/><rect x="24" y="26" width="22" height="12" rx="2" fill="#E0F2FE"/><rect x="52" y="26" width="22" height="12" rx="2" fill="#E0F2FE"/><rect x="24" y="46" width="22" height="12" rx="2" fill="#E0F2FE"/><rect x="52" y="46" width="22" height="12" rx="2" fill="#E0F2FE"/><circle cx="32" cy="72" r="8" fill="#1E293B"/><circle cx="68" cy="72" r="8" fill="#1E293B"/></svg>`,
+      '水上摩托車': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="66" width="80" height="18" rx="6" fill="#0EA5E9"/><path d="M22 62 L78 62 L66 48 L46 48 L38 36 L28 36 L34 48 L22 54 Z" fill="#FACC15"/></svg>`,
+      '收費站': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="14" y="26" width="72" height="12" rx="4" fill="#2563EB"/><rect x="24" y="38" width="16" height="40" fill="#CBD5E1"/><line x1="40" y1="58" x2="78" y2="46" stroke="#EF4444" stroke-width="5" stroke-linecap="round"/></svg>`,
+      '十字路口': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="14" y="14" width="72" height="72" rx="10" fill="#86EFAC"/><rect x="36" y="14" width="28" height="72" fill="#334155"/><rect x="14" y="36" width="72" height="28" fill="#334155"/><line x1="38" y1="32" x2="62" y2="32" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="4 3"/><line x1="38" y1="68" x2="62" y2="68" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="4 3"/></svg>`,
+      '山洞隧道': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M12 80 C16 24, 84 24, 88 80 Z" fill="#22C55E"/><path d="M32 80 L32 48 C32 36, 68 36, 68 48 L68 80 Z" fill="#1E293B"/><line x1="50" y1="54" x2="50" y2="76" stroke="#FACC15" stroke-width="3" stroke-dasharray="5 4"/></svg>`,
+      '隧道': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M12 80 C16 24, 84 24, 88 80 Z" fill="#22C55E"/><path d="M32 80 L32 48 C32 36, 68 36, 68 48 L68 80 Z" fill="#1E293B"/><line x1="50" y1="54" x2="50" y2="76" stroke="#FACC15" stroke-width="3" stroke-dasharray="5 4"/></svg>`,
+      '熱氣球': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M50 12 C26 12, 22 44, 42 62 L58 62 C78 44, 74 12, 50 12 Z" fill="#F43F5E"/><path d="M50 12 C38 12, 36 44, 46 62 L54 62 C64 44, 62 12, 50 12 Z" fill="#FACC15"/><rect x="42" y="70" width="16" height="12" rx="2" fill="#92400E"/><line x1="44" y1="62" x2="44" y2="70" stroke="#475569" stroke-width="2"/><line x1="56" y1="62" x2="56" y2="70" stroke="#475569" stroke-width="2"/></svg>`,
+      '雙人協力車': `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="22" cy="66" r="13" fill="none" stroke="#1E293B" stroke-width="4"/><circle cx="78" cy="66" r="13" fill="none" stroke="#1E293B" stroke-width="4"/><path d="M22 66 L38 46 L62 46 L78 66 M38 46 L34 36 M62 46 L66 36" fill="none" stroke="#10B981" stroke-width="4" stroke-linecap="round"/></svg>`,
+      '人行道': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="14" y="16" width="34" height="68" fill="#F87171"/><rect x="48" y="16" width="38" height="68" fill="#334155"/><line x1="14" y1="38" x2="48" y2="38" stroke="#FECACA" stroke-width="2"/><line x1="14" y1="60" x2="48" y2="60" stroke="#FECACA" stroke-width="2"/></svg>`,
+      '入口閘門': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="20" y="42" width="18" height="40" rx="4" fill="#F59E0B"/><line x1="38" y1="50" x2="82" y2="34" stroke="#EF4444" stroke-width="6" stroke-linecap="round"/><line x1="48" y1="46" x2="58" y2="42" stroke="#FFFFFF" stroke-width="6"/><line x1="68" y1="39" x2="76" y2="36" stroke="#FFFFFF" stroke-width="6"/></svg>`,
+      '繞圈圓環': `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="50" cy="50" r="36" fill="#475569"/><circle cx="50" cy="50" r="16" fill="#22C55E"/><circle cx="50" cy="50" r="26" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-dasharray="8 6"/></svg>`,
+      '自動駕駛車': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M36 22 Q50 12 64 22 M42 28 Q50 22 58 28" fill="none" stroke="#0EA5E9" stroke-width="3" stroke-linecap="round"/><path d="M20 52 L32 36 L68 36 L80 52 L84 68 L16 68 Z" fill="#38BDF8"/><rect x="34" y="40" width="32" height="12" rx="3" fill="#E0F2FE"/><circle cx="30" cy="70" r="9" fill="#1E293B"/><circle cx="70" cy="70" r="9" fill="#1E293B"/></svg>`,
+      '無人駕駛車': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M36 22 Q50 12 64 22 M42 28 Q50 22 58 28" fill="none" stroke="#0EA5E9" stroke-width="3" stroke-linecap="round"/><path d="M20 52 L32 36 L68 36 L80 52 L84 68 L16 68 Z" fill="#38BDF8"/><rect x="34" y="40" width="32" height="12" rx="3" fill="#E0F2FE"/><circle cx="30" cy="70" r="9" fill="#1E293B"/><circle cx="70" cy="70" r="9" fill="#1E293B"/></svg>`,
+      '走廊通道': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="16" y="16" width="68" height="68" rx="8" fill="#E2E8F0"/><polygon points="34,32 66,32 66,68 34,68" fill="#94A3B8"/><line x1="16" y1="16" x2="34" y2="32" stroke="#64748B" stroke-width="2.5"/><line x1="84" y1="16" x2="66" y2="32" stroke="#64748B" stroke-width="2.5"/><line x1="16" y1="84" x2="34" y2="68" stroke="#64748B" stroke-width="2.5"/><line x1="84" y1="84" x2="66" y2="68" stroke="#64748B" stroke-width="2.5"/></svg>`,
+      '總站': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="16" y="28" width="68" height="48" rx="6" fill="#0284C7"/><rect x="24" y="34" width="52" height="12" rx="2" fill="#FACC15"/><rect x="26" y="54" width="18" height="22" fill="#E0F2FE"/><rect x="56" y="54" width="18" height="22" fill="#E0F2FE"/></svg>`,
+      '左轉車道': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="22" y="14" width="56" height="72" rx="8" fill="#334155"/><path d="M56 72 L56 46 Q56 36 44 36 L34 36" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/><polygon points="36,28 24,36 36,44" fill="#FFFFFF"/></svg>`,
+      '餐車': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="16" y="28" width="68" height="42" rx="8" fill="#FB923C"/><rect x="24" y="36" width="32" height="16" rx="3" fill="#FFF7ED"/><path d="M22 36 L58 36 L54 42 L26 42 Z" fill="#EF4444"/><rect x="62" y="36" width="16" height="16" rx="2" fill="#E0F2FE"/><circle cx="30" cy="72" r="8" fill="#1E293B"/><circle cx="70" cy="72" r="8" fill="#1E293B"/></svg>`,
+      '移動餐車': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="16" y="28" width="68" height="42" rx="8" fill="#FB923C"/><rect x="24" y="36" width="32" height="16" rx="3" fill="#FFF7ED"/><path d="M22 36 L58 36 L54 42 L26 42 Z" fill="#EF4444"/><rect x="62" y="36" width="16" height="16" rx="2" fill="#E0F2FE"/><circle cx="30" cy="72" r="8" fill="#1E293B"/><circle cx="70" cy="72" r="8" fill="#1E293B"/></svg>`,
+      '採礦車': `<svg viewBox="0 0 100 100" class="w-full h-full"><line x1="14" y1="76" x2="86" y2="76" stroke="#475569" stroke-width="4"/><polygon points="30,38 50,24 70,38" fill="#FACC15"/><polygon points="22,38 78,38 70,64 30,64" fill="#64748B"/><circle cx="34" cy="68" r="7" fill="#1E293B"/><circle cx="66" cy="68" r="7" fill="#1E293B"/></svg>`,
+      '測試車': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M18 52 L32 36 L68 36 L82 52 L84 68 L16 68 Z" fill="#F8FAFC" stroke="#1E293B" stroke-width="3"/><line x1="34" y1="38" x2="26" y2="66" stroke="#1E293B" stroke-width="4"/><line x1="52" y1="38" x2="44" y2="66" stroke="#1E293B" stroke-width="4"/><line x1="68" y1="38" x2="60" y2="66" stroke="#1E293B" stroke-width="4"/><circle cx="30" cy="70" r="8" fill="#1E293B"/><circle cx="70" cy="70" r="8" fill="#1E293B"/></svg>`,
+      '側邊車道': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="16" y="16" width="68" height="68" rx="8" fill="#334155"/><rect x="56" y="16" width="20" height="68" fill="#FACC15" opacity="0.5"/><polygon points="66,28 60,40 72,40" fill="#FFFFFF"/></svg>`,
+      '草原小徑': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="14" y="16" width="72" height="68" rx="10" fill="#4ADE80"/><path d="M40 84 Q56 54 44 16 L58 16 Q70 54 54 84 Z" fill="#FEF3C7"/><circle cx="28" cy="36" r="4" fill="#F43F5E"/><circle cx="72" cy="58" r="4" fill="#FACC15"/></svg>`,
+      '倉庫碼頭': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="14" y="24" width="44" height="46" fill="#64748B"/><rect x="14" y="64" width="44" height="8" fill="#334155"/><rect x="58" y="38" width="28" height="26" rx="3" fill="#F97316"/><circle cx="66" cy="68" r="6" fill="#1E293B"/><circle cx="80" cy="68" r="6" fill="#1E293B"/></svg>`,
+      '三輪車': `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="28" cy="68" r="11" fill="none" stroke="#1E293B" stroke-width="4"/><circle cx="74" cy="66" r="13" fill="none" stroke="#1E293B" stroke-width="4"/><path d="M28 68 L48 48 L66 48 L74 66 M66 48 L62 32 L54 32" fill="none" stroke="#EF4444" stroke-width="4.5" stroke-linecap="round"/></svg>`,
+      '兒童三輪車': `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="28" cy="68" r="11" fill="none" stroke="#1E293B" stroke-width="4"/><circle cx="74" cy="66" r="13" fill="none" stroke="#1E293B" stroke-width="4"/><path d="M28 68 L48 48 L66 48 L74 66 M66 48 L62 32 L54 32" fill="none" stroke="#EF4444" stroke-width="4.5" stroke-linecap="round"/></svg>`,
+      '兒童滑步車': `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="26" cy="66" r="13" fill="none" stroke="#1E293B" stroke-width="4"/><circle cx="74" cy="66" r="13" fill="none" stroke="#1E293B" stroke-width="4"/><path d="M26 66 L44 48 L64 48 L74 66 M64 48 L60 32 L52 32" fill="none" stroke="#0EA5E9" stroke-width="4.5" stroke-linecap="round"/><rect x="36" y="42" width="14" height="5" rx="2.5" fill="#1E293B"/></svg>`,
+      '灑水車': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="18" y="34" width="44" height="28" rx="12" fill="#38BDF8"/><rect x="64" y="42" width="20" height="20" rx="4" fill="#0284C7"/><circle cx="30" cy="68" r="8" fill="#1E293B"/><circle cx="72" cy="68" r="8" fill="#1E293B"/><path d="M18 58 Q8 66 12 76 M22 62 Q14 70 18 78" fill="none" stroke="#BAE6FD" stroke-width="3" stroke-linecap="round"/></svg>`,
+      '森林步道': `<svg viewBox="0 0 100 100" class="w-full h-full"><polygon points="24,22 14,48 34,48" fill="#15803D"/><polygon points="76,22 66,48 86,48" fill="#15803D"/><polygon points="44,84 48,46 52,46 56,84" fill="#B45309"/><line x1="46" y1="60" x2="54" y2="60" stroke="#78350F" stroke-width="2"/><line x1="45" y1="72" x2="55" y2="72" stroke="#78350F" stroke-width="2"/></svg>`,
+      '一號公車': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="24" y="20" width="52" height="56" rx="10" fill="#10B981"/><rect x="30" y="38" width="40" height="18" rx="4" fill="#E0F2FE"/><circle cx="50" cy="29" r="7" fill="#FACC15"/><text x="46" y="33" font-size="11" font-weight="bold" fill="#1E293B">1</text><circle cx="34" cy="78" r="5" fill="#1E293B"/><circle cx="66" cy="78" r="5" fill="#1E293B"/></svg>`,
+      '二號公車': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="24" y="20" width="52" height="56" rx="10" fill="#F97316"/><rect x="30" y="38" width="40" height="18" rx="4" fill="#E0F2FE"/><circle cx="50" cy="29" r="7" fill="#FACC15"/><text x="46" y="33" font-size="11" font-weight="bold" fill="#1E293B">2</text><circle cx="34" cy="78" r="5" fill="#1E293B"/><circle cx="66" cy="78" r="5" fill="#1E293B"/></svg>`,
+      '驛站': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M14 42 Q50 22 86 42 Z" fill="#991B1B"/><rect x="24" y="42" width="52" height="34" fill="#FEF3C7"/><line x1="28" y1="42" x2="28" y2="76" stroke="#92400E" stroke-width="5"/><line x1="72" y1="42" x2="72" y2="76" stroke="#92400E" stroke-width="5"/></svg>`,
+      '引道': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="12" y="64" width="76" height="14" fill="#475569"/><path d="M16 64 Q48 64 78 28 L88 36 Q56 76 16 76 Z" fill="#94A3B8"/></svg>`,
+      '地下一樓停車場': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="18" y="20" width="64" height="60" rx="10" fill="#1E293B"/><text x="26" y="56" font-size="22" font-weight="bold" fill="#38BDF8">B1</text><text x="58" y="56" font-size="22" font-weight="bold" fill="#FACC15">P</text></svg>`,
+      '二樓停車場': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="18" y="20" width="64" height="60" rx="10" fill="#0284C7"/><text x="26" y="56" font-size="22" font-weight="bold" fill="#FFFFFF">2F</text><text x="58" y="56" font-size="22" font-weight="bold" fill="#FACC15">P</text></svg>`,
+      '挖掘機': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M52 46 L68 26 L84 44 L76 52" fill="none" stroke="#EAB308" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><rect x="22" y="42" width="32" height="22" rx="5" fill="#FACC15"/><rect x="18" y="64" width="42" height="12" rx="6" fill="#1E293B"/></svg>`,
+      '烏篷船': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="68" width="80" height="16" rx="5" fill="#0284C7"/><path d="M32 54 C32 34, 68 34, 68 54 Z" fill="#1E293B"/><polygon points="16,54 84,54 74,68 26,68" fill="#B45309"/></svg>`,
+      '屋頂停車場': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="20" y="34" width="60" height="48" fill="#94A3B8"/><rect x="20" y="26" width="60" height="8" fill="#334155"/><rect x="28" y="16" width="18" height="10" rx="3" fill="#EF4444"/><rect x="54" y="16" width="18" height="10" rx="3" fill="#38BDF8"/></svg>`,
+      '彎道': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="14" y="14" width="72" height="72" rx="10" fill="#86EFAC"/><path d="M26 84 C26 52, 74 52, 74 16" fill="none" stroke="#334155" stroke-width="20" stroke-linecap="round"/><path d="M26 84 C26 52, 74 52, 74 16" fill="none" stroke="#FACC15" stroke-width="3" stroke-dasharray="6 5"/></svg>`,
+      '外環道路': `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="50" cy="50" r="36" fill="none" stroke="#334155" stroke-width="12"/><circle cx="50" cy="50" r="16" fill="#F97316"/><circle cx="50" cy="50" r="36" fill="none" stroke="#FACC15" stroke-width="2" stroke-dasharray="6 4"/></svg>`,
+      '漁船': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="68" width="80" height="16" rx="5" fill="#0EA5E9"/><line x1="44" y1="22" x2="44" y2="52" stroke="#475569" stroke-width="3.5"/><rect x="44" y="34" width="22" height="18" rx="3" fill="#FFFFFF"/><polygon points="16,52 84,52 72,68 24,68" fill="#0284C7"/></svg>`,
+      '雲梯消防車': `<svg viewBox="0 0 100 100" class="w-full h-full"><line x1="24" y1="42" x2="82" y2="16" stroke="#CBD5E1" stroke-width="7" stroke-linecap="round"/><rect x="16" y="42" width="68" height="26" rx="6" fill="#DC2626"/><circle cx="30" cy="70" r="8" fill="#1E293B"/><circle cx="70" cy="70" r="8" fill="#1E293B"/></svg>`,
+      '宇宙飛船': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M34 44 C34 26, 66 26, 66 44 Z" fill="#BAE6FD"/><ellipse cx="50" cy="48" rx="36" ry="12" fill="#8B5CF6"/><circle cx="30" cy="48" r="3" fill="#FACC15"/><circle cx="50" cy="50" r="3" fill="#FACC15"/><circle cx="70" cy="48" r="3" fill="#FACC15"/></svg>`,
+      '漁港碼頭': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="66" width="80" height="18" rx="5" fill="#0284C7"/><rect x="12" y="48" width="44" height="8" fill="#B45309"/><polygon points="58,50 88,50 80,66 64,66" fill="#38BDF8"/></svg>`,
+      '月台': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="12" y="54" width="76" height="24" fill="#CBD5E1"/><line x1="12" y1="56" x2="88" y2="56" stroke="#FACC15" stroke-width="5"/><rect x="24" y="24" width="52" height="28" rx="6" fill="#F97316"/></svg>`,
+      '雨遮走廊': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M16 34 Q50 20 84 34 Z" fill="#38BDF8"/><line x1="26" y1="34" x2="26" y2="78" stroke="#64748B" stroke-width="4"/><line x1="74" y1="34" x2="74" y2="78" stroke="#64748B" stroke-width="4"/><rect x="16" y="76" width="68" height="8" fill="#94A3B8"/></svg>`,
+      '壓路機': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="20" y="34" width="36" height="28" rx="5" fill="#FACC15"/><circle cx="30" cy="68" r="10" fill="#1E293B"/><circle cx="68" cy="64" r="14" fill="#64748B"/></svg>`,
+      '鴨子船': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="68" width="80" height="16" rx="5" fill="#0EA5E9"/><path d="M22 52 C22 68, 78 68, 78 48 C78 34, 62 34, 62 46 L34 46 Z" fill="#FACC15"/><polygon points="76,44 88,46 76,50" fill="#F97316"/></svg>`,
+      '安全島': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="12" y="20" width="76" height="60" rx="8" fill="#334155"/><rect x="42" y="20" width="16" height="60" rx="6" fill="#22C55E"/><circle cx="50" cy="38" r="6" fill="#15803D"/><circle cx="50" cy="62" r="6" fill="#15803D"/></svg>`,
+      '山坡路': `<svg viewBox="0 0 100 100" class="w-full h-full"><polygon points="12,84 88,24 88,84" fill="#4ADE80"/><line x1="12" y1="80" x2="86" y2="22" stroke="#475569" stroke-width="10" stroke-linecap="round"/></svg>`,
+      '河堤步道': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="12" y="58" width="76" height="24" fill="#38BDF8"/><polygon points="12,32 54,32 72,58 12,58" fill="#22C55E"/><rect x="12" y="26" width="42" height="6" fill="#CBD5E1"/></svg>`,
+      '候車亭': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="18" y="26" width="64" height="8" rx="3" fill="#0284C7"/><line x1="24" y1="34" x2="24" y2="78" stroke="#475569" stroke-width="4"/><line x1="76" y1="34" x2="76" y2="78" stroke="#475569" stroke-width="4"/><rect x="32" y="60" width="36" height="6" rx="2" fill="#F59E0B"/></svg>`,
+      '龍舟': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="68" width="80" height="16" rx="5" fill="#0284C7"/><path d="M18 54 L76 54 L66 68 L26 68 Z" fill="#EF4444"/><circle cx="78" cy="44" r="8" fill="#22C55E"/><polygon points="84,42 94,40 86,48" fill="#FACC15"/></svg>`,
+      '蓬蓬船': `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="68" width="80" height="16" rx="5" fill="#38BDF8"/><path d="M26 36 L74 36 L68 44 L32 44 Z" fill="#F43F5E"/><line x1="34" y1="44" x2="34" y2="54" stroke="#475569" stroke-width="2.5"/><line x1="66" y1="44" x2="66" y2="54" stroke="#475569" stroke-width="2.5"/><polygon points="20,54 80,54 72,68 28,68" fill="#FACC15"/></svg>`,
+      '兒童安全座椅': `<svg viewBox="0 0 100 100" class="w-full h-full"><path d="M30 22 C30 16, 70 16, 70 22 L72 62 C72 74, 28 74, 28 62 Z" fill="#3B82F6"/><rect x="36" y="28" width="28" height="36" rx="8" fill="#93C5FD"/><path d="M40 32 L50 48 L60 32" fill="none" stroke="#1E293B" stroke-width="4" stroke-linecap="round"/><rect x="26" y="68" width="48" height="12" rx="5" fill="#1E293B"/></svg>`
+    };
+
+    // =========================================================================
+    // 2. 狀態管理與 LocalStorage 星星進度紀錄
+    // =========================================================================
+    const STAGE_DURATIONS = [60, 120, 180, 180]; // 1分、2分、3分、3分
+    let currentSymbolIndex = 0;
+    let currentStage = 0;
+    let timeRemaining = STAGE_DURATIONS[0];
+    let timerInterval = null;
+    let isTimerRunning = false;
+
+    let currentVisualMode = 'picture';
+    let popCount = 0;
+
+    // 黑色遮罩狀態
+    const maskState = { treasure: {}, vehicle: {} };
+    const showHints = { treasure: true, vehicle: true };
+
+    // 已完成星星紀錄
+    let masteredSet = new Set();
+    try {
+      const saved = JSON.parse(localStorage.getItem('bopomofo_mastered_v1') || '[]');
+      if (Array.isArray(saved)) {
+        masteredSet = new Set(saved);
+      }
+    } catch (e) {}
+
+    function saveMasteredProgress() {
+      try {
+        localStorage.setItem('bopomofo_mastered_v1', JSON.stringify([...masteredSet]));
+      } catch (e) {}
+      document.getElementById('mastered-count').textContent = masteredSet.size;
+    }
+
+    // =========================================================================
+    // 3. 音效與中文語音合成引擎
+    // =========================================================================
+    let synth = null;
+
+    async function ensureAudioReady() {
+      try {
+        if (typeof Tone !== 'undefined') {
+          if (Tone.context.state !== 'running') {
+            await Tone.start();
+          }
+          if (!synth) {
+            synth = new Tone.PolySynth(Tone.Synth).toDestination();
+          }
+        }
+      } catch (e) {}
+    }
+
+    function speakChinese(text) {
+      try {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.lang = 'zh-TW';
+          utterance.rate = 0.88; // 語速稍慢，方便中班幼兒聽清楚
+          utterance.pitch = 1.15;
+          window.speechSynthesis.speak(utterance);
+        }
+      } catch (e) {}
+    }
+
+    async function playSymbolAudio(symbolChar, event) {
+      if (event) event.stopPropagation();
+      await ensureAudioReady();
+      try {
+        if (synth) {
+          synth.triggerAttackRelease(['C5', 'E5'], '16n');
+        }
+      } catch (e) {}
+      speakChinese(symbolChar);
+    }
+
+    function playCurrentSymbolSound() {
+      const item = BOPOMOFO_DATA[currentSymbolIndex];
+      playSymbolAudio(item.s);
+    }
+
+    async function playActionEffect(soundType, symbolChar) {
+      await ensureAudioReady();
+      try {
+        if (synth) {
+          const now = Tone.now();
+          if (soundType === 'pop') {
+            synth.triggerAttackRelease(['E5', 'A5'], '32n', now);
+          } else if (soundType === 'blow') {
+            synth.triggerAttackRelease(['A5', 'E6'], '32n', now);
+          } else if (soundType === 'hum') {
+            synth.triggerAttackRelease(['G4', 'B4', 'D5'], '8n', now);
+          } else if (soundType === 'drum') {
+            synth.triggerAttackRelease(['C3', 'G3'], '16n', now);
+          } else if (soundType === 'engine') {
+            synth.triggerAttackRelease(['D3', 'A3'], '16n', now);
+          } else if (soundType === 'ship') {
+            synth.triggerAttackRelease(['F3', 'C4'], '8n', now);
+          } else {
+            synth.triggerAttackRelease(['C5', 'G5'], '16n', now);
+          }
+        }
+      } catch (e) {}
+      speakChinese(`${symbolChar}！`);
+    }
+
+    async function playRevealChime() {
+      await ensureAudioReady();
+      try {
+        if (synth) {
+          const now = Tone.now();
+          synth.triggerAttackRelease('C5', '16n', now);
+          synth.triggerAttackRelease('E5', '16n', now + 0.08);
+          synth.triggerAttackRelease('G5', '8n', now + 0.16);
+        }
+      } catch (e) {}
+    }
+
+    async function playVehicleHintSound(type, event) {
+      if (event) event.stopPropagation(); // 避免觸發掀開遮罩
+      await ensureAudioReady();
+      try {
+        if (synth) {
+          const now = Tone.now();
+          if (type === 'horn') {
+            synth.triggerAttackRelease('F4', '16n', now);
+            synth.triggerAttackRelease('F4', '8n', now + 0.16);
+          } else if (type === 'music') {
+            synth.triggerAttackRelease('E5', '16n', now);
+            synth.triggerAttackRelease('C5', '16n', now + 0.14);
+            synth.triggerAttackRelease('G5', '8n', now + 0.28);
+          } else if (type === 'engine') {
+            synth.triggerAttackRelease('C3', '16n', now);
+            synth.triggerAttackRelease('G2', '16n', now + 0.14);
+            synth.triggerAttackRelease('C3', '8n', now + 0.28);
+          } else if (type === 'jet') {
+            synth.triggerAttackRelease('C5', '16n', now);
+            synth.triggerAttackRelease('G5', '8n', now + 0.14);
+          } else if (type === 'siren') {
+            synth.triggerAttackRelease('A4', '8n', now);
+            synth.triggerAttackRelease('F4', '8n', now + 0.2);
+            synth.triggerAttackRelease('A4', '8n', now + 0.4);
+          } else if (type === 'ship') {
+            synth.triggerAttackRelease(['C3', 'G3'], '4n', now);
+          } else if (type === 'bell') {
+            synth.triggerAttackRelease('E6', '16n', now);
+            synth.triggerAttackRelease('E6', '16n', now + 0.16);
+            synth.triggerAttackRelease('E6', '16n', now + 0.32);
+          } else {
+            synth.triggerAttackRelease('B5', '16n', now);
+            synth.triggerAttackRelease('E6', '8n', now + 0.14);
+          }
+        }
+      } catch (e) {}
+    }
+
+    // =========================================================================
+    // 4. 視圖一：注音符號總表渲染與篩選
+    // =========================================================================
+    function renderMasterChart() {
+      const grids = {
+        initial: document.getElementById('grid-initial'),
+        medial: document.getElementById('grid-medial'),
+        final: document.getElementById('grid-final')
+      };
+
+      Object.values(grids).forEach(g => g.innerHTML = '');
+
+      const catThemes = {
+        initial: 'border-rose-200 hover:border-rose-400 bg-gradient-to-b from-white to-rose-50/70 text-rose-600',
+        medial: 'border-sky-200 hover:border-sky-400 bg-gradient-to-b from-white to-sky-50/70 text-sky-600',
+        final: 'border-emerald-200 hover:border-emerald-400 bg-gradient-to-b from-white to-emerald-50/70 text-emerald-600'
+      };
+
+      BOPOMOFO_DATA.forEach((item, idx) => {
+        const isStarred = masteredSet.has(item.s);
+        const card = document.createElement('div');
+        card.onclick = () => openSymbolLesson(idx);
+        card.className = `relative rounded-3xl border-4 ${catThemes[item.cat]} p-3.5 flex flex-col items-center justify-between shadow-sm hover:shadow-md hover:-translate-y-1 active:scale-95 transition cursor-pointer`;
+
+        card.innerHTML = `
+          <!-- 左上角星星完成標記 -->
+          <span class="absolute top-2.5 left-2.5 text-base ${isStarred ? 'opacity-100' : 'opacity-20 grayscale'}" title="${isStarred ? '已完成冒險' : '尚未完成'}">
+            ⭐
+          </span>
+
+          <!-- 右上角直接發音小按鈕 -->
+          <button
+            onclick="playSymbolAudio('${item.s}', event)"
+            title="直接聽「${item.s}」的發音"
+            class="absolute top-2 right-2 w-8 h-8 rounded-full bg-amber-100 hover:bg-amber-300 text-amber-900 flex items-center justify-center text-sm shadow-sm transition cursor-pointer"
+          >
+            🔊
+          </button>
+
+          <!-- 超大注音符號 -->
+          <div class="mt-4 mb-1 text-5xl sm:text-6xl font-black tracking-tight leading-none">
+            ${item.s}
+          </div>
+
+          <!-- 聯想圖示與關鍵詞 -->
+          <div class="mt-2 w-full bg-white/90 rounded-2xl py-1.5 px-2 text-center border border-slate-100">
+            <div class="text-lg leading-none mb-0.5">${item.vis.e}</div>
+            <div class="text-xs font-black text-slate-700 truncate">${item.vis.t}</div>
+          </div>
+        `;
+
+        grids[item.cat].appendChild(card);
+      });
+
+      document.getElementById('mastered-count').textContent = masteredSet.size;
+    }
+
+    function filterChart(filterType) {
+      document.querySelectorAll('.chart-filter-btn').forEach(btn => {
+        btn.classList.remove('bg-slate-800', 'text-white', 'shadow');
+        btn.classList.add('bg-slate-100', 'text-slate-700');
+      });
+
+      const activeBtn = document.getElementById(`filter-${filterType}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-slate-100', 'text-slate-700', 'bg-rose-50', 'text-rose-700', 'bg-sky-50', 'text-sky-700', 'bg-emerald-50', 'text-emerald-700');
+        activeBtn.classList.add('bg-slate-800', 'text-white', 'shadow');
+      }
+
+      const secInitial = document.getElementById('section-initial');
+      const secMedial = document.getElementById('section-medial');
+      const secFinal = document.getElementById('section-final');
+
+      secInitial.classList.toggle('hidden', filterType !== 'all' && filterType !== 'initial');
+      secMedial.classList.toggle('hidden', filterType !== 'all' && filterType !== 'medial');
+      secFinal.classList.toggle('hidden', filterType !== 'all' && filterType !== 'final');
+    }
+
+    // =========================================================================
+    // 5. 視圖切換：進入單一符號教學 / 返回總表
+    // =========================================================================
+    function openSymbolLesson(index) {
+      currentSymbolIndex = index;
+      const item = BOPOMOFO_DATA[index];
+
+      // 切換主畫面視圖
+      document.getElementById('view-chart').classList.add('hidden');
+      document.getElementById('view-lesson').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // 更新頂部標題與符號文字
+      const catNames = { initial: '聲母家族', medial: '介音家族', final: '韻母家族' };
+      const badgeColors = {
+        initial: 'bg-gradient-to-br from-rose-500 to-orange-500',
+        medial: 'bg-gradient-to-br from-sky-500 to-indigo-500',
+        final: 'bg-gradient-to-br from-emerald-500 to-teal-500'
+      };
+
+      const badge = document.getElementById('lesson-badge');
+      badge.textContent = item.s;
+      badge.className = `w-11 h-11 sm:w-12 sm:h-12 rounded-2xl ${badgeColors[item.cat]} text-white flex items-center justify-center text-2xl sm:text-3xl font-black shadow-md`;
+
+      document.getElementById('lesson-symbol-title').textContent = item.s;
+      document.getElementById('lesson-category-subtitle').textContent = `${catNames[item.cat]}・親子互動 9 分鐘`;
+      document.querySelectorAll('.current-sym-text').forEach(el => el.textContent = item.s);
+
+      // 重設本符號的關卡狀態
+      popCount = 0;
+      document.getElementById('pop-counter').textContent = '0';
+      maskState.treasure = {};
+      maskState.vehicle = {};
+
+      // 初始化四個關卡內容
+      setupStage1Visual(item);
+      setupStage2Pronounce(item);
+      renderMaskedCards('treasure', item);
+      renderMaskedCards('vehicle', item);
+
+      // 切回第一關並朗讀符號
+      switchStage(0);
+      playSymbolAudio(item.s);
+    }
+
+    function backToChart() {
+      clearInterval(timerInterval);
+      isTimerRunning = false;
+      document.getElementById('view-lesson').classList.add('hidden');
+      document.getElementById('view-chart').classList.remove('hidden');
+      renderMasterChart();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function navigateAdjacentSymbol(delta) {
+      const nextIndex = (currentSymbolIndex + delta + BOPOMOFO_DATA.length) % BOPOMOFO_DATA.length;
+      openSymbolLesson(nextIndex);
+    }
+
+    // =========================================================================
+    // 6. 關卡切換與計時器控制
+    // =========================================================================
+    function switchStage(stageIndex) {
+      currentStage = stageIndex;
+
+      document.querySelectorAll('.stage-panel').forEach((panel, idx) => {
+        panel.classList.toggle('hidden', idx !== stageIndex);
+      });
+
+      const activeColors = [
+        'bg-sky-500 text-white border-sky-700',
+        'bg-rose-500 text-white border-rose-700',
+        'bg-emerald-500 text-white border-emerald-700',
+        'bg-amber-500 text-white border-amber-700'
+      ];
+
+      document.querySelectorAll('.stage-tab').forEach((tab, idx) => {
+        tab.className = 'stage-tab p-3 sm:p-4 rounded-2xl border-b-4 text-left transition cursor-pointer flex flex-col justify-between shadow-sm ';
+        if (idx === stageIndex) {
+          tab.className += activeColors[idx];
+        } else {
+          tab.className += 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50';
+        }
+      });
+
+      resetTimer();
+    }
+
+    function updateTimerUI() {
+      const mins = String(Math.floor(timeRemaining / 60)).padStart(2, '0');
+      const secs = String(timeRemaining % 60).padStart(2, '0');
+      document.getElementById('timer-display').textContent = `${mins}:${secs}`;
+    }
+
+    function toggleTimer() {
+      const btn = document.getElementById('timer-toggle-btn');
+      const status = document.getElementById('timer-status');
+
+      if (isTimerRunning) {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        btn.textContent = '▶ 繼續計時';
+        btn.className = 'bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold px-4 py-2 rounded-xl shadow transition cursor-pointer';
+        status.textContent = '已暫停';
+        status.className = 'text-xs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full';
+      } else {
+        if (timeRemaining <= 0) {
+          timeRemaining = STAGE_DURATIONS[currentStage];
+        }
+        isTimerRunning = true;
+        btn.textContent = '⏸ 暫停';
+        btn.className = 'bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-bold px-4 py-2 rounded-xl shadow transition cursor-pointer';
+        status.textContent = '進行中';
+        status.className = 'text-xs font-bold text-rose-600 bg-rose-100 px-2 py-0.5 rounded-full';
+
+        timerInterval = setInterval(() => {
+          timeRemaining--;
+          updateTimerUI();
+
+          if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            btn.textContent = '▶ 重新開始';
+            status.textContent = '時間到！';
+            playRevealChime();
+            showToast('⏰ 時間到囉！可以準備進入下一關囉～');
+          }
+        }, 1000);
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      isTimerRunning = false;
+      timeRemaining = STAGE_DURATIONS[currentStage];
+      updateTimerUI();
+
+      const btn = document.getElementById('timer-toggle-btn');
+      const status = document.getElementById('timer-status');
+      btn.textContent = '▶ 開始計時';
+      btn.className = 'bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold px-4 py-2 rounded-xl shadow transition cursor-pointer';
+      status.textContent = '準備就緒';
+      status.className = 'text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full';
+    }
+
+    function showToast(msg) {
+      const banner = document.getElementById('toast-banner');
+      document.getElementById('toast-message').textContent = msg;
+      banner.classList.remove('opacity-0');
+      setTimeout(() => {
+        banner.classList.add('opacity-0');
+      }, 3500);
+    }
+
+    // =========================================================================
+    // 7. 第一關：看圖聯想（1 分鐘）
+    // =========================================================================
+    function setupStage1Visual(item) {
+      document.getElementById('visual-description').textContent = item.vis.d;
+      document.getElementById('visual-mode-emoji').textContent = item.vis.e;
+      document.getElementById('visual-mode-title').textContent = `變身「${item.vis.t}」`;
+      document.getElementById('visual-parent-tip').textContent = item.vis.tip;
+      setVisualMode('picture');
+    }
+
+    function setVisualMode(mode) {
+      currentVisualMode = mode;
+      const item = BOPOMOFO_DATA[currentSymbolIndex];
+      const container = document.getElementById('visual-morph-container');
+      const caption = document.getElementById('visual-caption');
+
+      document.querySelectorAll('.visual-mode-btn').forEach(btn => {
+        btn.classList.remove('border-sky-500', 'bg-sky-50', 'text-sky-900');
+        btn.classList.add('border-slate-200', 'bg-white', 'text-slate-700');
+      });
+      const activeBtn = document.getElementById(`btn-mode-${mode}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('border-slate-200', 'bg-white', 'text-slate-700');
+        activeBtn.classList.add('border-sky-500', 'bg-sky-50', 'text-sky-900');
+      }
+
+      container.classList.remove('animate-pop');
+      void container.offsetWidth;
+      container.classList.add('animate-pop');
+
+      if (mode === 'picture') {
+        caption.textContent = `像「${item.vis.t}」一樣的「${item.s}」！`;
+        container.innerHTML = `
+          <div class="relative w-52 h-52 rounded-full bg-white shadow-md border-4 border-sky-200 flex items-center justify-center overflow-hidden">
+            <span class="text-[115px] leading-none select-none transform -translate-x-2">${item.vis.e}</span>
+            <span class="absolute right-4 bottom-2 text-8xl font-black text-rose-500/90 drop-shadow-[0_2px_6px_rgba(255,255,255,1)]">
+              ${item.s}
+            </span>
+          </div>
+        `;
+      } else {
+        caption.textContent = `標準注音符號「${item.s}」`;
+        container.innerHTML = `
+          <div class="w-52 h-52 rounded-full bg-white shadow-md border-4 border-sky-300 flex items-center justify-center">
+            <span class="text-[135px] font-black text-slate-800 leading-none">${item.s}</span>
+          </div>
+        `;
+        playSymbolAudio(item.s);
+      }
+    }
+
+    function toggleVisualMorph() {
+      setVisualMode(currentVisualMode === 'picture' ? 'symbol' : 'picture');
+    }
+
+    // =========================================================================
+    // 8. 第二關：誇張發音（2 分鐘）
+    // =========================================================================
+    function setupStage2Pronounce(item) {
+      document.getElementById('pronounce-stage-title').textContent = `🗣️ 誇張發音：${item.pro.t}`;
+      document.getElementById('sound-game-instruction').textContent = `👆 ${item.pro.ins}`;
+      document.getElementById('pronounce-parent-tip').textContent = item.pro.tip;
+      spawnSoundTargets();
+    }
+
+    function spawnSoundTargets() {
+      const item = BOPOMOFO_DATA[currentSymbolIndex];
+      const grid = document.getElementById('sound-targets-grid');
+      grid.innerHTML = '';
+
+      const colors = [
+        'from-sky-300 to-blue-400 border-sky-200 text-white',
+        'from-rose-300 to-pink-400 border-rose-200 text-white',
+        'from-amber-300 to-orange-400 border-amber-200 text-white',
+        'from-emerald-300 to-teal-400 border-emerald-200 text-white'
+      ];
+
+      for (let i = 0; i < 8; i++) {
+        const btn = document.createElement('button');
+        btn.style.animationDelay = `${(i * 0.22).toFixed(2)}s`;
+        const color = colors[i % colors.length];
+
+        btn.className = `gentle-float w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-br ${color} border-4 shadow-lg flex flex-col items-center justify-center font-black transition-transform active:scale-75 cursor-pointer relative`;
+        btn.innerHTML = `
+          <span class="text-2xl leading-none">${item.pro.e}</span>
+          <span class="text-3xl sm:text-4xl mt-0.5">${item.s}</span>
+          <span class="text-[11px] font-bold bg-black/15 px-2 py-0.5 rounded-full mt-1">點我發音</span>
+        `;
+
+        btn.onclick = () => {
+          if (btn.dataset.triggered === 'true') return;
+          btn.dataset.triggered = 'true';
+
+          popCount++;
+          document.getElementById('pop-counter').textContent = popCount;
+          playActionEffect(item.pro.snd, item.s);
+
+          btn.classList.remove('gentle-float');
+          btn.className = 'w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-amber-100 border-2 border-dashed border-amber-400 text-rose-600 flex flex-col items-center justify-center font-black animate-pop';
+          btn.innerHTML = `<span class="text-3xl">✨</span><span class="text-lg">${item.s}！</span>`;
+        };
+
+        grid.appendChild(btn);
+      }
+    }
+
+    // =========================================================================
+    // 9. 第三關 & 第四關：黑色遮罩揭曉互動系統（生活尋寶 / 交通工具或設施）
+    // =========================================================================
+    function buildWordWithVerticalZhuyin(word, zhuyinLine, targetSymbol) {
+      const chars = Array.from(word);
+      const syllables = zhuyinLine.trim().split(/\s+/);
+
+      return chars.map((ch, idx) => {
+        const syl = syllables[idx] || '';
+        const isMatch = syl.includes(targetSymbol);
+        // 拆解輕聲符號 ˙ 放在最上方（標準台灣直式注音規則）
+        const hasNeutral = syl.startsWith('˙');
+        const cleanSyl = hasNeutral ? syl.slice(1) : syl;
+
+        return `
+          <div class="inline-flex items-center mx-1 bg-white/80 px-2 py-1 rounded-2xl border ${isMatch ? 'border-rose-300 shadow-sm' : 'border-slate-100'}">
+            <span class="text-3xl sm:text-4xl font-black text-slate-800">${ch}</span>
+            <div class="flex flex-col items-center justify-center ml-1 ${isMatch ? 'text-rose-600 font-black' : 'text-slate-500 font-bold'}">
+              ${hasNeutral ? '<span class="text-xs leading-none">˙</span>' : ''}
+              <span class="zhuyin-vertical text-sm sm:text-base">${cleanSyl}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderMaskedCards(category, item) {
+      const list = category === 'treasure' ? item.tr : item.vh;
+      const gridId = category === 'treasure' ? 'treasure-grid' : 'vehicle-grid';
+      const grid = document.getElementById(gridId);
+      grid.innerHTML = '';
+
+      const cardThemes = [
+        'from-sky-50 to-blue-100 border-sky-200',
+        'from-amber-50 to-yellow-100 border-amber-200',
+        'from-rose-50 to-pink-100 border-rose-200',
+        'from-emerald-50 to-teal-100 border-emerald-200',
+        'from-violet-50 to-purple-100 border-violet-200',
+        'from-orange-50 to-amber-100 border-orange-200'
+      ];
+
+      list.forEach((entry, index) => {
+        const [emoji, word, zhuyinLine, hintText, soundHintType] = entry;
+        const cardId = `${category}-${index}`;
+        const isRevealed = !!maskState[category][cardId];
+        const themeClass = cardThemes[index % cardThemes.length];
+        const customSvg = CUSTOM_SVGS[word];
+
+        const card = document.createElement('div');
+        card.className = `relative rounded-3xl border-4 bg-gradient-to-b ${themeClass} p-5 flex flex-col items-center justify-between min-h-[265px] shadow-sm overflow-hidden transition hover:shadow-md`;
+
+        const wordHtml = buildWordWithVerticalZhuyin(word, zhuyinLine, item.s);
+
+        const visualHtml = customSvg
+          ? `<div class="w-24 h-24 rounded-full bg-white/95 shadow-inner flex items-center justify-center p-2.5 mb-3 transition-transform hover:scale-110">${customSvg}</div>`
+          : `<div class="w-24 h-24 rounded-full bg-white/90 shadow-inner flex items-center justify-center text-6xl mb-3 transition-transform hover:scale-110">${emoji}</div>`;
+
+        const soundHintBtnHtml = soundHintType ? `
+          <button
+            onclick="playVehicleHintSound('${soundHintType}', event)"
+            class="mt-2 bg-amber-400 hover:bg-amber-500 active:scale-95 text-slate-900 font-black text-xs px-3.5 py-2 rounded-full shadow flex items-center gap-1.5 cursor-pointer"
+          >
+            <span>🔊</span>
+            <span>聽聽聲音提示</span>
+          </button>
+        ` : '';
+
+        card.innerHTML = `
+          <!-- 單獨重新蓋上黑布按鈕 -->
+          <button
+            onclick="toggleSingleMask('${category}', '${cardId}', '${word}', false, event)"
+            title="重新蓋上黑色遮罩"
+            class="absolute top-3 right-3 z-10 bg-white/90 hover:bg-neutral-900 hover:text-white text-slate-600 text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-200 transition cursor-pointer"
+          >
+            ⬛ 蓋起來
+          </button>
+
+          <!-- 揭曉後的內容（點擊可重複聽讀音） -->
+          <div
+            onclick="speakChinese('${word}')"
+            class="w-full h-full flex flex-col items-center justify-center cursor-pointer pt-4"
+          >
+            ${visualHtml}
+            <div class="flex flex-wrap items-center justify-center mt-1">
+              ${wordHtml}
+            </div>
+            <span class="mt-2.5 text-xs font-bold text-slate-500 bg-white/80 px-3 py-1 rounded-full">
+              🔊 點擊圖案再聽一次
+            </span>
+          </div>
+
+          <!-- 黑色遮罩層（預設完全遮住事物，點擊後消失顯示下方內容） -->
+          <div
+            id="mask-${cardId}"
+            onclick="toggleSingleMask('${category}', '${cardId}', '${word}', true, event)"
+            class="black-mask ${isRevealed ? 'revealed' : ''} absolute inset-0 z-20 flex flex-col items-center justify-center p-5 text-center cursor-pointer"
+          >
+            <div class="w-14 h-14 rounded-full bg-neutral-800 border-2 border-neutral-700 flex items-center justify-center text-2xl mb-2 shadow-inner">
+              ❓
+            </div>
+            <div class="text-white font-black text-lg tracking-wide">
+              神秘提示 #${index + 1}
+            </div>
+            <p class="hint-text-${category} ${showHints[category] ? '' : 'hidden'} text-amber-300 text-sm font-bold mt-1.5 px-1 leading-snug">
+              提示：${hintText}
+            </p>
+            ${soundHintBtnHtml}
+            <span class="mt-3 inline-block bg-white/15 text-neutral-200 text-xs font-bold px-3.5 py-1.5 rounded-full border border-white/20">
+              👆 點擊黑色遮罩揭曉
+            </span>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    function toggleSingleMask(category, cardId, word, reveal, event) {
+      if (event) event.stopPropagation();
+      maskState[category][cardId] = reveal;
+
+      const maskEl = document.getElementById(`mask-${cardId}`);
+      if (!maskEl) return;
+
+      if (reveal) {
+        maskEl.classList.add('revealed');
+        playRevealChime();
+        setTimeout(() => speakChinese(word), 250);
+      } else {
+        maskEl.classList.remove('revealed');
+      }
+    }
+
+    function setAllMasks(category, reveal) {
+      const item = BOPOMOFO_DATA[currentSymbolIndex];
+      const list = category === 'treasure' ? item.tr : item.vh;
+      list.forEach((_, index) => {
+        const cardId = `${category}-${index}`;
+        maskState[category][cardId] = reveal;
+        const maskEl = document.getElementById(`mask-${cardId}`);
+        if (maskEl) {
+          maskEl.classList.toggle('revealed', reveal);
+        }
+      });
+      if (reveal) {
+        playRevealChime();
+      }
+    }
+
+    function toggleHintVisibility(category) {
+      showHints[category] = !showHints[category];
+      const btn = document.getElementById(`${category}-hint-toggle`);
+      btn.textContent = showHints[category] ? '💡 提示文字：顯示中' : '💡 提示文字：已隱藏';
+
+      document.querySelectorAll(`.hint-text-${category}`).forEach(el => {
+        el.classList.toggle('hidden', !showHints[category]);
+      });
+    }
+
+    // =========================================================================
+    // 10. 完成獎勵彈窗控制（點亮總表小星星）
+    // =========================================================================
+    function showCelebrationModal() {
+      const item = BOPOMOFO_DATA[currentSymbolIndex];
+      masteredSet.add(item.s);
+      saveMasteredProgress();
+
+      document.getElementById('modal-symbol-text').textContent = item.s;
+      document.getElementById('modal-badge-symbol').textContent = item.s;
+
+      playRevealChime();
+      speakChinese(`太棒了！你認識注音符號${item.s}囉！`);
+
+      const modal = document.getElementById('celebration-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeCelebrationModal() {
+      const modal = document.getElementById('celebration-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // =========================================================================
+    // 11. 頁面初始化
+    // =========================================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      renderMasterChart();
+      updateTimerUI();
+    });
+  </script>
+</body>
+</html>
